@@ -2,8 +2,8 @@
 
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
-import L, { LatLngExpression } from "leaflet";
-import { useEffect } from "react";
+import L, { LatLngExpression, Map as LeafletMap } from "leaflet";
+import { MutableRefObject, useEffect } from "react";
 
 // Impor gambar ikon dari Leaflet
 import markerIcon from "leaflet/dist/images/marker-icon.png";
@@ -42,20 +42,30 @@ const fixLeafletIcon = () => {
     });
 };
 
+interface PreviewRecordProps {
+    latitude: number;
+    longitude: number;
+    circleCenter: LatLngExpression;
+    circleRadius: number;
+    mapRef: MutableRefObject<LeafletMap | null>;
+}
+
 const Map = ({
     latitude,
     longitude,
     circleCenter,
     circleRadius,
-}: {
-    latitude: number;
-    longitude: number;
-    circleCenter: LatLngExpression;
-    circleRadius: number;
-}) => {
+    mapRef,
+}: PreviewRecordProps) => {
     useEffect(() => {
+        if (mapRef.current) {
+            mapRef.current.flyTo([latitude, longitude], 15, {
+                animate: true,
+                duration: 1.5,
+            });
+        }
         fixLeafletIcon(); // Panggil fungsi untuk memperbaiki ikon Leaflet saat komponen dirender
-    }, []);
+    }, [latitude, longitude, mapRef]);
 
     // Fungsi untuk menghitung jarak antara dua koordinat
     const isMarkerInsideCircle = (
@@ -84,13 +94,13 @@ const Map = ({
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
-                <Marker position={[longitude, latitude]}>
-                <Popup>
-                    {markerInside
-                        ? "Marker is inside the circle."
-                        : "Marker is outside the circle."}
-                </Popup>
-            </Marker>
+                <Marker position={[latitude, longitude]}>
+                    <Popup>
+                        {markerInside
+                            ? "Marker is inside the circle."
+                            : "Marker is outside the circle."}
+                    </Popup>
+                </Marker>
                 <Circle center={circleCenter} radius={circleRadius} />
             </MapContainer>
             {markerInside ? (
