@@ -1,10 +1,9 @@
-// app/components/Map.js
 "use client";
 
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import L, { LatLngExpression } from "leaflet";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 // Impor gambar ikon dari Leaflet
 import markerIcon from "leaflet/dist/images/marker-icon.png";
@@ -54,22 +53,7 @@ const Map = ({
     circleCenter: LatLngExpression;
     circleRadius: number;
 }) => {
-    const [location, setLocation] = useState({
-        latitude: 0,
-        longitude: 0,
-    });
-
     useEffect(() => {
-        // Get Current Location
-        const getLocation = () => {
-            navigator.geolocation.getCurrentPosition((position) => {
-                setLocation({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                });
-            });
-        };
-
         fixLeafletIcon(); // Panggil fungsi untuk memperbaiki ikon Leaflet saat komponen dirender
     }, []);
 
@@ -84,7 +68,7 @@ const Map = ({
     };
 
     const markerInside = isMarkerInsideCircle(
-        [location.latitude, location.longitude],
+        [latitude, longitude],
         circleCenter,
         circleRadius
     );
@@ -94,27 +78,29 @@ const Map = ({
             <MapContainer
                 center={circleCenter}
                 zoom={13}
-                style={{ height: "400px", width: "100%" }}
+                style={{ height: "300px", width: "100%" }}
             >
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
+                <Marker position={[longitude, latitude]}>
+                <Popup>
+                    {markerInside
+                        ? "Marker is inside the circle."
+                        : "Marker is outside the circle."}
+                </Popup>
+            </Marker>
                 <Circle center={circleCenter} radius={circleRadius} />
-                <Marker position={[location.longitude, location.latitude]}>
-                    <Popup>
-                        {markerInside
-                            ? "Marker is inside the circle."
-                            : "Marker is outside the circle."}
-                    </Popup>
-                </Marker>
             </MapContainer>
             {markerInside ? (
                 <p className="text-green-500">
                     {latitude}, {longitude} is inside the circle.
                 </p>
             ) : (
-                <p className="text-red-500">{latitude}, {longitude} Marker is outside the circle.</p>
+                <p className="text-red-500">
+                    {latitude}, {longitude} Marker is outside the circle.
+                </p>
             )}
         </div>
     );

@@ -15,7 +15,7 @@ const HomePage = () => {
         latitude: 0,
         longitude: 0,
     }); // Default lokasi marker
-    const circleCenter: LatLngExpression = [106.941418, -6.173130]; // Pusat lingkaran
+    const circleCenter: LatLngExpression = [-6.173, 106.941 ]; // Pusat lingkaran
     const circleRadius = 500; // Radius lingkaran dalam meter
 
     // Fungsi untuk mendapatkan lokasi
