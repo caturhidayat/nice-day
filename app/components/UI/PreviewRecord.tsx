@@ -3,14 +3,16 @@
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import L, { LatLngExpression, Map as LeafletMap } from "leaflet";
-import { MutableRefObject, useEffect } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 
-// Impor gambar ikon dari Leaflet
+// Impor icon default Leaflet
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
+import { useMapEvents } from "react-leaflet";
+import { get } from "http";
 
-// Menggunakan dynamic import untuk memuat komponen hanya di client-side
+// Using dynamic import to load components only on the client-side
 const MapContainer = dynamic(
     () => import("react-leaflet").then((mod) => mod.MapContainer),
     { ssr: false }
@@ -31,7 +33,7 @@ const Circle = dynamic(
     { ssr: false }
 );
 
-// Fungsi untuk mengganti ikon default Leaflet
+// Function to change the default Leaflet icon
 const fixLeafletIcon = () => {
     delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -43,31 +45,32 @@ const fixLeafletIcon = () => {
 };
 
 interface PreviewRecordProps {
-    latitude: number;
-    longitude: number;
+    position: LatLngExpression;
     circleCenter: LatLngExpression;
     circleRadius: number;
     mapRef: MutableRefObject<LeafletMap | null>;
+    getLocation: () => void;
 }
 
 const Map = ({
-    latitude,
-    longitude,
+    position,
     circleCenter,
     circleRadius,
     mapRef,
+    getLocation,
 }: PreviewRecordProps) => {
     useEffect(() => {
         if (mapRef.current) {
-            mapRef.current.flyTo([latitude, longitude], 15, {
+            mapRef.current.flyTo(position, 15, {
                 animate: true,
                 duration: 1.5,
             });
         }
-        fixLeafletIcon(); // Panggil fungsi untuk memperbaiki ikon Leaflet saat komponen dirender
-    }, [latitude, longitude, mapRef]);
 
-    // Fungsi untuk menghitung jarak antara dua koordinat
+        fixLeafletIcon();
+    }, [position, mapRef]);
+
+    // Function to calculate the distance between two coordinates
     const isMarkerInsideCircle = (
         markerPos: L.LatLngLiteral | L.LatLngTuple,
         circleCenter: L.LatLngExpression,
@@ -78,40 +81,69 @@ const Map = ({
     };
 
     const markerInside = isMarkerInsideCircle(
-        [latitude, longitude],
+        position,
         circleCenter,
         circleRadius
     );
 
+    // Funtion Location Marker
+    function LocationMarker() {
+        const map = useMapEvents({
+            click() {
+                map.locate();
+            },
+            locationfound() {
+                map.flyTo(position, map.getZoom());
+            },
+        });
+
+        // Store map event reference
+        mapRef.current = map;
+
+        return position === null ? null : (
+            <Marker position={position}>
+                <Popup>You are here</Popup>
+            </Marker>
+        );
+        // return null;
+    }
+
+    // Function to trigger map click event
+    const triggerMapClick = () => {
+        if (mapRef.current) {
+            mapRef.current.locate();
+        }
+    };
+
     return (
-        <div>
+        <div className="grid grid-cols-1 gap-2">
             <MapContainer
-                center={circleCenter}
-                zoom={13}
+                center={position}
+                zoom={15}
                 style={{ height: "300px", width: "100%" }}
+                ref={mapRef}
             >
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
-                <Marker position={[latitude, longitude]}>
-                    <Popup>
-                        {markerInside
-                            ? "Marker is inside the circle."
-                            : "Marker is outside the circle."}
-                    </Popup>
-                </Marker>
+                <LocationMarker />
                 <Circle center={circleCenter} radius={circleRadius} />
             </MapContainer>
+            <button
+                onClick={() => {
+                    getLocation();
+                    triggerMapClick();
+                }}
+                className="btn btn-warning btn-md"
+            >
+                Refresh Location
+            </button>
             {markerInside ? (
-                <p className="text-green-500">
-                    {latitude}, {longitude} is inside the circle.
-                </p>
-            ) : (
-                <p className="text-red-500">
-                    {latitude}, {longitude} Marker is outside the circle.
-                </p>
-            )}
+                <button className="btn btn-accent btn-md">
+                    Save Attendance
+                </button>
+            ) : null}
         </div>
     );
 };

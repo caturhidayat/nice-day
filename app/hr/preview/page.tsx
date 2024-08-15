@@ -1,7 +1,7 @@
 // app/page.js
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { LatLngExpression, Map as LeafletMap } from "leaflet";
 
@@ -11,27 +11,24 @@ const Map = dynamic(() => import("../../components/UI/PreviewRecord"), {
 });
 
 const HomePage = () => {
-    const [location, setLocation] = useState({
-        latitude: 0,
-        longitude: 0,
-    }); // Default lokasi marker
-
+    const [location, setLocation] = useState<LatLngExpression>([0, 0]);
     const mapRef = useRef<LeafletMap | null>(null);
 
-    const circleCenter: LatLngExpression = [-6.173, 106.941]; // Pusat lingkaran
-    const circleRadius = 500; // Radius lingkaran dalam meter
+    // Circle Location (HO Cakung)
+    const circleCenter: LatLngExpression = [-6.173, 106.941];
+    // Radius Circle (150 meter)
+    const circleRadius = 150;
 
-    // Fungsi untuk mendapatkan lokasi
+    // Function to get user location
     const getLocation = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    setLocation({
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                    });
-
-                    // Set marker ke lokasi user
+                    setLocation([
+                        position.coords.latitude,
+                        position.coords.longitude,
+                    ]);
+                    // Set marker to user location
                     if (mapRef.current) {
                         mapRef.current.flyTo(
                             [
@@ -55,17 +52,23 @@ const HomePage = () => {
         }
     };
 
+    // Get user location on page load
+    useEffect(() => {
+        getLocation();
+    }, []);
+
     return (
-        <div>
-            <h1>Aplikasi Absensi</h1>
-            <Map
-                latitude={location.latitude}
-                longitude={location.longitude}
-                circleCenter={circleCenter}
-                circleRadius={circleRadius}
-                mapRef={mapRef}
-            />
-            <button className="btn btn-neutral" onClick={getLocation}>Dapatkan Lokasi</button>
+        <div className="grid grid-cols-1 w-auto mx-40 gap-2">
+            <div className="justify-center">
+                <Map
+                    position={location}
+                    circleCenter={circleCenter}
+                    circleRadius={circleRadius}
+                    mapRef={mapRef}
+                    getLocation={getLocation}
+                />
+            </div>
+            <div className=""></div>
         </div>
     );
 };
