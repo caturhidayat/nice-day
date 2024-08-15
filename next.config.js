@@ -2,7 +2,7 @@
 const nextConfig = {
     // allow image from external source
     images: {
-        domains: ['openstreetmap.org'],
+        domains: ['openstreetmap.org', 'images.unsplash.com'],
     },
 }
 
