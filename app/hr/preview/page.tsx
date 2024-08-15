@@ -58,7 +58,7 @@ const HomePage = () => {
     }, []);
 
     return (
-        <div className="grid grid-cols-1 w-auto mx-40 gap-2">
+        <div className="grid grid-cols-1 w-auto gap-2 py-32">
             <div className="justify-center">
                 <Map
                     position={location}
