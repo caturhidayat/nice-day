@@ -32,9 +32,9 @@ const BottomItemNav = ({ icon, text, path }: ButtonItem) => {
             href={path}
             className="px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
         >
-            <button className="inline-flex flex-col items-center justify-center">
+            <button className="inline-flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 group-hover:text-accent dark:group-hover:text-accent">
                 {icon}
-                <span className="btm-nav-label text-sm text-gray-500 dark:text-gray-400 group-hover:text-violet-600 dark:group-hover:text-violet-600">
+                <span className="btm-nav-label">
                     {text}
                 </span>
             </button>
@@ -44,7 +44,7 @@ const BottomItemNav = ({ icon, text, path }: ButtonItem) => {
 
 export default function BottomNav() {
     return (
-        <div className="btm-nav">
+        <div className="btm-nav shadow-xl border-t-2 border-accent">
             {buttons.map((button, index) => (
                 <BottomItemNav key={index} {...button} />
             ))}
