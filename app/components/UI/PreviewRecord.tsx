@@ -135,12 +135,12 @@ const Map = ({
                     getLocation();
                     triggerMapClick();
                 }}
-                className="btn btn-error btn-md"
+                className="btn btn-warning btn-md"
             >
                 Refresh Location
             </button>
             {markerInside ? (
-                <button className="btn btn-accent btn-md">
+                <button className="btn btn-primary btn-md">
                     Save Attendance
                 </button>
             ) : null}
