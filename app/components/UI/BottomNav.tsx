@@ -1,53 +1,61 @@
-import { House, UserCheck, UserRound } from "lucide-react";
-import React from "react";
-import Link from "next/link";
+"use client";
 
-type ButtonItem = {
-    icon: JSX.Element;
-    text: string;
-    path: string;
+import { CalendarCog, House, UserCheck, UserRound } from "lucide-react";
+import React, { useContext } from "react";
+import Link from "next/link";
+import { AuthContext } from "@/app/auth/auth-context";
+
+export type ButtonItem = {
+  icon: JSX.Element;
+  text: string;
+  path: string;
 };
 
-const buttons: ButtonItem[] = [
-    {
-        icon: <House />,
-        text: "Home",
-        path: "/hr",
-    },
-    {
-        icon: <UserCheck />,
-        text: "Attendance",
-        path: "/hr/attendance",
-    },
-    {
-        icon: <UserRound />,
-        text: "Profile",
-        path: "/hr/profile",
-    },
+export const buttons: ButtonItem[] = [
+  {
+    icon: <House />,
+    text: "Home",
+    path: "/hr",
+  },
+  {
+    icon: <UserCheck />,
+    text: "Attendance",
+    path: "/hr/attendance",
+  },
+  {
+    icon: <CalendarCog />,
+    text: "Corrections",
+    path: "/hr/corrections",
+  },
+  {
+    icon: <UserRound />,
+    text: "Profile",
+    path: "/hr/profile",
+  },
 ];
 
 const BottomItemNav = ({ icon, text, path }: ButtonItem) => {
-    return (
-        <Link
-            href={path}
-            className="px-5 hover:bg-gray-50 dark:hover:bg-accent group"
-        >
-            <button className="inline-flex flex-col items-center justify-center text-base-100 dark:text-gray-400 group-hover:text-secondary dark:group-hover:text-secondary">
-                {icon}
-                <span className="btm-nav-label">
-                    {text}
-                </span>
-            </button>
-        </Link>
-    );
+  return (
+    <Link href={path} className="px-2 hover:bg-gray-50 group">
+      <button className="inline-flex flex-col items-center justify-center text-primary dark:text-gray-400 group-hover:text-primary dark:group-hover:text-primary">
+        {icon}
+        <span className="btm-nav-label">{text}</span>
+      </button>
+    </Link>
+  );
 };
 
 export default function BottomNav() {
-    return (
+  const isAuthenticated = useContext(AuthContext);
+  return (
+    <div>
+      {isAuthenticated ? (
         <div className="btm-nav shadow-xl border-t-2 border-primary">
-            {buttons.map((button, index) => (
-                <BottomItemNav key={index} {...button} />
-            ))}
+          {buttons.map((button, index) => (
+            <BottomItemNav key={index} {...button} />
+          ))}
         </div>
-    );
+      ) : null}
+    </div>
+  );
 }

@@ -19,45 +19,26 @@ const config: Config = {
     themes: [
       {
         mytheme: {
-          primary: "#ffd803",
-
-          "primary-content": "#272343",
-
-          secondary: "#e3f6f5",
-
-          "secondary-content": "#161616",
-
-          accent: "#272343",
-
-          "accent-content": "#f2f7f5",
-
-          neutral: "#ffffff",
-
-          "neutral-content": "#161616",
-
+          primary: "#6246ea",
+          "primary-content": "#fffffe",
+          secondary: "#d1d1e9",
+          "secondary-content": "#101013",
+          accent: "#e45858",
+          "accent-content": "#120303",
+          neutral: "#ffb0b0",
+          "neutral-content": "#160b0b",
           "base-100": "#fffffe",
-
-          "base-200": "#e3f6f0",
-
-          "base-300": "#bebebe",
-
-          "base-content": "#161616",
-
-          info: "#bae8e8",
-
-          "info-content": "#161616",
-
-          success: "#475d2b",
-
-          "success-content": "#f2f7f5",
-
-          warning: "#ffd883",
-
-          "warning-content": "#161616",
-
-          error: "#fa7743",
-
-          "error-content": "#161616",
+          "base-200": "#dededd",
+          "base-300": "#bebebd",
+          "base-content": "#2b2c34",
+          info: "#009df2",
+          "info-content": "#1b2d45",
+          success: "#00ebc7",
+          "success-content": "#00214d",
+          warning: "#fde24f",
+          "warning-content": "#00214d",
+          error: "#e45858",
+          "error-content": "#1b2d45",
         },
       },
     ],

@@ -135,7 +135,7 @@ const Map = ({
                     getLocation();
                     triggerMapClick();
                 }}
-                className="btn btn-warning btn-md"
+                className="btn btn-error btn-md my-6"
             >
                 Refresh Location
             </button>
