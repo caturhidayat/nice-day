@@ -54,8 +54,9 @@ export default function page() {
               </div>
               <div className="card-actions justify-end"></div>
 
-              <button className="btn btn-primary">
-                <Link href="/hr/preview">Preview</Link>
+              <button className="btn btn-primary" onClick={redirectToPreview}>
+                {/* <Link href="/hr/preview">Preview</Link> */}
+                Record Attendance
               </button>
             </div>
           </div>
