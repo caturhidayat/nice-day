@@ -9,7 +9,7 @@ const getDate = () => {
 };
 
 const redirectToPreview = () => {
-  window.location.href = "/hr/preview";
+  window.location.href = "/hr/attendance/capture";
 };
 
 export default function page() {
