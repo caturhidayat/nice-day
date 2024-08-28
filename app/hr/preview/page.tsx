@@ -1,9 +1,10 @@
 // app/page.js
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, Suspense } from "react";
 import dynamic from "next/dynamic";
 import { LatLngExpression, Map as LeafletMap } from "leaflet";
+import LoadingHr from "../loading";
 
 // Dynamic import komponen Map
 const Map = dynamic(() => import("../../components/UI/PreviewRecord"), {
@@ -58,7 +59,7 @@ const HomePage = () => {
     }, []);
 
     return (
-        <div className="grid grid-cols-1 w-auto gap-2 py-32">
+        <div className="grid grid-cols-1 w-auto gap-2">
             <div className="justify-center">
                 <Map
                     position={location}
