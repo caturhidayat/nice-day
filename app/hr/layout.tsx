@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function HrLayout({ children }: { children: React.ReactNode }) {
     return (
-        <section className="max-w-screen-xl py-20 px-8 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+        <section className="max-w-screen-xl py-4 px-8 sm:px-6 sm:py-12 lg:px-8">
             {children}
         </section>
     );
