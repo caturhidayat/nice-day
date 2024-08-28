@@ -131,21 +131,23 @@ const Map = ({
                 <Circle center={circleCenter} radius={circleRadius} />
             </MapContainer>
 
-            {markerInside ? (
-                <button className="btn btn-primary btn-md">
-                    Save Attendance
-                </button>
-            ) : (
-                <button
-                    onClick={() => {
-                        getLocation();
-                        triggerMapClick();
-                    }}
-                    className="btn btn-error btn-md my-6"
-                >
-                    Refresh Location
-                </button>
-            )}
+            <div className="grid my-6">
+                {markerInside ? (
+                    <button className="btn btn-primary btn-md">
+                        Save Attendance
+                    </button>
+                ) : (
+                    <button
+                        onClick={() => {
+                            getLocation();
+                            triggerMapClick();
+                        }}
+                        className="btn btn-error btn-md"
+                    >
+                        Refresh Location
+                    </button>
+                )}
+            </div>
         </div>
     );
 };
