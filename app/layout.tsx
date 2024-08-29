@@ -26,7 +26,7 @@ export default async function RootLayout({
                 <Providers authenticated={isAuthenticated}>
                     <Navbar />
                     <Suspense fallback={<Loading />}>
-                        <main className="max-w-screen-xl py-12 px-2 sm:px-4 sm:py-14 lg:px-8 lg:py-14 h-dvh">
+                        <main className="max-w-screen-xl py-16 px-2 sm:px-4 sm:py-14 lg:px-8 lg:py-14 h-dvh">
                             {children}
                         </main>
                     </Suspense>
