@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
-import { Dot } from "lucide-react";
 
 const getDate = () => {
     const date = new Date();
@@ -10,7 +8,7 @@ const getDate = () => {
 };
 
 const redirectToPreview = () => {
-    window.location.href = "/hr/attendance/capture";
+    window.location.href = "/hr/preview";
 };
 
 export default function page() {

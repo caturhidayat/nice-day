@@ -1,11 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function Camera() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [photo, setPhoto] = useState<string | null>(null);
+  const [isCameraOn, setIsCameraOn] = useState(false);
 
   // Start the camera
   const startCamera = async () => {
@@ -16,11 +18,23 @@ export default function Camera() {
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+        setIsCameraOn(true);
       }
     } catch (error) {
       console.error("Error accessing the camera", error);
     }
   };
+
+  // Call the startCamera function when the component mounts
+  useEffect(() => {
+    if (videoRef.current && !photo) {
+      startCamera();
+    }
+
+    return () => {
+      stopCamera();
+    };
+  }, []);
 
   // Take a photo
   const takePhoto = () => {
@@ -34,6 +48,7 @@ export default function Camera() {
       const context = canvasRef.current.getContext("2d");
       context?.drawImage(videoRef.current, 0, 0, width, height);
       setPhoto(canvasRef.current.toDataURL("image/png"));
+      setIsCameraOn(false);
       stopCamera();
     }
   };
@@ -77,32 +92,28 @@ export default function Camera() {
   return (
     <div className="grid grid-cols-1 gap-2">
       <div>
-        <video ref={videoRef} autoPlay playsInline />
+        <video ref={videoRef} autoPlay playsInline className="min-h-full min-w-full right-0 bottom-0"  />
       </div>
-      
-      <button className="btn btn-accent" onClick={takePhoto}>
-        Take Photo
-      </button>
+
+      {isCameraOn && (
+        <button className="btn btn-accent" onClick={takePhoto}>
+          Take Photo
+        </button>
+      )}
       <canvas ref={canvasRef} style={{ display: "none" }} />
-      {photo && (
-        <div>
-          <img
+      {/* {photo && (
+        <div className="grid justify-center">
+          <Image
             src={photo}
             alt="Capture"
-            style={{ widows: "100%", height: "300px" }}
+            height={300}
+            width={300}
           />
-          <button className="btn btn-primary my-4 block" onClick={savePhoto}>
+          <button className="btn btn-primary my-4" onClick={savePhoto}>
             Save Photo
           </button>
         </div>
-      )}
-      {!photo && (
-        <div className="grid">
-          <button className="btn btn-primary block" onClick={startCamera}>
-            Start Camera
-          </button>
-        </div>
-      )}
+      )} */}
     </div>
   );
 }
