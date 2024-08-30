@@ -5,6 +5,7 @@ export const unauthenticatedRoutes = [
   },
 ];
 
+
 export const routes = [
   {
     title: "Home",

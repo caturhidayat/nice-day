@@ -1,6 +1,14 @@
+'use client';
+
+import logout from "@/app/auth/logout";
 import React from "react";
 
 export default function page() {
+
+    const handleLogout = async () => {
+        await logout();
+    }
+
     return (
         <div className="flow-root">
             <h1 className="flex justify-center text-center text-2xl font-bold tracking-tight sm:text-2xl">
@@ -36,6 +44,9 @@ export default function page() {
                         fugit aperiam aspernatur neque molestiae labore aliquam
                         soluta architecto?
                     </dd>
+                </div>
+                <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                    <button onClick={handleLogout} className="btn btn-error btn-outline">Logout</button>
                 </div>
             </dl>
         </div>
