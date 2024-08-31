@@ -64,13 +64,15 @@ const MapView = ({
         />
 
         {targetLocations.map((target, index) => (
-          <Circle
-            center={target}
-            radius={circleRadius}
-            color="red"
-            fillColor="red"
-            fillOpacity={0.5}
-          />
+          <div key={index}>
+            <Circle
+              center={target}
+              radius={circleRadius}
+              color="red"
+              fillColor="red"
+              fillOpacity={0.5}
+            />
+          </div>
         ))}
         <Marker position={position}>
           <Popup>Your Location</Popup>
