@@ -3,16 +3,29 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
-import { LatLngExpression, Map as LeafletMap } from "leaflet";
+import L, { LatLngExpression, Map as LeafletMap } from "leaflet";
+import { getDate, getDateTime } from "@/app/common/utils/get-date";
 
 // Dynamic import komponen Map
-const Map = dynamic(() => import("../../components/UI/PreviewRecord"), {
+const MapView = dynamic(() => import("../../components/UI/PreviewRecord"), {
   ssr: false,
 });
 
+// Target Locations
+const TargetLocations = [
+  { lat: -6.173, lng: 106.941 }, // Office Cakung
+  { lat: -6.21, lng: 106.826666 }, // Lokasi 2
+  { lat: -6.22, lng: 106.836666 }, // Lokasi 3
+];
+
+const RADIUS = 150;
+
 const PreviewPage = () => {
   // Location State
-  const [location, setLocation] = useState<LatLngExpression>([0, 0]);
+  const [location, setLocation] = useState<LatLngExpression>({
+    lat: 0,
+    lng: 0,
+  });
   const mapRef = useRef<LeafletMap | null>(null);
 
   //   Photo State
@@ -20,6 +33,7 @@ const PreviewPage = () => {
   const [isCameraOn, setIsCameraOn] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [inRadius, setInRadius] = useState(false);
 
   // Circle Location (HO Cakung)
   const circleCenter: LatLngExpression = [-6.173, 106.941];
@@ -31,18 +45,23 @@ const PreviewPage = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setLocation([position.coords.latitude, position.coords.longitude]);
-          // Set marker to user location
-          if (mapRef.current) {
-            mapRef.current.flyTo(
-              [position.coords.latitude, position.coords.longitude],
-              15,
-              {
-                animate: true,
-                duration: 1.5,
-              }
-            );
-          }
+          const userLocation = new L.LatLng(
+            position.coords.latitude,
+            position.coords.longitude
+          );
+          setLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+
+          // Calculate distance between user location and target locations
+          const targetLatLng = TargetLocations.some((target) => {
+            const targetLocation = new L.LatLng(target.lat, target.lng);
+            const distance = userLocation.distanceTo(targetLocation);
+            return distance <= RADIUS;
+          });
+
+          setInRadius(targetLatLng);
         },
         (error) => {
           console.error("Error obtaining location", error);
@@ -62,7 +81,7 @@ const PreviewPage = () => {
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user" },
+        video: { facingMode: "user", width: 200 },
       });
 
       if (videoRef.current) {
@@ -113,47 +132,50 @@ const PreviewPage = () => {
     }
   };
 
-    // Save the photo
-    const savePhoto = async () => {
-      if (!photo) return;
-  
-      try {
-        const response = await fetch("/api/upload", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ photo }),
-        });
-  
-        if (response.ok) {
-          console.log("Photo uploaded successfully");
-        } else {
-          console.error("Failed to upload photo");
-        }
-      } catch (error) {
-        console.error("Error uploading photo", error);
+  // Save attendance
+  const saveAttendance = async () => {
+    if (!photo) return;
+
+    try {
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ photo }),
+      });
+
+      if (response.ok) {
+        console.log("Photo uploaded successfully");
+      } else {
+        console.error("Failed to upload photo");
       }
-    };
+    } catch (error) {
+      console.error("Error uploading photo", error);
+    }
+  };
 
   return (
-    <div className="grid grid-cols-1 w-auto gap-2">
+    <div className="grid grid-cols-1 w-auto gap-4">
       <div className="justify-center">
         {photo ? (
           <>
-            <Map
+            <MapView
               position={location}
-              circleCenter={circleCenter}
-              circleRadius={circleRadius}
-              mapRef={mapRef}
-              getLocation={getLocation}
+              targetLocations={TargetLocations}
+              circleRadius={RADIUS}
             />
+            <div className="grid justify-center py-4">
+              <h1 className="font-semibold text-lg">{`${getDate()} - ${getDateTime()}`}</h1>
+            </div>
             <div className="flex flex-col items-center justify-center gap-2">
-              <img src={photo} alt="Preview"
-                className="w-64 h-64 object-cover rounded-lg" />
-                <button className="btn btn-primary btn-md" onClick={savePhoto}>
-                  Save Photo
-                </button>
+              <img
+                src={photo}
+                alt="Preview"
+                className="rounded-lg"
+                width={180}
+                height={500}
+              />
             </div>
           </>
         ) : (
@@ -175,6 +197,16 @@ const PreviewPage = () => {
               ) : null}
             </div>
           </div>
+        )}
+      </div>
+      <div className="flex flex-col items-center justify-center gap-2">
+        {!isCameraOn && (
+          <button
+            className="btn btn-secondary"
+            onClick={inRadius ? saveAttendance : getLocation}
+          >
+            {inRadius ? "Save Attendance" : "Refresh Location"}
+          </button>
         )}
       </div>
       <div className=""></div>

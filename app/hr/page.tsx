@@ -1,11 +1,7 @@
 "use client";
 
 import React from "react";
-
-const getDate = () => {
-    const date = new Date();
-    return date.toDateString();
-};
+import { getDate } from "../common/utils/get-date";
 
 const redirectToPreview = () => {
     window.location.href = "/hr/preview";
