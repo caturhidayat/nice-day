@@ -1,11 +1,10 @@
-'use client';
-
 import AttendancePreview from "@/app/components/UI/AttendancePreview";
+import React from "react";
 
 export default function page() {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-8">
+    <section className="mx-auto max-w-screen-xl lg:flex  lg:items-center">
       <AttendancePreview />
-    </div>
+    </section>
   );
 }

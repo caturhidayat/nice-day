@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import L, { LatLngExpression, Map as leafletMap } from "leaflet";
 import { getDate, getDateTime } from "@/app/common/utils/get-date";
 import Image from "next/image";
+import "leaflet/dist/leaflet.css";
 
 // Dynamic import komponen Map
 const MapView = dynamic(() => import("./MapView"), {
@@ -197,12 +198,12 @@ export default function AttendancePreview() {
         )}
       </div>
       <div className="flex flex-col items-center justify-center gap-2">
-        {!isCameraOn && !photo && (
+        {!isCameraOn && (
           <button
             className={`btn ${inRadius ? "btn-primary" : "btn-error"}`}
-            onClick={inRadius && photo ? saveAttendance : getLocation}
+            onClick={inRadius ? saveAttendance : getLocation}
           >
-            {inRadius && photo ? "Save Attendance" : "Refresh Location"}
+            {inRadius ? "Save Attendance" : "Refresh Location"}
           </button>
         )}
       </div>

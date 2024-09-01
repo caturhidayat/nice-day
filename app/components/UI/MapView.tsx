@@ -49,7 +49,7 @@ const MapView = ({
       });
 
       fixLeafletIcon();
-    }, [location]);
+    }, [location, map]);
 
     return null;
   }
