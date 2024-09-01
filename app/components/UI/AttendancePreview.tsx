@@ -169,10 +169,9 @@ export default function AttendancePreview() {
               <Image
                 src={photo}
                 alt="Preview"
-                style={{ width: "100%", height: "200" }}
                 className="rounded-lg"
-                width={180}
-                height={500}
+                width={120}
+                height={200}
               />
             </div>
           </>

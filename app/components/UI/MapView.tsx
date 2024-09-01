@@ -12,7 +12,6 @@ import {
   Circle,
   useMap,
 } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 
 // Impor icon default Leaflet
 import markerIcon from "leaflet/dist/images/marker-icon.png";
@@ -59,7 +58,7 @@ const MapView = ({
       <MapContainer
         center={location}
         zoom={13}
-        style={{ height: "200px", width: "100%" }}
+        style={{ height: "200px", width : "100%" }}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
