@@ -136,39 +136,37 @@ export default function AttendancePreview() {
 
   // Save attendance
   const saveAttendance = async () => {
-    // if (!photo) return;
+    if (!photo) return;
 
-    // try {
-    //   const uploadImage = await fetch("/api/save-attendance", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ photo }),
-    //   });
+    try {
+      const uploadImage = await fetch("/api/save-attendance", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ photo }),
+      });
 
-    //   const checkIn = await fetch(`http://localhost:3333/attendance/check-in`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json", ...getHeaders(),
-    //     },
-    //     body: JSON.stringify({
-    //       time: isoTime,
-    //       location: {
-    //         lat: (location as any).lat,
-    //         lng: (location as any).lng,
-    //       },
-    //     }),
-    //   });
-
-
-    //   if (checkIn.ok && uploadImage.ok) {
-    //     console.log("Attendance saved successfully");
-    //   } else {
-    //     console.error("Failed to save attendance");
-    //   }
+      // const checkIn = await fetch(`http://localhost:3333/attendance/check-in`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json", ...getHeaders(),
+      //   },
+      //   body: JSON.stringify({
+      //     time: isoTime,
+      //     location: {
+      //       lat: (location as any).lat,
+      //       lng: (location as any).lng,
+      //     },
+      //   }),
+      // });
 
 
+      // if (checkIn.ok && uploadImage.ok) {
+      //   console.log("Attendance saved successfully");
+      // } else {
+      //   console.error("Failed to save attendance");
+      // }
 
 
       // if (checkIn.ok) {
@@ -177,14 +175,16 @@ export default function AttendancePreview() {
       //   console.error("Failed to save attendance");
       // }
 
-      // if (uploadImage.ok) {
-      //   console.log("Photo uploaded successfully");
-      // } else {
-      //   console.error("Failed to upload photo");
-      // }
-    // } catch (error) {
-    //   console.error("Error uploading photo", error);
-    // }
+      if (uploadImage.ok) {
+        console.log("Photo uploaded successfully");
+      } else {
+        console.error("Failed to upload photo");
+      }
+      
+
+    } catch (error) {
+      console.error("Error uploading photo", error);
+    }
   };
 
   console.log(1, localTime);
