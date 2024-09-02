@@ -39,6 +39,8 @@ const MapView = ({
         location: LatLngExpression;
     }
 
+
+
     function FlyToUserLocation({ location }: FlyToUserLocationProps) {
         const map = useMap();
         useEffect(() => {
@@ -52,6 +54,14 @@ const MapView = ({
 
         return null;
     }
+
+    // Custome map marker icon
+    const myIcon = L.icon({
+        iconUrl: "/images/map-marker-red.png",
+        iconSize: [30, 50],
+        iconAnchor: [15, 50],
+        popupAnchor: [0, -50],
+    });
 
     return (
         <div className="grid grid-cols-1 gap-2">
@@ -86,10 +96,10 @@ const MapView = ({
                         />
                     </div>
                 ))}
-                <Marker position={location}>
+                <Marker position={location} icon={myIcon}>
                     <Popup>Your Here</Popup>
                 </Marker>
-                <FlyToUserLocation location={location} />
+                <FlyToUserLocation location={location}/>
             </MapContainer>
         </div>
     );
