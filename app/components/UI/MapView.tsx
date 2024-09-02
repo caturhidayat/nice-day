@@ -57,8 +57,7 @@ const MapView = ({
 
     // Custome map marker icon
     const myIcon = L.icon({
-        // iconUrl: "/images/map-marker-red.png",
-        iconUrl: "📍",
+        iconUrl: "/images/map-marker-red.png",
         iconSize: [25, 40],
         iconAnchor: [15, 50],
         popupAnchor: [0, -50],
