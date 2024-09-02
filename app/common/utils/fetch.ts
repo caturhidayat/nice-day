@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { API_URL } from "../constants/api";
 import { getErrorMessage } from "./errors";
 
-const getHeaders = () => ({
+export const getHeaders = () => ({
   Cookie: cookies().toString(),
 });
 

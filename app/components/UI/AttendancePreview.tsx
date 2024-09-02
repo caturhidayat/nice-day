@@ -3,9 +3,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import L, { LatLngExpression, Map as leafletMap } from "leaflet";
-import { getDate, getDateTime } from "@/app/common/utils/get-date";
 import Image from "next/image";
 import "leaflet/dist/leaflet.css";
+import { getDate } from "@/app/common/utils/get-date";
+import { API_URL } from "@/app/common/constants/api";
+import { getHeaders, post } from "@/app/common/utils/fetch";
 
 // Dynamic import komponen Map
 const MapView = dynamic(() => import("./MapView"), {
@@ -29,6 +31,8 @@ export default function AttendancePreview() {
   });
 
   //  * State
+  const [localTime, setLocalTime] = useState<any>(null);
+  const [isoTime, setIsoTime] = useState<any>(null);
   const [photo, setPhoto] = useState<string | null>(null);
   const [isCameraOn, setIsCameraOn] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -125,31 +129,66 @@ export default function AttendancePreview() {
       setPhoto(canvasRef.current.toDataURL("image/png"));
       setIsCameraOn(false);
       stopCamera();
+      setLocalTime(`${getDate().toLocaleTimeString()}`);
+      setIsoTime(`${getDate().toISOString()}`);
     }
   };
 
   // Save attendance
   const saveAttendance = async () => {
-    if (!photo) return;
+    // if (!photo) return;
 
-    try {
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ photo }),
-      });
+    // try {
+    //   const uploadImage = await fetch("/api/save-attendance", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ photo }),
+    //   });
 
-      if (response.ok) {
-        console.log("Photo uploaded successfully");
-      } else {
-        console.error("Failed to upload photo");
-      }
-    } catch (error) {
-      console.error("Error uploading photo", error);
-    }
+    //   const checkIn = await fetch(`http://localhost:3333/attendance/check-in`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json", ...getHeaders(),
+    //     },
+    //     body: JSON.stringify({
+    //       time: isoTime,
+    //       location: {
+    //         lat: (location as any).lat,
+    //         lng: (location as any).lng,
+    //       },
+    //     }),
+    //   });
+
+
+    //   if (checkIn.ok && uploadImage.ok) {
+    //     console.log("Attendance saved successfully");
+    //   } else {
+    //     console.error("Failed to save attendance");
+    //   }
+
+
+
+
+      // if (checkIn.ok) {
+      //   console.log("Attendance saved successfully");
+      // } else {
+      //   console.error("Failed to save attendance");
+      // }
+
+      // if (uploadImage.ok) {
+      //   console.log("Photo uploaded successfully");
+      // } else {
+      //   console.error("Failed to upload photo");
+      // }
+    // } catch (error) {
+    //   console.error("Error uploading photo", error);
+    // }
   };
+
+  console.log(1, localTime);
+  console.log(2, isoTime);
 
   return (
     <div className="grid grid-cols-1 w-auto gap-4">
@@ -162,9 +201,11 @@ export default function AttendancePreview() {
               circleRadius={RADIUS}
               // mapRef={mapRef}
             />
+
             <div className="grid justify-center py-4">
-              <h1 className="font-semibold text-lg">{`${getDate()} - ${getDateTime()}`}</h1>
+              <h1 className="font-semibold text-lg">{localTime}</h1>
             </div>
+
             <div className="flex flex-col items-center justify-center gap-2">
               <Image
                 src={photo}

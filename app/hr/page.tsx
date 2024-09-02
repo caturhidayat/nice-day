@@ -23,7 +23,7 @@ export default function page() {
             <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2 md:gap-12 lg:grid-cols-2">
                 <div className="flex items-start gap-4">
                     <div>
-                        <h2 className="text-lg font-bold">{getDate()}</h2>
+                        <h2 className="text-lg font-bold">{`${getDate().toDateString()}`}</h2>
 
                         <p className="mt-1 text-sm">
                             Lorem ipsum dolor sit amet consectetur adipisicing
