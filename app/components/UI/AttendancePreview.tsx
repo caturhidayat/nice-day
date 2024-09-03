@@ -133,15 +133,33 @@ export default function AttendancePreview() {
     if (!photo) return;
 
     try {
-      const response = await fetch("/api/upload", {
+      const saveAttendance = await fetch("/api/attendance", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ photo }),
+        body: JSON.stringify({
+          checkInTime: new Date().toISOString(),
+          latitude: (location as any).lat,
+          longitude: (location as any).lng,
+        }),
       });
 
-      if (response.ok) {
+
+      const savePhoto = await fetch("/api/attendance", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          file: photo,
+        }),
+      });
+
+
+
+
+      if (saveAttendance.ok) {
         console.log("Photo uploaded successfully");
       } else {
         console.error("Failed to upload photo");
