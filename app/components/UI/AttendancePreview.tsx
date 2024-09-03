@@ -6,6 +6,7 @@ import L, { LatLngExpression, Map as leafletMap } from "leaflet";
 import { getDate, getDateTime } from "@/app/common/utils/get-date";
 import Image from "next/image";
 import "leaflet/dist/leaflet.css";
+import { redirect } from "next/navigation";
 
 // Dynamic import komponen Map
 const MapView = dynamic(() => import("./MapView"), {
@@ -16,7 +17,7 @@ const MapView = dynamic(() => import("./MapView"), {
 const TargetLocations = [
   { lat: -6.173, lng: 106.941 }, // Office Cakung
   { lat: -6.153857, lng: 107.016924 }, // WPU
-  { lat: -6.22, lng: 106.836666 }, // Lokasi 3
+  { lat: -6.130013, lng: 106.942239 }, // Office Nagrak
 ];
 
 const RADIUS = 150;
@@ -130,43 +131,52 @@ export default function AttendancePreview() {
 
   // Save attendance
   const saveAttendance = async () => {
-    if (!photo) return;
+    if (!photo || !location) return;
 
+    const blob = await fetch(photo).then((res) => res.blob());
+    const formData = new FormData();
+    formData.append("photo", blob, "photo.png");
+    formData.append("latitude", (location as any).lat);
+    formData.append("longitude", (location as any).lng);
+    formData.append("checkInTime", new Date().toISOString().split("T")[0]);
+
+    // console.log("formData", formData);
     try {
-      const saveAttendance = await fetch("/api/attendance", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          checkInTime: new Date().toISOString(),
-          latitude: (location as any).lat,
-          longitude: (location as any).lng,
-        }),
-      });
+      const saveAttendance = await fetch(
+        "/api/attendance",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          body: JSON.stringify({
+            photo: blob,
+            latitude: (location as any).lat,
+            longitude: (location as any).lng,
+            checkInTime: new Date().toISOString().split("T")[0],
+          }),
+        }
+      );
 
+      console.log("save", saveAttendance);
 
-      const savePhoto = await fetch("/api/attendance", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          file: photo,
-        }),
-      });
-
-
-
-
-      if (saveAttendance.ok) {
-        console.log("Photo uploaded successfully");
+      if (saveAttendance) {
+        redirect("/hr");
       } else {
-        console.error("Failed to upload photo");
+        console.error("Failed to save attendance");
       }
     } catch (error) {
-      console.error("Error uploading photo", error);
+      console.error("Error saving attendance", error);
     }
+
+    //   if (saveAttendance.ok) {
+    //     console.log("Photo uploaded successfully");
+    //   } else {
+    //     console.error("Failed to upload photo");
+    //   }
+    // } catch (error) {
+    //   console.error("Error uploading photo", error);
+    // }
   };
 
   return (
