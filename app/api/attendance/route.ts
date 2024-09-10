@@ -7,7 +7,7 @@ export async function POST(req: Request) {
 
   console.log("formData", formData);
   
-  const res = await fetch(`${API_URL}/attendance/check-in`, {
+  const res = await fetch(`${API_URL}/attendances/check-in`, {
     method: "POST",
     headers: {
       ...tokenAuth,
