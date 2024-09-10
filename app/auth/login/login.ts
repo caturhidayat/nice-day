@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 import { AUTHENTICATION_COOKIE } from "../auth-cookie";
 
 export default async function login(_prevState: FormError, formData: FormData) {
-  const res = await fetch(`${API_URL}/auth/employee/login`, {
+  const res = await fetch(`${API_URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
