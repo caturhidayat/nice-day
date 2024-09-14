@@ -167,7 +167,6 @@ export default function AttendancePreview() {
               location={location}
               targetLocations={TargetLocations}
               circleRadius={RADIUS}
-              // mapRef={mapRef}
             />
             <div className="grid justify-center py-4">
               <h1 className="font-semibold text-lg">{`${getDate()} - ${getDateTime()}`}</h1>
