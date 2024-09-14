@@ -9,19 +9,10 @@ const redirectToPreview = () => {
 
 export default function page() {
   return (
-<<<<<<< HEAD
-    <div className="grid grid-cols-1 gap-4">
-      <div className="flex justify-center">
-        <div className="grid justify-center max-w-xl px-4">
-          <h2 className="text-xl font-bold sm:text-2xl ">Hello 👋 "Name"</h2>
-          <p className="mt-4 text-base-content">Semangat Kerja ya!</p>
-        </div>
-=======
     <div className="bg-base-100">
       <div className="grid justify-center max-w-xl px-4">
         <h2 className="text-xl font-bold sm:text-2xl ">Hello Bro!</h2>
         <p className="mt-4 text-base-content">Semangat Kerja ya!</p>
->>>>>>> 34f2dafc8876ca4cf2be6d0ef22007dfa524f098
       </div>
       <div className="p-4 bg-slate-50 rounded-xl min-h-max pb-16">
         <div className="relative block overflow-hidden rounded-xl bg-base-100 border-gray-100 p-4 sm:p-6 lg:p-8 shadow-lg">
