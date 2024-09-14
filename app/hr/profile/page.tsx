@@ -10,7 +10,7 @@ export default function page() {
     }
 
     return (
-        <div className="flow-root">
+        <div className="px-6 flow-root">
             <h1 className="flex justify-center text-center text-2xl font-bold tracking-tight sm:text-2xl">
                 Profile
             </h1>

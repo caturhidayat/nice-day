@@ -8,3 +8,9 @@ export const getDateTime = () => {
   const date = new Date();
   return date.toLocaleTimeString();
 };
+
+export const getDateIso = () => {
+  const date = new Date();
+  return new Date().toISOString().split("T")[0];
+  
+}

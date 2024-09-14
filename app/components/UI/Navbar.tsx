@@ -9,7 +9,7 @@ export default function Navbar() {
     return (
         <div>
             {isAuthenticated ? (
-                <div className="navbar bg-slate-50 fixed ">
+                <div className="navbar bg-base-100 fixed ">
                     <div className="flex-1 justify-center">
                         <a className="btn btn-ghost text-2xl bg-gradient-to-r from-violet-600 via-teal-600 to-purple-600 bg-clip-text text-transparent">NiceDay</a>
                     </div>

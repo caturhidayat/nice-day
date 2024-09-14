@@ -3,10 +3,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import L, { LatLngExpression, Map as leafletMap } from "leaflet";
-import { getDate, getDateTime } from "@/app/common/utils/get-date";
+import { getDate, getDateIso, getDateTime } from "@/app/common/utils/get-date";
 import Image from "next/image";
 import "leaflet/dist/leaflet.css";
 import { redirect } from "next/navigation";
+import { createAttendance } from "@/app/hr/attendance/actions/create-attendance";
+import { FormResponse } from "@/app/common/interfaces/form-response.interface";
 
 // Dynamic import komponen Map
 const MapView = dynamic(() => import("./MapView"), {
@@ -23,19 +25,22 @@ const TargetLocations = [
 const RADIUS = 150;
 
 export default function AttendancePreview() {
-  // Location State
+  //  * State
   const [location, setLocation] = useState<LatLngExpression>({
     lat: 0,
     lng: 0,
   });
-
-  //  * State
   const [photo, setPhoto] = useState<string | null>(null);
   const [isCameraOn, setIsCameraOn] = useState(false);
+  const [inRadius, setInRadius] = useState(false);
+  const [response, setResponse] = useState<FormResponse>();
+  const [checkInTime, setCheckInTime] = useState<Date>();
+  const [checkOutTime, setCheckOutTime] = useState<Date>();
+
+  // * Ref
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mapRef = useRef<leafletMap | null>(null);
-  const [inRadius, setInRadius] = useState(false);
 
   // Function to get user location
   const getLocation = async () => {
@@ -124,6 +129,11 @@ export default function AttendancePreview() {
       const context = canvasRef.current.getContext("2d");
       context?.drawImage(videoRef.current, 0, 0, width, height);
       setPhoto(canvasRef.current.toDataURL("image/png"));
+      // if(!checkInTime) {
+      //   setCheckInTime(getDateIso());
+      // } else {
+      //   setCheckOutTime(getDateIso());
+      // }
       setIsCameraOn(false);
       stopCamera();
     }
@@ -135,48 +145,17 @@ export default function AttendancePreview() {
 
     const blob = await fetch(photo).then((res) => res.blob());
     const formData = new FormData();
-    formData.append("photo", blob, "photo.png");
+    const imageName = `${Date.now()}-${Math.round(Math.random() * 1e9)}.png`;
+    formData.append("image", blob, imageName);
     formData.append("latitude", (location as any).lat);
     formData.append("longitude", (location as any).lng);
-    formData.append("checkInTime", new Date().toISOString().split("T")[0]);
+    // formData.append("checkInTime", checkInTime);
 
-    // console.log("formData", formData);
-    try {
-      const saveAttendance = await fetch(
-        "/api/attendance",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          body: JSON.stringify({
-            photo: blob,
-            latitude: (location as any).lat,
-            longitude: (location as any).lng,
-            checkInTime: new Date().toISOString().split("T")[0],
-          }),
-        }
-      );
-
-      console.log("save", saveAttendance);
-
-      if (saveAttendance) {
-        redirect("/hr");
-      } else {
-        console.error("Failed to save attendance");
-      }
-    } catch (error) {
-      console.error("Error saving attendance", error);
+    const response = await createAttendance(formData);
+    setResponse(response);
+    if (response.error) {
+      console.error(response.error);
     }
-
-    //   if (saveAttendance.ok) {
-    //     console.log("Photo uploaded successfully");
-    //   } else {
-    //     console.error("Failed to upload photo");
-    //   }
-    // } catch (error) {
-    //   console.error("Error uploading photo", error);
-    // }
   };
 
   return (

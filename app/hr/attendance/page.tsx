@@ -2,7 +2,7 @@ import React from "react";
 
 export default function page() {
   return (
-    <section className="mx-auto max-w-screen-xl lg:flex  lg:items-center">
+    <section className="mx-auto max-w-screen-xl px-6 lg:flex  lg:items-center">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-8">
         <div className="card-compact bg-base-100 shadow-lg rounded-lg">
           <div className="card-body">

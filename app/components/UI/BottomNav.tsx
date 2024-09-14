@@ -40,7 +40,7 @@ const BottomItemNav = ({ icon, text, path }: ButtonItem) => {
   return (
     <Link
       href={path}
-      className={`px-2 hover:bg-primary group hover:text-primary-content rounded-full ${
+      className={`px-2 hover:bg-primary group hover:text-primary-content ${
         currentPath === path ? "text-primary-content bg-primary" : ""
       }`}
     >
@@ -61,7 +61,7 @@ export default function BottomNav() {
   return (
     <div>
       {isAuthenticated ? (
-        <div className="btm-nav m-2 w-auto rounded-full border">
+        <div className="btm-nav w-auto">
           {buttons.map((button, index) => (
             <BottomItemNav key={index} {...button} />
           ))}

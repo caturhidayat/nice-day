@@ -7,6 +7,7 @@ export const getHeaders = () => ({
 });
 
 export const post = async (path: string, formData: FormData) => {
+  console.log("formData : ", formData);
   const res = await fetch(`${API_URL}/${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...getHeaders() },
@@ -17,7 +18,7 @@ export const post = async (path: string, formData: FormData) => {
   if (!res.ok) {
     return { error: getErrorMessage(parsedRes) };
   }
-  return { error: "" };
+  return { error: "", data: parsedRes };
 };
 
 export const get = async (path: string) => {
