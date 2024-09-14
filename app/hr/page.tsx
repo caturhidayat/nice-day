@@ -11,7 +11,7 @@ export default function page() {
   return (
     <div className="bg-base-100">
       <div className="grid justify-center max-w-xl px-4">
-        <h2 className="text-xl font-bold sm:text-2xl ">Hello 👋 "Name"</h2>
+        <h2 className="text-xl font-bold sm:text-2xl ">Hello Bro!</h2>
         <p className="mt-4 text-base-content">Semangat Kerja ya!</p>
       </div>
 
