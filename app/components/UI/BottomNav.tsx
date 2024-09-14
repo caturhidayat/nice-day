@@ -40,13 +40,13 @@ const BottomItemNav = ({ icon, text, path }: ButtonItem) => {
   return (
     <Link
       href={path}
-      className={`px-2 hover:bg-primary group hover:text-primary-content ${
-        currentPath === path ? "text-primary-content bg-primary" : ""
+      className={`px-2 group hover:text-primary-content ${
+        currentPath === path ? "text-primary" : ""
       }`}
     >
       <button
-        className={`inline-flex flex-col items-center justify-center text-primary group-hover:text-primary-content ${
-          currentPath === path ? "text-primary-content bg-primary" : ""
+        className={`inline-flex flex-col items-center justify-center text-gray-600 group-hover:text-primary ${
+          currentPath === path ? "text-primary" : ""
         }`}
       >
         {icon}
