@@ -2,16 +2,31 @@
 
 import React from "react";
 import { getDate } from "../common/utils/get-date";
+import dayjs from "dayjs";
 
 const redirectToPreview = () => {
   window.location.href = "/hr/preview";
 };
 
 export default function page() {
+  // Get Attendance Data from local storage
+  const attendanceData = localStorage.getItem("attendance");
+  console.log(attendanceData);
+
+  // Get Hour and Minute from checkInTime
+  const checkInTime = attendanceData
+    ? JSON.parse(attendanceData).checkInTime
+    : "--:--";
+  const checkOutTime = attendanceData
+    ? JSON.parse(attendanceData).checkOutTime
+    : "--:--";
+  const checkInView = dayjs(checkInTime).format("HH:mm");
+  const checkOutView = dayjs(checkOutTime).format("HH:mm");
+
   return (
     <div className="bg-base-100">
-      <div className="grid justify-center max-w-xl px-4">
-        <h2 className="text-xl font-bold sm:text-2xl ">Hello Bro!</h2>
+      <div className="grid justify-center py-4 max-w-xl px-4">
+        <h2 className="text-xl font-bold sm:text-2xl ">Hello Catur Hidayat!</h2>
         <p className="mt-4 text-base-content">Semangat Kerja ya!</p>
       </div>
       <div className="p-4 bg-slate-50 rounded-xl min-h-max pb-16">
@@ -31,7 +46,9 @@ export default function page() {
           <div className="mt-4">
             <div className="grid grid-cols-2 py-2 gap-1">
               <div className="flex flex-col gap-2 items-center">
-                <h2 className="text-lg text-success font-bold py-4">--:--</h2>
+                <h2 className="text-lg text-success font-bold py-4">
+                  {checkInTime ? checkInView : "--:--"}
+                </h2>
                 <button
                   className="btn btn-block btn-primary"
                   onClick={redirectToPreview}
@@ -40,25 +57,13 @@ export default function page() {
                 </button>
               </div>
               <div className="flex flex-col gap-2 items-center">
-                <h2 className="text-lg text-error font-bold py-4">--:--</h2>
-                <button className="btn btn-block btn-outline btn-primary">
-                  Pulang
-                </button>
+                <h2 className="text-lg text-error font-bold py-4">
+                  {checkOutTime ? checkOutView : "--:--"}
+                </h2>
+                <button className="btn btn-block btn-outline">Pulang</button>
               </div>
             </div>
           </div>
-
-          {/* <dl className="mt-6 flex gap-4 sm:gap-6">
-          <div className="flex flex-col-reverse">
-            <dt className="text-sm font-medium text-gray-600">Published</dt>
-            <dd className="text-xs text-gray-500">31st June, 2021</dd>
-          </div>
-
-          <div className="flex flex-col-reverse">
-            <dt className="text-sm font-medium text-gray-600">Reading time</dt>
-            <dd className="text-xs text-gray-500">3 minute</dd>
-          </div>
-        </dl> */}
         </div>
       </div>
     </div>

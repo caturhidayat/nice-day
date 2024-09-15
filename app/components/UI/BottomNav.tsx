@@ -61,7 +61,7 @@ export default function BottomNav() {
   return (
     <div>
       {isAuthenticated ? (
-        <div className="btm-nav w-auto">
+        <div className="btm-nav w-auto border-t">
           {buttons.map((button, index) => (
             <BottomItemNav key={index} {...button} />
           ))}

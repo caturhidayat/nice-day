@@ -6,14 +6,19 @@ import { revalidateTag } from "next/cache";
 
 
 export async function createAttendance(formData: FormData) {
-    const response = await post("attendance/check-in", formData);
 
-    console.log("res-action", response);
-    const attendanceImage = formData.get("image") as File;
-    if (attendanceImage instanceof File && response.error) {
-        await uploadAttendanceImage(response.data.id, attendanceImage);
-    }
-    revalidateTag("last-attendance");
+    console.log("location lat", formData.get("inLatitude"));
+    console.log("location lng", formData.get("inLongitude"));
+
+
+    const response = await post("attendances/check-in", formData);
+
+    // console.log("res-action", response);
+    // const attendanceImage = formData.get("image") as File;
+    // if (attendanceImage instanceof File && response.error) {
+    //     await uploadAttendanceImage(response.data.id, attendanceImage);
+    // }
+    // revalidateTag("last-attendance");
     return response;
 }
 

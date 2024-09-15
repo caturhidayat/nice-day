@@ -3,12 +3,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import L, { LatLngExpression, Map as leafletMap } from "leaflet";
-import { getDate, getDateIso, getDateTime } from "@/app/common/utils/get-date";
 import Image from "next/image";
 import "leaflet/dist/leaflet.css";
-import { redirect } from "next/navigation";
 import { createAttendance } from "@/app/hr/attendance/actions/create-attendance";
 import { FormResponse } from "@/app/common/interfaces/form-response.interface";
+import dayjs from "dayjs";
+import LocalizeFormat from "dayjs/plugin/localizedFormat";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
+
+dayjs.extend(LocalizeFormat);
 
 // Dynamic import komponen Map
 const MapView = dynamic(() => import("./MapView"), {
@@ -34,8 +39,11 @@ export default function AttendancePreview() {
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [inRadius, setInRadius] = useState(false);
   const [response, setResponse] = useState<FormResponse>();
-  const [checkInTime, setCheckInTime] = useState<Date>();
-  const [checkOutTime, setCheckOutTime] = useState<Date>();
+  const [checkInTime, setCheckInTime] = useState<string>();
+  const [checkOutTime, setCheckOutTime] = useState<string>();
+
+  // * Router
+  const router = useRouter();
 
   // * Ref
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -129,11 +137,9 @@ export default function AttendancePreview() {
       const context = canvasRef.current.getContext("2d");
       context?.drawImage(videoRef.current, 0, 0, width, height);
       setPhoto(canvasRef.current.toDataURL("image/png"));
-      // if(!checkInTime) {
-      //   setCheckInTime(getDateIso());
-      // } else {
-      //   setCheckOutTime(getDateIso());
-      // }
+      if (!checkInTime) {
+        setCheckInTime(dayjs().toISOString());
+      }
       setIsCameraOn(false);
       stopCamera();
     }
@@ -141,25 +147,65 @@ export default function AttendancePreview() {
 
   // Save attendance
   const saveAttendance = async () => {
-    if (!photo || !location) return;
+    // if (!photo || !location) return;
 
-    const blob = await fetch(photo).then((res) => res.blob());
+    // const blob = await fetch(photo).then((res) => res.blob());
     const formData = new FormData();
     const imageName = `${Date.now()}-${Math.round(Math.random() * 1e9)}.png`;
-    formData.append("image", blob, imageName);
-    formData.append("latitude", (location as any).lat);
-    formData.append("longitude", (location as any).lng);
-    // formData.append("checkInTime", checkInTime);
+    // formData.append("image", blob, imageName);
+    formData.append("inLatitude", (location as any).lat);
+    formData.append("inLongitude", (location as any).lng);
+    formData.append("checkInTime", checkInTime?.toString() || "");
+
+    console.log("check In time : ", checkInTime);
+    console.log("lon", (location as any).lng);
+    console.log("lon", (location as any).lat);
 
     const response = await createAttendance(formData);
     setResponse(response);
+    // Save response to local storage
+    localStorage.setItem("attendance", JSON.stringify(response.data));
+
+
     if (response.error) {
-      console.error(response.error);
+      console.error("error", response.error);
+    } else {
+      toast.custom((t) => (
+        <div
+          className={`${
+            t.visible ? "animate-enter" : "animate-leave"
+          } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="ml-3 flex-1">
+                <p className="text-md font-medium text-gray-900">
+                  Attendance Saved
+                </p>
+                <p className="mt-1 text-sm text-gray-500">
+                  your attendance at {dayjs(checkInTime).format("LLL")} has been
+                  saved
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="flex border-l border-gray-200">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      ));
+      router.push("/hr");
     }
+    console.log("response", response);
   };
 
   return (
-    <div className="grid grid-cols-1 w-auto gap-4">
+    <div className="grid grid-cols-1 w-auto gap-4 justify-center">
       <div className="justify-center">
         {photo ? (
           <>
@@ -169,7 +215,9 @@ export default function AttendancePreview() {
               circleRadius={RADIUS}
             />
             <div className="grid justify-center py-4">
-              <h1 className="font-semibold text-lg">{`${getDate()} - ${getDateTime()}`}</h1>
+              <h1 className="font-semibold text-lg">
+                {dayjs(checkInTime).format("LLL")}
+              </h1>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">
               <Image

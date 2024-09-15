@@ -7,6 +7,7 @@ import Providers from "./providers";
 import authenticated from "./auth/authenticated";
 import { Suspense } from "react";
 import Loading from "./loading";
+import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -31,6 +32,7 @@ export default async function RootLayout({
                         </main>
                     </Suspense>
                     <BottomNav />
+                    <Toaster />
                 </Providers>
             </body>
         </html>
