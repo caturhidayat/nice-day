@@ -26,13 +26,6 @@ export default function Page() {
     };
     fetchData();
   }, []);
-  
-  
-  // Get Hour and Minute from checkInTime
-  const checkInTime = attendanceData ? attendanceData.checkInTime : "--:--";
-  const checkOutTime = attendanceData ? attendanceData.checkOutTime : "--:--";
-  const checkInView = dayjs(checkInTime).format("HH:mm");
-  const checkOutView = dayjs(checkOutTime).format("HH:mm");
 
   // Check checkOutTime, if checkOut Time greater than current time 3 hours, don't show attendance
   // const currentTime = dayjs();
@@ -111,7 +104,9 @@ export default function Page() {
             <div className="grid grid-cols-2 py-2 gap-1">
               <div className="flex flex-col gap-2 items-center">
                 <h2 className="text-lg text-success font-bold py-4">
-                  {checkInView ? checkInView : "--:--"}
+                  {attendanceData?.checkInTime
+                    ? dayjs(attendanceData?.checkInTime).format("HH:mm")
+                    : "--:--"}
                 </h2>
                 <button
                   className="btn btn-block btn-primary"
@@ -122,7 +117,9 @@ export default function Page() {
               </div>
               <div className="flex flex-col gap-2 items-center">
                 <h2 className="text-lg text-error font-bold py-4">
-                  {checkOutView ? checkOutView : "--:--"}
+                  {attendanceData?.checkOutTime
+                    ? dayjs(attendanceData?.checkOutTime).format("HH:mm")
+                    : "--:--"}
                 </h2>
                 <button className="btn btn-block btn-outline">Pulang</button>
               </div>

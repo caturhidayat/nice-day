@@ -24,7 +24,7 @@ export default async function page() {
   const attendance = (await getAttendances()) as Attendance[];
   const me = (await getMe()) as ProfileProps;
 
-  console.log("attendance", attendance);
+  // console.log("attendance", attendance);
   return (
     <section className="mx-auto max-w-screen-xl px-6 justify-center lg:flex  lg:items-center">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-8">
