@@ -44,7 +44,7 @@ export default async function page() {
                   <div className="text-accent">Date: {dayjs(item.attendanceDate).format("YYYY-MM-DD")} </div>
                   <div className="grid grid-cols-2 py-2">
                     <div className="items-center">
-                      <text className="text-teal-600">Check In</text>
+                      <p className="text-teal-600">Check In</p>
                       {item.checkInTime ? (
                         <div className="items-center">
                           {dayjs(item.checkInTime).format("HH:mm")}
@@ -54,7 +54,7 @@ export default async function page() {
                       )}
                     </div>
                     <div className="items-center">
-                      <text className="text-error">Check Out</text>
+                      <p className="text-error">Check Out</p>
                       {item.checkOutTime ? (
                         <div className="items-center">
                           {dayjs(item.checkOutTime).format("HH:mm")}

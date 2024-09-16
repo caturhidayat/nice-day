@@ -199,7 +199,7 @@ export default function AttendancePreview() {
         router.push("/hr/attendance");
       }, 2000);
     }
-    console.log("response", response);
+    // console.log("response", response);
   };
 
   return (
