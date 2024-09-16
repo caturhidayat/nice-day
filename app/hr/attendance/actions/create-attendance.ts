@@ -3,7 +3,9 @@
 import { API_URL } from "@/app/common/constants/api";
 import { ATTENDANCE_COOKIE } from "@/app/common/constants/attendance_cookie";
 import { getHeaders, post } from "@/app/common/utils/fetch";
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
+
 
 export async function createAttendance(formData: FormData) {
 
@@ -14,9 +16,9 @@ export async function createAttendance(formData: FormData) {
   // if (attendanceImage instanceof File && response.error) {
   //     await uploadAttendanceImage(response.data.id, attendanceImage);
   // }
-  // revalidateTag("last-attendance");
+  revalidateTag("attendance");
   // setAttendanceCookie(response.data);
-  console.log("res-action", response);
+  // console.log("res-action", response);
   return response;
 }
 
