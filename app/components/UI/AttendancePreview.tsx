@@ -195,7 +195,9 @@ export default function AttendancePreview() {
           </div>
         </div>
       ));
-      router.push("/hr");
+      setTimeout(() => {
+        router.push("/hr/attendance");
+      }, 2000);
     }
     console.log("response", response);
   };

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { getDate } from "../common/utils/get-date";
 import dayjs from "dayjs";
-import { get } from "../common/utils/fetch";
 import { getAttendance } from "./attendance/actions/get-attendance";
 
 const redirectToPreview = () => {
@@ -112,7 +111,7 @@ export default function Page() {
             <div className="grid grid-cols-2 py-2 gap-1">
               <div className="flex flex-col gap-2 items-center">
                 <h2 className="text-lg text-success font-bold py-4">
-                  {checkInTime ? checkInView : "--:--"}
+                  {checkInView ? checkInView : "--:--"}
                 </h2>
                 <button
                   className="btn btn-block btn-primary"
@@ -123,7 +122,7 @@ export default function Page() {
               </div>
               <div className="flex flex-col gap-2 items-center">
                 <h2 className="text-lg text-error font-bold py-4">
-                  {checkOutTime ? checkOutView : "--:--"}
+                  {checkOutView ? checkOutView : "--:--"}
                 </h2>
                 <button className="btn btn-block btn-outline">Pulang</button>
               </div>
