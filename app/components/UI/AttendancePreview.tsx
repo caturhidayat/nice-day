@@ -12,7 +12,6 @@ import LocalizeFormat from "dayjs/plugin/localizedFormat";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-
 dayjs.extend(LocalizeFormat);
 
 // Dynamic import komponen Map
@@ -157,15 +156,12 @@ export default function AttendancePreview() {
     formData.append("inLongitude", (location as any).lng);
     formData.append("checkInTime", checkInTime?.toString() || "");
 
-    console.log("check In time : ", checkInTime);
-    console.log("lon", (location as any).lng);
-    console.log("lon", (location as any).lat);
+    // console.log("check In time : ", checkInTime);
+    // console.log("lon", (location as any).lng);
+    // console.log("lon", (location as any).lat);
 
     const response = await createAttendance(formData);
     setResponse(response);
-    // Save response to local storage
-    localStorage.setItem("attendance", JSON.stringify(response.data));
-
 
     if (response.error) {
       console.error("error", response.error);

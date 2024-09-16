@@ -6,12 +6,13 @@ export const getHeaders = () => ({
   Cookie: cookies().toString(),
 });
 
-export const post = async (path: string, formData: FormData) => {
-  console.log("formData : ", formData);
+export const post = async (path: string, data: FormData | object) => {
+  console.log("formData : ", data);
+  const body = data instanceof FormData ? Object.fromEntries(data) : data;
   const res = await fetch(`${API_URL}/${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...getHeaders() },
-    body: JSON.stringify(Object.fromEntries(formData)),
+    body: JSON.stringify(body),
   });
 
   const parsedRes = await res.json();
@@ -21,9 +22,10 @@ export const post = async (path: string, formData: FormData) => {
   return { error: "", data: parsedRes };
 };
 
-export const get = async (path: string) => {
+export const get = async <T>(path: string, tags?: string[]) => {
   const res = await fetch(`${API_URL}/${path}`, {
     headers: { ...getHeaders() },
+    next: { tags },
   });
-  return res.json();
+  return res.json() as T;
 };

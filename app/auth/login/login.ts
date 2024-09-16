@@ -6,7 +6,7 @@ import { getErrorMessage } from "@/app/common/utils/errors";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { AUTHENTICATION_COOKIE } from "../auth-cookie";
+import { AUTHENTICATION_COOKIE } from "../../common/constants/auth-cookie";
 
 export default async function login(_prevState: FormResponse, formData: FormData) {
   const res = await fetch(`${API_URL}/auth/login`, {
