@@ -4,7 +4,7 @@ import logout from "@/app/auth/logout";
 import getProfile from "@/app/get-me";
 import React, { useEffect, useState } from "react";
 
-export default function page() {
+export default function Page() {
   const [profile, setProfile] = useState<ProfileProps>({
     id: "",
     name: "",

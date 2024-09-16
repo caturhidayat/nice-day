@@ -16,7 +16,7 @@ interface Attendance {
   checkOutTime: string;
 }
 
-export default function page() {
+export default function Page() {
   const [attendanceData, setAttendanceData] = useState<Attendance>();
   // Get Attendance Data from server
   useEffect(() => {
