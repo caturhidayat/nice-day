@@ -2,7 +2,7 @@ import React from "react";
 import { getAttendances } from "./actions/get-attendance";
 import getMe from "@/app/get-me";
 import dayjs from "dayjs";
-import { CalendarCheck, LocateIcon, MapPin, Pin } from "lucide-react";
+import { CalendarCheck, MapPin } from "lucide-react";
 
 export default async function page() {
   interface Attendance {
