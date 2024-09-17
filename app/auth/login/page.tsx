@@ -1,15 +1,23 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+// import { login } from "@/app/common/action";
+import { ActionState } from "@/app/common/interfaces/action-state-type";
+import { startTransition, useActionState } from "react";
+import { useFormState } from "react-dom";
 import login from "./login";
 
 const initialState = {
   error: "",
+  success: "",
 };
 
 export default function Login() {
+  // const [state, formAction, isPending] = useActionState<ActionState, FormData>(
+  //   login,
+  //   initialState
+  // );
   const [state, formAction] = useFormState(login, initialState);
-  const { pending } = useFormStatus();
+
   return (
     <section className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-lg text-center">
@@ -32,9 +40,6 @@ export default function Login() {
             placeholder="Enter Username"
             required
           />
-          {state.error !== undefined && (
-            <span className="text-red-500">{state.error}</span>
-          )}
 
           <input
             type="password"
@@ -44,11 +49,10 @@ export default function Login() {
             required
           />
           {state.error !== undefined && (
-            <span className="text-red-500">{state.error}</span>
+            <span className="text-error">{state.error}</span>
           )}
-          <button type="submit" className="btn btn-primary" disabled={pending}>
-            Login
-          </button>
+
+          <button className="btn btn-primary btn-block">login</button>
         </div>
       </form>
     </section>
