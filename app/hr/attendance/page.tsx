@@ -1,47 +1,36 @@
 import React from "react";
-import { getAttendances } from "./actions/get-attendance";
+
 import getMe from "@/app/get-me";
 import dayjs from "dayjs";
 import { CalendarCheck, MapPin } from "lucide-react";
+import { getAttendances } from "@/app/common/action";
 
-export default async function page() {
-  interface Attendance {
-    id: string;
-    attendanceDate: Date;
-    userId: string;
-    checkInTime: string;
-    checkOutTime: string;
-  }
 
-  type ProfileProps = {
-    id: string;
-    name: string;
-    departement: string;
-    branch: string;
-  };
-
+export default async function Page() {
   // Get 3 last attendance records
-  const attendance = (await getAttendances()) as Attendance[];
-  const me = (await getMe()) as ProfileProps;
+  const attendance = await getAttendances();
+  const me = await getMe();
 
   // console.log("attendance", attendance);
   return (
-    <section className="mx-auto max-w-screen-xl px-6 justify-center lg:flex  lg:items-center">
+    <section className="mx-auto max-w-screen-xl px-6 pb-16 justify-center lg:flex  lg:items-center">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-8">
         {attendance.map((item) => (
           <div
             key={item.id}
-            className="block rounded-lg p-4 shadow-sm shadow-indigo-100"
+            className="block rounded-lg p-4 shadow-lg shadow-indigo-100"
           >
             <div className="mt-2">
               <dl>
                 <div>
                   <dt className="sr-only">Name</dt>
 
-                  <dd className="font-medium text-primary">{me.name}</dd>
+                  <dd className="font-bold text-primary">{me.name}</dd>
                 </div>
                 <div className="grid grid-cols-1 py-2 gap-2">
-                  <div className="text-accent">Date: {dayjs(item.attendanceDate).format("YYYY-MM-DD")} </div>
+                  <div className="text-gray-400 text-sm">
+                    Date: {dayjs(item.attendanceDate).format("YYYY-MM-DD")}{" "}
+                  </div>
                   <div className="grid grid-cols-2 py-2">
                     <div className="items-center">
                       <p className="text-teal-600">Check In</p>
@@ -65,8 +54,8 @@ export default async function page() {
                     </div>
                   </div>
                   <div className="flex gap-6 pt-4 border-t-2">
-                    <MapPin size={18} className="text-teal-600"/>
-                    <CalendarCheck size={18} className="text-teal-600"/>
+                    <MapPin size={18} className="text-teal-600" />
+                    <CalendarCheck size={18} className="text-teal-600" />
                   </div>
                 </div>
               </dl>

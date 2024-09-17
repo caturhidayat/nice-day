@@ -1,34 +1,17 @@
-// import React, { useEffect, useState } from "react";
-import { getDate } from "../common/utils/get-date";
 import dayjs from "dayjs";
-import { getAttendance } from "./attendance/actions/get-attendance";
+
 import ButtonAtt from "../components/ButtonAttendance";
+import getMe from "../get-me";
+import getAttendance from "../common/action";
 
-interface Attendance {
-  id: string;
-  checkInTime: string;
-  checkOutTime: string;
-}
-
-export default async function page() {
-  // const [attendanceData, setAttendanceData] = useState<Attendance>();
-  // // Get Attendance Data from server
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const res: any = await getAttendance();
-  //     setAttendanceData(res);
-  //     console.log("res", res);
-  //   };
-  //   fetchData();
-  // }, []);
-
-  const lastAttendance = (await getAttendance()) as Attendance;
-
+export default async function Page() {
+  const lastAttendance = await getAttendance();
+  const me = await getMe();
 
   return (
     <div className="bg-base-100">
       <div className="grid justify-center py-4 max-w-xl px-4">
-        <h2 className="text-xl font-bold sm:text-2xl ">Hello Catur Hidayat!</h2>
+        <h2 className="text-xl font-bold sm:text-2xl ">Hello {me.name}!</h2>
         <p className="mt-4 text-base-content">Semangat Kerja ya!</p>
       </div>
       <div className="p-4 bg-slate-50 rounded-xl min-h-max pb-16">
@@ -37,7 +20,7 @@ export default async function page() {
 
           <div className="sm:flex sm:justify-between sm:gap-4">
             <div>
-              <h2 className="text-md font-bold">{getDate()}</h2>
+              <h2>{dayjs().format("dddd, MMMM D, YYYY")}</h2>
 
               <p className="mt-1 text-xs font-medium text-gray-600">
                 Jam kerja Kamu pukul 08:00 - 17:00

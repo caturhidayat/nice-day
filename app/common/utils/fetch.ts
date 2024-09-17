@@ -24,10 +24,17 @@ export const post = async (path: string, data: FormData) => {
   }
 };
 
-export const get = async <T>(path: string, tags?: string[]) => {
+// export const get = async <T>(path: string, tags?: string[]) => {
+//   const res = await fetch(`${API_URL}/${path}`, {
+//     headers: { ...getHeaders() },
+//     next: { tags },
+//   });
+//   return res.json() as T;
+// };
+
+export const get = async <T>(path: string) => {
   const res = await fetch(`${API_URL}/${path}`, {
     headers: { ...getHeaders() },
-    next: { tags },
   });
   return res.json() as T;
 };
