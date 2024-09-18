@@ -2,6 +2,7 @@ import React from "react";
 
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 
 import getMe from "@/app/get-me";
 import { CalendarCheck, MapPin } from "lucide-react";
@@ -9,6 +10,7 @@ import { getAttendances } from "@/app/common/action";
 import EmplyAttendance from "@/app/components/UI/EmplyAttendance";
 
 dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export default async function Page() {
     // Get 3 last attendance records

@@ -1,17 +1,20 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 
 import ButtonAtt from "../components/ButtonAttendance";
 import getMe from "../get-me";
 import getAttendance from "../common/action";
+import LocalTimeView from "../components/LocalTimeView";
 
 dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export default async function Page() {
     const lastAttendance = await getAttendance();
     const me = await getMe();
 
-    // const userTimezone = "Asia/Jakarta";
+    const userTimezone = "Asia/Jakarta";
 
     return (
         <div className="bg-base-100">
@@ -38,13 +41,9 @@ export default async function Page() {
                     <div className="mt-4">
                         <div className="grid grid-cols-2 py-2 gap-1">
                             <div className="flex flex-col gap-2 items-center">
-                                <h2 className="text-lg text-success font-bold py-4">
-                                    {lastAttendance?.checkInTime
-                                        ? dayjs
-                                              .utc(lastAttendance?.checkInTime)
-                                              .format("HH:mm")
-                                        : "--:--"}
-                                </h2>
+                                <LocalTimeView
+                                    dbTime={lastAttendance.checkInTime}
+                                />
                                 <ButtonAtt
                                     label="Masuk"
                                     param="hr/preview"
@@ -52,13 +51,9 @@ export default async function Page() {
                                 />
                             </div>
                             <div className="flex flex-col gap-2 items-center">
-                                <h2 className="text-lg text-error font-bold py-4">
-                                    {lastAttendance?.checkOutTime
-                                        ? dayjs
-                                              .utc(lastAttendance?.checkOutTime)
-                                              .format("HH:mm")
-                                        : "--:--"}
-                                </h2>
+                                <LocalTimeView
+                                    dbTime={lastAttendance.checkOutTime}
+                                />
                                 <ButtonAtt
                                     label="Pulang"
                                     param="hr/preview"
