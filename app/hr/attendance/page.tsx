@@ -1,10 +1,14 @@
 import React from "react";
 
-import getMe from "@/app/get-me";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+import getMe from "@/app/get-me";
 import { CalendarCheck, MapPin } from "lucide-react";
 import { getAttendances } from "@/app/common/action";
 import EmplyAttendance from "@/app/components/UI/EmplyAttendance";
+
+dayjs.extend(utc);
 
 export default async function Page() {
     // Get 3 last attendance records
@@ -34,9 +38,9 @@ export default async function Page() {
                                     <div className="grid grid-cols-1 py-2 gap-2">
                                         <div className="text-gray-400 text-sm">
                                             Date:{" "}
-                                            {dayjs(item.attendanceDate).format(
-                                                "YYYY-MM-DD"
-                                            )}{" "}
+                                            {dayjs
+                                                .utc(item.attendanceDate)
+                                                .format("YYYY-MM-DD")}{" "}
                                         </div>
                                         <div className="grid grid-cols-2 py-2">
                                             <div className="items-center">
@@ -45,9 +49,11 @@ export default async function Page() {
                                                 </p>
                                                 {item.checkInTime ? (
                                                     <div className="items-center">
-                                                        {dayjs(
-                                                            item.checkInTime
-                                                        ).format("HH:mm")}
+                                                        {dayjs
+                                                            .utc(
+                                                                item.checkInTime
+                                                            )
+                                                            .format("HH:mm")}
                                                     </div>
                                                 ) : (
                                                     <div className="items-center">
@@ -61,7 +67,7 @@ export default async function Page() {
                                                 </p>
                                                 {item.checkOutTime ? (
                                                     <div className="items-center">
-                                                        {dayjs(
+                                                        {dayjs.utc(
                                                             item.checkOutTime
                                                         ).format("HH:mm")}
                                                     </div>
