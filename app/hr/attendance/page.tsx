@@ -16,8 +16,8 @@ export default async function Page() {
             {attendance.length === 0 ? (
                 <EmplyAttendance />
             ) : (
-                attendance.map((item) => (
-                    <div className="grid grid-cols-1 gap-4 justify-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-8">
+                <div className="grid grid-cols-1 gap-4 justify-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-8">
+                    {attendance.map((item) => (
                         <div
                             key={item.id}
                             className="block rounded-lg p-4 shadow-lg shadow-indigo-100"
@@ -86,8 +86,8 @@ export default async function Page() {
                                 </dl>
                             </div>
                         </div>
-                    </div>
-                ))
+                    ))}
+                </div>
             )}
         </section>
     );
