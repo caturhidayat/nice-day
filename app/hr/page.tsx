@@ -11,7 +11,7 @@ export default async function Page() {
   return (
     <div className="bg-base-100">
       <div className="grid justify-center py-4 max-w-xl px-4">
-        <h2 className="text-xl font-bold sm:text-2xl ">Hello {me.name}!</h2>
+        <h2 className="text-xl font-bold sm:text-2xl ">Hello {me?.name}!</h2>
         <p className="mt-4 text-base-content">Semangat Kerja ya!</p>
       </div>
       <div className="p-4 bg-slate-50 rounded-xl min-h-max pb-16">

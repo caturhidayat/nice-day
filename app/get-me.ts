@@ -1,13 +1,9 @@
 "use server";
+import { ProfileProps } from "./common/action";
 import { get } from "./common/utils/fetch";
 
-type ProfileProps = {
-  id: string;
-  name: string;
-  departement: string;
-  branch: string;
-};
+
 
 export default async function getProfile() {
-  return get<ProfileProps>("users/profile", ["attendances", "attendance"]);
+    return get<ProfileProps>("users/profile");
 }

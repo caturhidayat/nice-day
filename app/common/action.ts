@@ -16,12 +16,27 @@ const loginSchema = z.object({
   password: z.string().min(6).max(100),
 });
 
-type AttendanceResponse = {
+export type AttendanceResponse = {
   id: string;
   attendanceDate: Date;
   userId: string;
   checkInTime: string;
   checkOutTime: string;
+};
+
+export interface Attendance {
+  id: string;
+  attendanceDate: Date;
+  userId: string;
+  checkInTime: string;
+  checkOutTime: string;
+}
+
+export type ProfileProps = {
+    id: string;
+    name: string;
+    departement: string;
+    branch: string;
 };
 
 // export const login = validatedAction(loginSchema, async (data, FormData) => {
@@ -44,11 +59,11 @@ type AttendanceResponse = {
 // });
 
 export default async function getAttendance() {
-  return get<AttendanceResponse>("attendances/last-attendance");
+  return get<Attendance>("attendances/last-attendance");
 }
 
 export async function getAttendances() {
-  return get<AttendanceResponse[]>("attendances/last-attendances");
+  return get<Attendance[]>("attendances/last-attendances");
 }
 
 export async function createAttendance(formData: FormData) {
