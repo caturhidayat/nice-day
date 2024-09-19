@@ -86,6 +86,12 @@ export async function createAttendance(formData: FormData) {
     return response;
 }
 
+export async function updateAttendance(attendanceId: string, formData: FormData) {
+    const response = await post(`attendances/${attendanceId}/check-out`, formData);
+    revalidateTag("attendance");
+    return response;
+}
+
 async function uploadAttendanceImage(attendanceId: string, file: File) {
     const formData = new FormData();
     formData.append("image", file);

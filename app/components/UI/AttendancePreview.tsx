@@ -10,8 +10,9 @@ import dayjs from "dayjs";
 import LocalizeFormat from "dayjs/plugin/localizedFormat";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { createAttendance } from "@/app/common/action";
+import { createAttendance, updateAttendance } from "@/app/common/action";
 import { CircleCheck, CircleX } from "lucide-react";
+import { ToastWrap } from "@/app/common/ToastC";
 
 dayjs.extend(LocalizeFormat);
 
@@ -29,7 +30,13 @@ const TargetLocations = [
 
 const RADIUS = 150;
 
-export default function AttendancePreview({ mode }: { mode: string }) {
+export default function AttendancePreview({
+    mode,
+    attendanceId,
+}: {
+    mode: string;
+    attendanceId: string;
+}) {
     //  * State
     const [location, setLocation] = useState<LatLngExpression>({
         lat: 0,
@@ -159,85 +166,57 @@ export default function AttendancePreview({ mode }: { mode: string }) {
             Math.random() * 1e9
         )}.png`;
         // formData.append("image", blob, imageName);
-        formData.append("inLatitude", (location as any).lat);
-        formData.append("inLongitude", (location as any).lng);
-        formData.append("checkInTime", checkInTime?.toString() || "");
+        if (mode === "in") {
+            formData.append("inLatitude", (location as any).lat);
+            formData.append("inLongitude", (location as any).lng);
+            formData.append("checkInTime", checkInTime?.toString() || "");
+        } else if (mode === "out") {
+            formData.append("outLatitude", (location as any).lat);
+            formData.append("outLongitude", (location as any).lng);
+            formData.append("checkOutTime", checkInTime?.toString() || "");
+        }
 
         // console.log("check In time : ", checkInTime);
         // console.log("lon", (location as any).lng);
         // console.log("lon", (location as any).lat);
 
-        const response = await createAttendance(formData);
-        if (response.error) {
-            toast.custom((t) => (
-                <div
-                    className={`${
-                        t.visible ? "animate-enter" : "animate-leave"
-                    } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-                >
-                    <div className="flex-1 w-0 p-4">
-                        <div className="flex items-start">
-                            <div className="flex-shrink-0 pt-0.5">
-                                <CircleX className="h-5 w-5 text-red-400" />
-                            </div>
-                            <div className="ml-3 flex-1">
-                                <p className="text-sm font-medium text-gray-900">
-                                    Failed to save attendance
-                                </p>
-                                <p className="mt-1 text-sm text-gray-500">
-                                    {response.error}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex border-l border-gray-200">
-                        <button
-                            onClick={() => toast.dismiss(t.id)}
-                            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        >
-                            Close
-                        </button>
-                    </div>
-                </div>
-            ));
-            router.push("/hr");
-        }
+        const handleResponse = (response: any) => {
+            if (response && response.error) {
+                ToastWrap.error("Error", response.error);
+                router.push("/hr");
+            } else {
+                ToastWrap.success("Success", response.data.message);
+                setResponse(response.data);
+                router.push("/hr");
+            }
+        };
 
-        setResponse(response.data);
-        toast.custom((t) => (
-            <div
-                className={`${
-                    t.visible ? "animate-enter" : "animate-leave"
-                } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-            >
-                <div className="flex-1 w-0 p-4">
-                    <div className="flex items-start">
-                        <div className="flex-shrink-0 pt-0.5">
-                            <CircleCheck className="h-5 w-5 text-green-400" />
-                        </div>
-                        <div className="ml-3 flex-1">
-                            <p className="text-sm font-medium text-gray-900">
-                                Attendance saved successfully
-                            </p>
-                            <p className="mt-1 text-sm text-gray-500">
-                                {response.data.message}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div className="flex border-l border-gray-200">
-                    <button
-                        onClick={() => toast.dismiss(t.id)}
-                        className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    >
-                        Close
-                    </button>
-                </div>
-            </div>
-        ));
-        setTimeout(() => {
-            router.push("/hr");
-        }, 2000);
+        const response =
+            mode === "in"
+                ? await createAttendance(formData)
+                : await updateAttendance(attendanceId, formData);
+        handleResponse(response);
+
+        // if (mode === "in") {
+        //     const response = await createAttendance(formData);
+        //     if (response && response.error) {
+        //         ToastWrap.error("Error", response.error);
+        //         router.push("/hr");
+        //     } else {
+        //         ToastWrap.success("Success", response.data.message);
+        //         setResponse(response.data);
+        //     }
+        // } else if (mode === "out") {
+        //     const response = await updateAttendance(attendanceId, formData);
+        //     if (response && response.error) {
+        //         ToastWrap.error("Error", response.error);
+        //         router.push("/hr");
+        //     } else {
+        //         ToastWrap.success("Success", response.data.message);
+        //         setResponse(response.data);
+        // }
+
+        // router.push("/hr");
     };
 
     return (
