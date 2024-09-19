@@ -22,6 +22,11 @@ export interface AttendanceContextValue {
   updateAttendance: () => void;
 }
 
+export type AttendancePreviewProps = {
+  mode: string;
+  attendanceId?: string;
+}
+
 enum AttendanceStatus {
   PRESENT,
   ABSENT,

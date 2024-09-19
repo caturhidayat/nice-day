@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { createAttendance, updateAttendance } from "@/app/common/action";
 import { CircleCheck, CircleX } from "lucide-react";
 import { ToastWrap } from "@/app/common/ToastC";
+import { AttendancePreviewProps } from "@/app/common/interfaces/attendance.interface";
 
 dayjs.extend(LocalizeFormat);
 
@@ -33,10 +34,7 @@ const RADIUS = 150;
 export default function AttendancePreview({
     mode,
     attendanceId,
-}: {
-    mode: string;
-    attendanceId: string;
-}) {
+}: AttendancePreviewProps) {
     //  * State
     const [location, setLocation] = useState<LatLngExpression>({
         lat: 0,
@@ -194,7 +192,7 @@ export default function AttendancePreview({
         const response =
             mode === "in"
                 ? await createAttendance(formData)
-                : await updateAttendance(attendanceId, formData);
+                : await updateAttendance(attendanceId || "", formData);
         handleResponse(response);
 
         // if (mode === "in") {
