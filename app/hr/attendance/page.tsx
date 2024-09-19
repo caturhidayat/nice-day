@@ -42,6 +42,7 @@ export default async function Page() {
                       Date:{" "}
                       {dayjs
                         .utc(Number(item.attendanceDate))
+                        .add(1, "day")
                         .format("YYYY-MM-DD")}{" "}
                     </div>
                     <div className="grid grid-cols-2 py-2">

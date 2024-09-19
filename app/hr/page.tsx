@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import LocalizeFormat from "dayjs/plugin/localizedFormat";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import isBetween from "dayjs/plugin/isBetween";
 
 import ButtonAtt from "../components/ButtonAttendance";
 import LocalTimeView from "../components/LocalTimeView";
@@ -10,17 +11,33 @@ import { getAttendance, getProfile } from "../common/action";
 dayjs.extend(LocalizeFormat);
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(isBetween);
 
 export default async function Page() {
+  const userTimezone = "Asia/Jakarta";
+  const startDay = dayjs().startOf("day").valueOf();
+  console.log("startDay", startDay);
+  const endDay = dayjs().endOf("day").valueOf();
+
   const lastAttendance = await getAttendance();
+  console.log("lastAttendance", lastAttendance);
+  const attDate = +dayjs(Number(lastAttendance.attendanceDate));
+  const attendanceDate = dayjs(attDate).startOf("day").valueOf();
+  console.log("attendance Date : ", attendanceDate);
   const me = await getProfile();
 
+  if (
+    +dayjs(lastAttendance.attendanceDate) > startDay &&
+    +dayjs(lastAttendance.attendanceDate) < endDay
+  ) {
+  }
+
   const checkInTime = dayjs(Number(lastAttendance.checkInTime))
-    .tz("Asia/Jakarta")
+    .tz(userTimezone)
     .format("HH:mm")
     .toString();
   const checkOutTime = dayjs(Number(lastAttendance.checkOutTime))
-    .tz("Asia/Jakarta")
+    .tz(userTimezone)
     .format("HH:mm")
     .toString();
 
@@ -30,7 +47,6 @@ export default async function Page() {
     .format("dddd, MMM D, YYYY h:mm A")
     .toString();
   // console.log("me", me);
-  const userTimezone = "Asia/Jakarta";
 
   return (
     <div className="bg-base-100">
@@ -56,7 +72,8 @@ export default async function Page() {
             <div className="grid grid-cols-2 py-2 gap-1">
               <div className="flex flex-col gap-2 items-center">
                 <p className="text-success font-semibold text-lg py-4">
-                  {lastAttendance.checkInTime ? checkInTime : "--:--"}
+                  {/* {lastAttendance.checkInTime ? checkInTime : "--:--"} */}
+                  {startDay === attendanceDate ? checkInTime : "--:--"}
                 </p>
                 <ButtonAtt
                   label="Masuk"
@@ -66,7 +83,10 @@ export default async function Page() {
               </div>
               <div className="flex flex-col gap-2 items-center">
                 <p className="text-error font-semibold text-lg py-4">
-                  {lastAttendance.checkOutTime ? checkOutTime : "--:--"}
+                  {/* {lastAttendance.checkOutTime ? checkOutTime : "--:--"} */}
+                  {startDay === attendanceDate && lastAttendance.checkOutTime
+                    ? checkOutTime
+                    : "--:--"}
                 </p>
                 <ButtonAtt
                   label="Pulang"
