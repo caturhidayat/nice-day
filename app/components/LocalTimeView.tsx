@@ -10,15 +10,17 @@ dayjs.extend(timezone);
 type LocalTimeViewProps = {
     dbTime: string;
     timezone?: string;
+    style?: string;
 };
 
 export default function LocalTimeView({
     dbTime,
     timezone,
+    style,
 }: LocalTimeViewProps) {
     const localTime = dayjs.utc(dbTime);
     return (
-        <h2 className="text-lg text-success font-bold py-4">
+        <h2 className={`text-lg text-${style} font-bold py-4`}>
             {dbTime ? localTime.format("HH:mm").toString() : "--:--"}
         </h2>
     );

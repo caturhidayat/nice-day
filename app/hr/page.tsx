@@ -3,18 +3,22 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 
 import ButtonAtt from "../components/ButtonAttendance";
-import getMe from "../get-me";
-import getAttendance from "../common/action";
 import LocalTimeView from "../components/LocalTimeView";
+import { getAttendance, getProfile } from "../common/action";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export default async function Page() {
     const lastAttendance = await getAttendance();
-    const me = await getMe();
+    const me = await getProfile();
 
-    const userTimezone = "Asia/Jakarta";
+    const today = dayjs()
+        .tz("Asia/Jakarta")
+        .format("dddd, MMM D, YYYY")
+        .toString();
+    // console.log("me", me);
+    // const userTimezone = "Asia/Jakarta";
 
     return (
         <div className="bg-base-100">
@@ -30,7 +34,7 @@ export default async function Page() {
 
                     <div className="sm:flex sm:justify-between sm:gap-4">
                         <div>
-                            <h2>{dayjs.utc().format("dddd, MMMM D, YYYY")}</h2>
+                            <h2>{today}</h2>
 
                             <p className="mt-1 text-xs font-medium text-gray-600">
                                 Jam kerja Kamu pukul 08:00 - 17:00
@@ -43,21 +47,23 @@ export default async function Page() {
                             <div className="flex flex-col gap-2 items-center">
                                 <LocalTimeView
                                     dbTime={lastAttendance.checkInTime}
+                                    style="success"
                                 />
                                 <ButtonAtt
                                     label="Masuk"
-                                    param="hr/preview"
-                                    style="btn-primary"
+                                    param1="hr/preview/in"
+                                    style="primary"
                                 />
                             </div>
                             <div className="flex flex-col gap-2 items-center">
                                 <LocalTimeView
                                     dbTime={lastAttendance.checkOutTime}
+                                    style="error"
                                 />
                                 <ButtonAtt
                                     label="Pulang"
-                                    param="hr/preview"
-                                    style="btn-outline"
+                                    param1="hr/preview/out"
+                                    style="outline"
                                 />
                             </div>
                         </div>

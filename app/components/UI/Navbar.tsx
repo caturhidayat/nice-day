@@ -11,7 +11,7 @@ export default function Navbar() {
             {isAuthenticated ? (
                 <div className="navbar bg-base-100 fixed ">
                     <div className="flex-1">
-                        <a className="btn btn-ghost text-2xl bg-gradient-to-r from-violet-600 via-teal-600 to-purple-600 bg-clip-text text-transparent">NiceDay</a>
+                        <a className="btn btn-ghost text-2xl bg-gradient-to-r from-violet-600 via-teal-600 to-purple-600 bg-clip-text text-transparent">App Name</a>
                     </div>
                     <div className="flex-none"></div>
                 </div>

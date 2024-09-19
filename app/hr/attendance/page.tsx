@@ -4,9 +4,9 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 
-import getMe from "@/app/get-me";
+
 import { CalendarCheck, MapPin } from "lucide-react";
-import { getAttendances } from "@/app/common/action";
+import { getAttendances, getProfile } from "@/app/common/action";
 import EmplyAttendance from "@/app/components/UI/EmplyAttendance";
 
 dayjs.extend(utc);
@@ -15,7 +15,7 @@ dayjs.extend(timezone);
 export default async function Page() {
     // Get 3 last attendance records
     const attendance = await getAttendances();
-    const me = await getMe();
+    const me = await getProfile();
 
     return (
         <section className="mx-auto max-w-screen-xl px-6 pb-16 justify-center lg:flex  lg:items-center">
