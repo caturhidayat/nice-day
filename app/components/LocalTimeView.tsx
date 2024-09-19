@@ -1,27 +1,29 @@
 "use client";
 
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
+import LocalizeFormat from "dayjs/plugin/localizedFormat";
+import { Suspense } from "react";
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
+dayjs.extend(LocalizeFormat);
 
 type LocalTimeViewProps = {
-    dbTime: string;
-    timezone?: string;
-    style?: string;
+  dbTime: string;
+  timezone?: string;
+  style?: string;
 };
 
 export default function LocalTimeView({
-    dbTime,
-    timezone,
-    style,
+  dbTime,
+  timezone,
+  style,
 }: LocalTimeViewProps) {
-    const localTime = dayjs(dbTime).format("HH:mm").toString();
-    return (
-        <h2 className={`text-lg text-${style} font-bold py-4`}>
-            {dbTime ? localTime : "--:--"}
-        </h2>
-    );
+  console.log("dbTime : ", dbTime);
+  const localTime = dayjs(dbTime).format("LT");
+  return (
+    <Suspense fallback={<h2>Loading...</h2>}>
+      <h2 className={`text-lg text-${style} font-bold py-4`}>
+        {dbTime ? localTime : "--:--"}
+      </h2>
+    </Suspense>
+  );
 }

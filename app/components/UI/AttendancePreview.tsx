@@ -6,8 +6,10 @@ import L, { LatLngExpression, Map as leafletMap } from "leaflet";
 import Image from "next/image";
 import "leaflet/dist/leaflet.css";
 import { FormResponse } from "@/app/common/interfaces/form-response.interface";
+
 import dayjs from "dayjs";
 import LocalizeFormat from "dayjs/plugin/localizedFormat";
+
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { createAttendance, updateAttendance } from "@/app/common/action";
@@ -35,6 +37,7 @@ export default function AttendancePreview({
   mode,
   attendanceId,
 }: AttendancePreviewProps) {
+  console.log("attendanceId props : ", attendanceId);
   //  * State
   const [location, setLocation] = useState<LatLngExpression>({
     lat: 0,

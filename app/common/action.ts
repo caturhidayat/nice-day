@@ -30,6 +30,12 @@ export interface Attendance {
     userId: string;
     checkInTime: string;
     checkOutTime: string;
+    inLatitude: number;
+    inLongitude: number;
+    outLatitude: number;
+    outLongitude: number;
+    isLate: boolean;
+    status: string;
     createdAt: string;
     updatedAt: string;
 }
@@ -89,6 +95,7 @@ export async function createAttendance(formData: FormData) {
 }
 
 export async function updateAttendance(attendanceId: string, formData: FormData) {
+    console.log("attendanceId action : ", attendanceId);
     const response = await post(`attendances/${attendanceId}/check-out`, formData);
     revalidateTag("attendance");
     return response;
