@@ -26,10 +26,12 @@ export type AttendanceResponse = {
 
 export interface Attendance {
     id: string;
-    attendanceDate: Date;
+    attendanceDate: string;
     userId: string;
     checkInTime: string;
     checkOutTime: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export type ProfileProps = {

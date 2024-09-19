@@ -18,10 +18,10 @@ export default function LocalTimeView({
     timezone,
     style,
 }: LocalTimeViewProps) {
-    const localTime = dayjs.utc(dbTime);
+    const localTime = dayjs(dbTime).format("HH:mm").toString();
     return (
         <h2 className={`text-lg text-${style} font-bold py-4`}>
-            {dbTime ? localTime.format("HH:mm").toString() : "--:--"}
+            {dbTime ? localTime : "--:--"}
         </h2>
     );
 }

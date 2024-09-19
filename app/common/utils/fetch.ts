@@ -9,6 +9,8 @@ export const getHeaders = () => ({
 export const post = async (path: string, data: FormData) => {
   console.log("formData : ", data);
   // const body = data instanceof FormData ? Object.fromEntries(data) : data;
+
+  console.log("request body ", data);
   const res = await fetch(`${API_URL}/${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...getHeaders() },

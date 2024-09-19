@@ -13,12 +13,13 @@ export default async function Page() {
     const lastAttendance = await getAttendance();
     const me = await getProfile();
 
+    console.log("lastAttendance checkIn : ", lastAttendance);
     const today = dayjs()
         .tz("Asia/Jakarta")
-        .format("dddd, MMM D, YYYY")
+        .format("dddd, MMM D, YYYY h:mm A")
         .toString();
     // console.log("me", me);
-    // const userTimezone = "Asia/Jakarta";
+    const userTimezone = "Asia/Jakarta";
 
     return (
         <div className="bg-base-100">
@@ -48,6 +49,7 @@ export default async function Page() {
                                 <LocalTimeView
                                     dbTime={lastAttendance.checkInTime}
                                     style="success"
+                                    timezone={userTimezone}
                                 />
                                 <ButtonAtt
                                     label="Masuk"
@@ -59,6 +61,7 @@ export default async function Page() {
                                 <LocalTimeView
                                     dbTime={lastAttendance.checkOutTime}
                                     style="error"
+                                    timezone={userTimezone}
                                 />
                                 <ButtonAtt
                                     label="Pulang"
