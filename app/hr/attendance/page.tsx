@@ -14,6 +14,7 @@ dayjs.extend(timezone);
 export default async function Page() {
   // Get 3 last attendance records
   const attendance = await getAttendances();
+  const userTimezone = "Asia/Jakarta";
   console.log("attendance page : ", attendance);
 
   const me = await getProfile();
@@ -48,7 +49,10 @@ export default async function Page() {
                         <p className="text-teal-600">Check In</p>
                         {item.checkInTime ? (
                           <div className="items-center">
-                            {dayjs(Number(item.checkInTime)).format("HH:mm")}
+                            {dayjs(Number(item.checkInTime))
+                              .tz(userTimezone)
+                              .format("HH:mm")
+                              .toString()}
                           </div>
                         ) : (
                           <div className="items-center">--:--</div>
@@ -58,7 +62,10 @@ export default async function Page() {
                         <p className="text-error">Check Out</p>
                         {item.checkOutTime ? (
                           <div className="items-center">
-                            {dayjs(Number(item.checkOutTime)).format("HH:mm")}
+                            {dayjs(Number(item.checkOutTime))
+                              .tz(userTimezone)
+                              .format("HH:mm")
+                              .toString()}
                           </div>
                         ) : (
                           <div className="items-center">--:--</div>
@@ -75,8 +82,8 @@ export default async function Page() {
                         {item.outLatitude}, {item.outLongitude}
                       </span>
                       <span className="flex gap-2  items-center">
-                        <CalendarCheck size={18} className="text-purple-600" /> :
-                        {item.status}
+                        <CalendarCheck size={18} className="text-purple-600" />{" "}
+                        :{item.status}
                       </span>
                       <span className="flex gap-2  items-center">
                         <Clock
