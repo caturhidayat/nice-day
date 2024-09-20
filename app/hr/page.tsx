@@ -44,7 +44,7 @@ export default async function Page() {
     //   console.log("lastAttendance checkIn : ", lastAttendance);
     const today = dayjs()
         .tz("Asia/Jakarta")
-        .format("dddd, MMM D, YYYY h:mm A")
+        .format("dddd, MMM D, YYYY")
         .toString();
     // console.log("me", me);
 
