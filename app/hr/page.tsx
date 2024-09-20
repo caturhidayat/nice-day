@@ -74,10 +74,12 @@ export default async function Page() {
                         <div className="grid grid-cols-2 py-2 gap-1">
                             <div className="flex flex-col gap-2 items-center">
                                 <p className="text-success font-semibold text-lg py-4">
-                                    {/* {lastAttendance.checkInTime ? checkInTime : "--:--"} */}
-                                    {startDay === attendanceDate
+                                    {lastAttendance.checkInTime
                                         ? checkInTime
                                         : "--:--"}
+                                    {/* {startDay === attendanceDate
+                                        ? checkInTime
+                                        : "--:--"} */}
                                 </p>
                                 <ButtonAtt
                                     label="Masuk"
@@ -87,11 +89,13 @@ export default async function Page() {
                             </div>
                             <div className="flex flex-col gap-2 items-center">
                                 <p className="text-error font-semibold text-lg py-4">
-                                    {/* {lastAttendance.checkOutTime ? checkOutTime : "--:--"} */}
-                                    {startDay === attendanceDate &&
-                                    lastAttendance.checkOutTime
+                                    {lastAttendance.checkOutTime
                                         ? checkOutTime
                                         : "--:--"}
+                                    {/* {startDay === attendanceDate &&
+                                    lastAttendance.checkOutTime
+                                        ? checkOutTime
+                                        : "--:--"} */}
                                 </p>
                                 <ButtonAtt
                                     label="Pulang"
