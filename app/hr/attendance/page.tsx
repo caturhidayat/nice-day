@@ -24,21 +24,21 @@ export default async function Page() {
       {attendance.length === 0 ? (
         <EmplyAttendance />
       ) : (
-        <div className="grid grid-cols-1 gap-4 justify-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 bg-gray-100">
+        <div className="grid grid-cols-1 gap-4 justify-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 ">
           {attendance.map((item) => (
             <div
               key={item.id}
-              className="block rounded-xl p-4 shadow-lg shadow-indigo-100"
+              className="block rounded-xl p-4 bg-gray-50 shadow-md"
             >
               <div className="mt-2">
                 <dl>
                   <div>
                     <dt className="sr-only">Name</dt>
 
-                    <dd className="font-bold text-primary">{me.name}</dd>
+                    <dd className="font-bold text-secondary">{me.name}</dd>
                   </div>
                   <div className="grid grid-cols-1 py-2 gap-2">
-                    <div className="text-gray-400 text-sm">
+                    <div className="text-gray-400 text-xs">
                       Date:{" "}
                       {dayjs
                         .utc(Number(item.attendanceDate))
@@ -73,7 +73,7 @@ export default async function Page() {
                         )}
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-6 pt-4 border-t-2 text-neutral-content text-xs">
+                    <div className="grid grid-cols-2 gap-6 pt-4 border-t-2 border-dashed text-neutral-content text-xs">
                       <span className="flex gap-2  items-center">
                         <MapPin size={18} className="text-teal-600" /> : In{" "}
                         {item.inLatitude}, {item.inLongitude}
@@ -83,7 +83,7 @@ export default async function Page() {
                         {item.outLatitude}, {item.outLongitude}
                       </span>
                       <span className="flex gap-2  items-center">
-                        <CalendarCheck size={18} className="text-purple-600" />{" "}
+                        <CalendarCheck size={18} className="text-secondary" />{" "}
                         :{item.status}
                       </span>
                       <span className="flex gap-2  items-center">
