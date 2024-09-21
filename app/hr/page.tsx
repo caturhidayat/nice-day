@@ -18,6 +18,7 @@ export default async function Page() {
   const startDay = dayjs().startOf("day").valueOf();
   console.log("startDay", startDay);
   const endDay = dayjs().endOf("day").valueOf();
+  const now = dayjs().valueOf();
 
   const lastAttendance = await getAttendance();
   console.log("lastAttendance", lastAttendance);
@@ -25,12 +26,6 @@ export default async function Page() {
   const attendanceDate = dayjs(attDate).startOf("day").valueOf();
   console.log("attendance Date : ", attendanceDate);
   const me = await getProfile();
-
-  if (
-    +dayjs(lastAttendance.attendanceDate) > startDay &&
-    +dayjs(lastAttendance.attendanceDate) < endDay
-  ) {
-  }
 
   const checkInTime = dayjs(Number(lastAttendance.checkInTime))
     .tz(userTimezone)
@@ -40,6 +35,36 @@ export default async function Page() {
     .tz(userTimezone)
     .format("HH:mm")
     .toString();
+
+  const displayCheckInDate = () => {
+    if (attendanceDate === startDay && lastAttendance.checkInTime) {
+      return (
+        <p className="text-success font-semibold text-lg py-4">{checkInTime}</p>
+      );
+    } else {
+      return <p className="text-success font-semibold text-lg py-4">--:--</p>;
+    }
+  };
+
+  const displayCheckOutDate = () => {
+    if (attendanceDate === startDay && lastAttendance.checkOutTime) {
+      return (
+        <p className="text-error font-semibold text-lg py-4">{checkOutTime}</p>
+      );
+    } else if (
+      dayjs(Number(lastAttendance.checkOutTime)).add(4, "hours").isAfter(now)
+    ) {
+      return <p className="text-error font-semibold text-lg py-4">--:--</p>;
+    } else {
+      return <p className="text-error font-semibold text-lg py-4">--:--</p>;
+    }
+  };
+
+  if (
+    +dayjs(lastAttendance.attendanceDate) > startDay &&
+    +dayjs(lastAttendance.attendanceDate) < endDay
+  ) {
+  }
 
   //   console.log("lastAttendance checkIn : ", lastAttendance);
   const today = dayjs()
@@ -71,10 +96,10 @@ export default async function Page() {
           <div className="mt-4">
             <div className="grid grid-cols-2 py-2 gap-1">
               <div className="flex flex-col gap-2 items-center">
-                <p className="text-success font-semibold text-lg py-4">
-                  {/* {lastAttendance.checkInTime ? checkInTime : "--:--"} */}
+                {/* <p className="text-success font-semibold text-lg py-4">
                   {startDay === attendanceDate ? checkInTime : "--:--"}
-                </p>
+                </p> */}
+                {displayCheckInDate()}
                 <ButtonAtt
                   label="Masuk"
                   param1="hr/preview/in"
@@ -82,12 +107,12 @@ export default async function Page() {
                 />
               </div>
               <div className="flex flex-col gap-2 items-center">
-                <p className="text-error font-semibold text-lg py-4">
-                  {/* {lastAttendance.checkOutTime ? checkOutTime : "--:--"} */}
+                {/* <p className="text-error font-semibold text-lg py-4">
                   {startDay === attendanceDate && lastAttendance.checkOutTime
                     ? checkOutTime
                     : "--:--"}
-                </p>
+                </p> */}
+                {displayCheckOutDate()}
                 <ButtonAtt
                   label="Pulang"
                   param1="hr/preview/out"
