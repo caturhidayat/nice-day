@@ -20,6 +20,7 @@ export default async function Page() {
   const endDay = dayjs().endOf("day").valueOf();
   const now = dayjs().valueOf();
 
+
   const lastAttendance = await getAttendance();
   console.log("lastAttendance", lastAttendance);
   const attDate = +dayjs(Number(lastAttendance.attendanceDate));
