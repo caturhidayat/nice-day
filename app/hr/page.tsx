@@ -1,63 +1,129 @@
-"use client";
+import dayjs from "dayjs";
+import LocalizeFormat from "dayjs/plugin/localizedFormat";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import isBetween from "dayjs/plugin/isBetween";
 
-import React from "react";
-import { getDate } from "../common/utils/get-date";
+import ButtonAtt from "../components/ButtonAttendance";
+import LocalTimeView from "../components/LocalTimeView";
+import { getAttendance, getProfile } from "../common/action";
 
-const redirectToPreview = () => {
-    window.location.href = "/hr/preview";
-};
+dayjs.extend(LocalizeFormat);
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(isBetween);
 
-export default function page() {
-    return (
-        <div className="bg-base-100">
-            <div className="max-w-xl">
-                <h2 className="text-lg font-bold sm:text-2xl">
-                    PT. Puninar Yusen Logistics Indonesia
-                </h2>
+export default async function Page() {
+  const userTimezone = "Asia/Jakarta";
+  const startDay = dayjs().startOf("day").valueOf();
+  console.log("startDay", startDay);
+  const endDay = dayjs().endOf("day").valueOf();
+  const now = dayjs().valueOf();
 
-                <p className="mt-4 text-base-content">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                </p>
+
+  const lastAttendance = await getAttendance();
+  console.log("lastAttendance", lastAttendance);
+  const attDate = +dayjs(Number(lastAttendance.attendanceDate));
+  const attendanceDate = dayjs(attDate).startOf("day").valueOf();
+  console.log("attendance Date : ", attendanceDate);
+  const me = await getProfile();
+
+  const checkInTime = dayjs(Number(lastAttendance.checkInTime))
+    .tz(userTimezone)
+    .format("HH:mm")
+    .toString();
+  const checkOutTime = dayjs(Number(lastAttendance.checkOutTime))
+    .tz(userTimezone)
+    .format("HH:mm")
+    .toString();
+
+  const displayCheckInDate = () => {
+    if (attendanceDate === startDay && lastAttendance.checkInTime) {
+      return (
+        <p className="text-success font-semibold text-lg py-4">{checkInTime}</p>
+      );
+    } else {
+      return <p className="text-success font-semibold text-lg py-4">--:--</p>;
+    }
+  };
+
+  const displayCheckOutDate = () => {
+    if (attendanceDate === startDay && lastAttendance.checkOutTime) {
+      return (
+        <p className="text-error font-semibold text-lg py-4">{checkOutTime}</p>
+      );
+    } else if (
+      dayjs(Number(lastAttendance.checkOutTime)).add(4, "hours").isAfter(now)
+    ) {
+      return <p className="text-error font-semibold text-lg py-4">--:--</p>;
+    } else {
+      return <p className="text-error font-semibold text-lg py-4">--:--</p>;
+    }
+  };
+
+  if (
+    +dayjs(lastAttendance.attendanceDate) > startDay &&
+    +dayjs(lastAttendance.attendanceDate) < endDay
+  ) {
+  }
+
+  //   console.log("lastAttendance checkIn : ", lastAttendance);
+  const today = dayjs()
+    .tz("Asia/Jakarta")
+    .format("dddd, MMM D, YYYY h:mm A")
+    .toString();
+  // console.log("me", me);
+
+  return (
+    <div className="bg-base-100">
+      <div className="grid justify-center py-4 max-w-xl px-4">
+        <h2 className="text-xl font-bold sm:text-2xl ">Hello {me?.name}!</h2>
+        <p className="mt-4 text-base-content">Semangat Kerja ya!</p>
+      </div>
+      <div className="p-4 bg-slate-50 rounded-xl min-h-max pb-16">
+        <div className="relative block overflow-hidden rounded-xl bg-base-100 border-gray-100 p-4 sm:p-6 lg:p-8 shadow-lg">
+          <span className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
+
+          <div className="sm:flex sm:justify-between sm:gap-4">
+            <div>
+              <h2>{today}</h2>
+
+              <p className="mt-1 text-xs font-medium text-gray-600">
+                Jam kerja Kamu pukul 08:00 - 17:00
+              </p>
             </div>
+          </div>
 
-            <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2 md:gap-12 lg:grid-cols-2">
-                <div className="flex items-start gap-4">
-                    <div>
-                        <h2 className="text-lg font-bold">{getDate()}</h2>
-
-                        <p className="mt-1 text-sm">
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit.
-                        </p>
-                    </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                    <div className="border-primary border-2 w-96 shadow-xl rounded-xl">
-                        <div className="card-body">
-                            <div className="grid grid-cols-2 py-6 border border-secondary border-dashed rounded-lg">
-                                <div className="flex flex-col gap-2 items-center">
-                                    <h2 className="text-lg text-success font-bold">--:--</h2>
-                                    <p>Start Time</p>
-                                </div>
-                                <div className="flex flex-col gap-2 items-center">
-                                    <h2 className="text-lg text-error font-bold">--:--</h2>
-                                    <p>End Time</p>
-                                </div>
-                            </div>
-                            <div className="card-actions justify-end"></div>
-
-                            <button
-                                className="btn btn-primary"
-                                onClick={redirectToPreview}
-                            >
-                                {/* <Link href="/hr/preview">Preview</Link> */}
-                                Record Attendance
-                            </button>
-                        </div>
-                    </div>
-                </div>
+          <div className="mt-4">
+            <div className="grid grid-cols-2 py-2 gap-1">
+              <div className="flex flex-col gap-2 items-center">
+                {/* <p className="text-success font-semibold text-lg py-4">
+                  {startDay === attendanceDate ? checkInTime : "--:--"}
+                </p> */}
+                {displayCheckInDate()}
+                <ButtonAtt
+                  label="Masuk"
+                  param1="hr/preview/in"
+                  style="primary"
+                />
+              </div>
+              <div className="flex flex-col gap-2 items-center">
+                {/* <p className="text-error font-semibold text-lg py-4">
+                  {startDay === attendanceDate && lastAttendance.checkOutTime
+                    ? checkOutTime
+                    : "--:--"}
+                </p> */}
+                {displayCheckOutDate()}
+                <ButtonAtt
+                  label="Pulang"
+                  param1="hr/preview/out"
+                  style="outline"
+                />
+              </div>
             </div>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }

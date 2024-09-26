@@ -1,15 +1,15 @@
 "use server";
 
-import { FormError } from "@/app/common/interfaces/form-error.interface";
+import { FormResponse } from "@/app/common/interfaces/form-response.interface";
 import { API_URL } from "@/app/common/constants/api";
 import { getErrorMessage } from "@/app/common/utils/errors";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { AUTHENTICATION_COOKIE } from "../auth-cookie";
+import { AUTHENTICATION_COOKIE } from "../../common/constants/auth-cookie";
 
-export default async function login(_prevState: FormError, formData: FormData) {
-  const res = await fetch(`${API_URL}/auth/employee/login`, {
+export default async function login(_prevState: FormResponse, formData: FormData) {
+  const res = await fetch(`${API_URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -19,13 +19,14 @@ export default async function login(_prevState: FormError, formData: FormData) {
 
   const parsedRes = await res.json();
   if (!res.ok) {
-    return { error: getErrorMessage(parsedRes) };
+    return { error: getErrorMessage(parsedRes), success: "" };
   }
+  
   setAuthCookie(res);
   redirect("/hr");
 }
 
-const setAuthCookie = (response: Response) => {
+export const setAuthCookie = (response: Response) => {
   const setCookieHeader = response.headers.get("Set-Cookie");
   if (setCookieHeader) {
     const token = setCookieHeader.split(";")[0].split("=")[1];
