@@ -165,7 +165,7 @@ export default function AttendancePreview({
       formData.append("inLatitude", (location as any).lat);
       formData.append("inLongitude", (location as any).lng);
       formData.append("checkInTime", checkInTime?.toString() || "");
-      formData.append("attedanceDate", dayjs().valueOf().toString());
+      // formData.append("attedanceDate", dayjs().valueOf().toString());
     } else if (mode === "out") {
       formData.append("outLatitude", (location as any).lat);
       formData.append("outLongitude", (location as any).lng);
