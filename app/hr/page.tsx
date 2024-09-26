@@ -71,17 +71,17 @@ export default async function Page() {
     }
   };
 
-  if (
-    +dayjs(lastAttendance.attendanceDate) > startDay &&
-    +dayjs(lastAttendance.attendanceDate) < endDay
-  ) {
-  }
+  // if (
+  //   +dayjs(lastAttendance.attendanceDate) > startDay &&
+  //   +dayjs(lastAttendance.attendanceDate) < endDay
+  // ) {
+  // }
 
   //   console.log("lastAttendance checkIn : ", lastAttendance);
-  const today = dayjs()
-    .tz("Asia/Jakarta")
-    .format("dddd, MMM D, YYYY h:mm A")
-    .toString();
+  // const today = dayjs()
+  //   .tz("Asia/Jakarta")
+  //   .format("dddd, MMM D, YYYY h:mm A")
+  //   .toString();
   // console.log("me", me);
 
   return (
@@ -96,7 +96,7 @@ export default async function Page() {
 
           <div className="sm:flex sm:justify-between sm:gap-4">
             <div>
-              <h2>{today}</h2>
+              <h2>{dayjs(today).tz("Asia/Jakarta").format("dddd, MM D, YYYY")}</h2>
 
               <p className="mt-1 text-xs font-medium text-gray-600">
                 Jam kerja Kamu pukul 08:00 - 17:00
