@@ -47,7 +47,7 @@ export default function AttendancePreview({
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [inRadius, setInRadius] = useState(false);
   const [response, setResponse] = useState<FormResponse>();
-  const [checkInTime, setCheckInTime] = useState<string>();
+  const [checkInTime, setCheckInTime] = useState<number>();
 
   // * Router
   const router = useRouter();
@@ -145,7 +145,7 @@ export default function AttendancePreview({
       context?.drawImage(videoRef.current, 0, 0, width, height);
       setPhoto(canvasRef.current.toDataURL("image/png"));
       if (!checkInTime) {
-        setCheckInTime(dayjs().valueOf().toString());
+        setCheckInTime(dayjs().valueOf());
         console.log("checkInTime", checkInTime);
       }
       setIsCameraOn(false);
@@ -165,6 +165,7 @@ export default function AttendancePreview({
       formData.append("inLatitude", (location as any).lat);
       formData.append("inLongitude", (location as any).lng);
       formData.append("checkInTime", checkInTime?.toString() || "");
+      // formData.append("attedanceDate", dayjs().valueOf().toString());
     } else if (mode === "out") {
       formData.append("outLatitude", (location as any).lat);
       formData.append("outLongitude", (location as any).lng);
