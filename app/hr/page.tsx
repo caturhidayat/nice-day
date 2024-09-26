@@ -15,11 +15,10 @@ dayjs.extend(isBetween);
 
 export default async function Page() {
   const userTimezone = "Asia/Jakarta";
-  const startDay = dayjs().startOf("day").valueOf();
-  console.log("startDay", startDay);
+  const today = dayjs().valueOf();
+  console.log("startDay", today);
   const endDay = dayjs().endOf("day").valueOf();
   const now = dayjs().valueOf();
-
 
   const lastAttendance = await getAttendance();
   console.log("lastAttendance", lastAttendance);
@@ -38,17 +37,28 @@ export default async function Page() {
     .toString();
 
   const displayCheckInDate = () => {
-    if (attendanceDate === startDay && lastAttendance.checkInTime) {
+    if (
+      dayjs(attendanceDate).isSame(today, "day") &&
+      lastAttendance.checkInTime
+    ) {
       return (
         <p className="text-success font-semibold text-lg py-4">{checkInTime}</p>
       );
+    } else if (
+      dayjs(Number(lastAttendance.checkOutTime)).add(4, "hours").isAfter(now) &&
+      dayjs(attendanceDate).isSame(today, "day")
+    ) {
+      return <p className="text-success font-semibold text-lg py-4">--:--</p>;
     } else {
       return <p className="text-success font-semibold text-lg py-4">--:--</p>;
     }
   };
 
   const displayCheckOutDate = () => {
-    if (attendanceDate === startDay && lastAttendance.checkOutTime) {
+    if (
+      dayjs(attendanceDate).isSame(today, "day") &&
+      lastAttendance.checkOutTime
+    ) {
       return (
         <p className="text-error font-semibold text-lg py-4">{checkOutTime}</p>
       );
