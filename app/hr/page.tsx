@@ -21,6 +21,11 @@ export default async function Page() {
   const endDay = dayjs().endOf("day").valueOf();
   const now = dayjs().valueOf();
 
+  // const [lastAttendance, me] = await Promise.all([
+  //   getAttendance(),
+  //   getProfile(),
+  // ]);
+
   // Get last attendance for today
   const lastAttendance = await getAttendance();
   console.log("lastAttendance", lastAttendance);
@@ -31,6 +36,8 @@ export default async function Page() {
 
   // Function to get user shift today
   const userShift = await getShiftToday(me.id);
+
+  console.log("userShift : ", userShift);
   const shiftToday = () => {
     if (userShift) {
       if (userShift.name === "OFF") {
