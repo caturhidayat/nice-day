@@ -28,7 +28,7 @@ export default async function Page() {
           {attendance.map((item) => (
             <div
               key={item.id}
-              className="block rounded-xl p-4 bg-gray-50 shadow-md"
+              className="block rounded-lg p-4 bg-base-200 shadow-lg"
             >
               <div className="mt-2">
                 <dl>
@@ -73,7 +73,7 @@ export default async function Page() {
                         )}
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-6 pt-4 border-t-2 border-dashed text-neutral-content text-xs">
+                    <div className="grid grid-cols-2 gap-6 pt-4 border-t-2 border-dashed text-xs">
                       <span className="flex gap-2  items-center">
                         <MapPin size={18} className="text-teal-600" /> : In{" "}
                         {item.inLatitude}, {item.inLongitude}

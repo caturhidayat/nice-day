@@ -6,7 +6,8 @@ import isBetween from "dayjs/plugin/isBetween";
 
 import ButtonAtt from "../components/ButtonAttendance";
 import LocalTimeView from "../components/LocalTimeView";
-import { getAttendance, getProfile } from "../common/action";
+import { getAttendance, getProfile, getShiftToday } from "../common/action";
+import { MapPinned } from "lucide-react";
 
 dayjs.extend(LocalizeFormat);
 dayjs.extend(utc);
@@ -20,12 +21,43 @@ export default async function Page() {
   const endDay = dayjs().endOf("day").valueOf();
   const now = dayjs().valueOf();
 
+  // Get last attendance for today
   const lastAttendance = await getAttendance();
   console.log("lastAttendance", lastAttendance);
   const attDate = +dayjs(Number(lastAttendance.attendanceDate));
   const attendanceDate = dayjs(attDate).startOf("day").valueOf();
   console.log("attendance Date : ", attendanceDate);
   const me = await getProfile();
+
+  // Function to get user shift today
+  const userShift = await getShiftToday(me.id);
+  const shiftToday = () => {
+    if (userShift) {
+      if (userShift.name === "OFF") {
+        return (
+          <p className="mt-1 text-xs font-medium text-error">
+            Shift : [ {userShift.name} ] -{" "}
+            {dayjs(today).tz("Asia/Jakarta").format("dddd")}
+          </p>
+        );
+      } else {
+        return (
+          <p className="mt-1 text-xs font-medium text-gray-600">
+            Shift :{" "}
+            {dayjs(Number(userShift.startTime))
+              .tz(userTimezone)
+              .format("HH:mm")}{" "}
+            -{" "}
+            {dayjs(Number(userShift.endTime)).tz(userTimezone).format("HH:mm")}
+          </p>
+        );
+      }
+    } else {
+      return (
+        <p className="mt-1 text-xs font-medium text-gray-600">Shift : -</p>
+      );
+    }
+  };
 
   const checkInTime = dayjs(Number(lastAttendance.checkInTime))
     .tz(userTimezone)
@@ -36,21 +68,33 @@ export default async function Page() {
     .format("HH:mm")
     .toString();
 
+  // Function to display check in time
   const displayCheckInDate = () => {
     if (
       dayjs(attendanceDate).isSame(today, "day") &&
       lastAttendance.checkInTime
     ) {
       return (
-        <p className="text-success font-semibold text-lg py-4">{checkInTime}</p>
+        <span className="text-success py-4 flex justify-center items-center gap-2">
+          <p className="font-semibold text-lg">{checkInTime}</p>
+          <MapPinned size={16} />
+        </span>
       );
     } else if (
       dayjs(Number(lastAttendance.checkOutTime)).add(4, "hours").isAfter(now) &&
       dayjs(attendanceDate).isSame(today, "day")
     ) {
-      return <p className="text-success font-semibold text-lg py-4">--:--</p>;
+      return (
+        <span className="text-success py-4 flex justify-center items-center gap-2">
+          <p className="font-semibold text-lg">--:--</p>;
+        </span>
+      );
     } else {
-      return <p className="text-success font-semibold text-lg py-4">--:--</p>;
+      return (
+        <span className="text-success py-4 flex justify-center items-center gap-2">
+          <p className="font-semibold text-lg">--:--</p>;
+        </span>
+      );
     }
   };
 
@@ -60,29 +104,27 @@ export default async function Page() {
       lastAttendance.checkOutTime
     ) {
       return (
-        <p className="text-error font-semibold text-lg py-4">{checkOutTime}</p>
+        <span className="text-error py-4 flex justify-center items-center gap-2">
+          <p className="font-semibold text-lg">{checkOutTime}</p>
+          <MapPinned size={16} />
+        </span>
       );
     } else if (
       dayjs(Number(lastAttendance.checkOutTime)).add(4, "hours").isAfter(now)
     ) {
-      return <p className="text-error font-semibold text-lg py-4">--:--</p>;
+      return (
+        <span className="text-error py-4 flex justify-center items-center gap-2">
+          <p className="font-semibold text-lg">--:--</p>
+        </span>
+      );
     } else {
-      return <p className="text-error font-semibold text-lg py-4">--:--</p>;
+      return (
+        <span className="text-error py-4 flex justify-center items-center gap-2">
+          <p className="font-semibold text-lg">--:--</p>
+        </span>
+      );
     }
   };
-
-  // if (
-  //   +dayjs(lastAttendance.attendanceDate) > startDay &&
-  //   +dayjs(lastAttendance.attendanceDate) < endDay
-  // ) {
-  // }
-
-  //   console.log("lastAttendance checkIn : ", lastAttendance);
-  // const today = dayjs()
-  //   .tz("Asia/Jakarta")
-  //   .format("dddd, MMM D, YYYY h:mm A")
-  //   .toString();
-  // console.log("me", me);
 
   return (
     <div className="bg-base-100">
@@ -90,17 +132,17 @@ export default async function Page() {
         <h2 className="text-xl font-bold sm:text-2xl ">Hello {me?.name}!</h2>
         <p className="mt-4 text-base-content">Semangat Kerja ya!</p>
       </div>
-      <div className="p-4 bg-slate-50 rounded-xl min-h-max pb-16">
-        <div className="relative block overflow-hidden rounded-xl bg-base-100 border-gray-100 p-4 sm:p-6 lg:p-8 shadow-lg">
+      <div className="p-4 bg-base-200 rounded-lg min-h-max pb-16">
+        <div className="relative block overflow-hidden rounded-lg bg-base-100 border-gray-100 p-4 sm:p-6 lg:p-8 shadow-lg">
           <span className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
 
           <div className="sm:flex sm:justify-between sm:gap-4">
             <div>
-              <h2>{dayjs(today).tz("Asia/Jakarta").format("dddd, MM D, YYYY")}</h2>
-
-              <p className="mt-1 text-xs font-medium text-gray-600">
-                Jam kerja Kamu pukul 08:00 - 17:00
-              </p>
+              <h2>
+                Today [{" "}
+                {dayjs(today).tz("Asia/Jakarta").format("dddd, MMM D, YYYY")} ]
+              </h2>
+              {shiftToday()}
             </div>
           </div>
 
