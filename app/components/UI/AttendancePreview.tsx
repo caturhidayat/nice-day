@@ -126,6 +126,7 @@ export default function AttendancePreview({
   useEffect(() => {
     startCamera();
     getLocation();
+    setCheckInTime(dayjs().valueOf());
 
     return () => {
       stopCamera();
@@ -144,10 +145,10 @@ export default function AttendancePreview({
       const context = canvasRef.current.getContext("2d");
       context?.drawImage(videoRef.current, 0, 0, width, height);
       setPhoto(canvasRef.current.toDataURL("image/png"));
-      if (!checkInTime) {
-        setCheckInTime(dayjs().valueOf());
-        console.log("checkInTime", checkInTime);
-      }
+      // if (!checkInTime) {
+      //   setCheckInTime(dayjs().valueOf());
+      //   console.log("checkInTime", checkInTime);
+      // }
       setIsCameraOn(false);
       stopCamera();
     }
