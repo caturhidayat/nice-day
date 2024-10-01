@@ -57,7 +57,7 @@ export default function AttendancePreview({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mapRef = useRef<leafletMap | null>(null);
 
-  // Function to get user location
+  // * Function to get user location
   const getLocation = async () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -154,7 +154,7 @@ export default function AttendancePreview({
     }
   };
 
-  // Save attendance
+  // * Save attendance
   const saveAttendance = async () => {
     // if (!photo || !location) return;
 

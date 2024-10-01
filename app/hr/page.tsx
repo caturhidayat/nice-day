@@ -1,41 +1,63 @@
+"use client";
+
 import dayjs from "dayjs";
-import LocalizeFormat from "dayjs/plugin/localizedFormat";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import isBetween from "dayjs/plugin/isBetween";
 
 import ButtonAtt from "../components/ButtonAttendance";
-import LocalTimeView from "../components/LocalTimeView";
-import { getAttendance, getProfile, getShiftToday } from "../common/action";
+import {
+  Attendance,
+  getAttendance,
+  getProfile,
+  getShiftToday,
+  ProfileProps,
+} from "../common/action";
 import { MapPinned } from "lucide-react";
+import { useEffect, useState } from "react";
 
-dayjs.extend(LocalizeFormat);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(isBetween);
 
-export default async function Page() {
+export default function Page() {
   const userTimezone = "Asia/Jakarta";
   const today = dayjs().valueOf();
   console.log("startDay", today);
   const endDay = dayjs().endOf("day").valueOf();
   const now = dayjs().valueOf();
 
-  // const [lastAttendance, me] = await Promise.all([
-  //   getAttendance(),
-  //   getProfile(),
-  // ]);
+  const [lastAttendance, setLastAttendance] = useState<Attendance | undefined>(
+    undefined
+  );
+  const [me, setMe] = useState<ProfileProps>();
+  const [userShift, setUserShift] = useState<any>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const lastAttendance = await getAttendance();
+      const me = await getProfile();
+      const userShift = await getShiftToday(me.id);
+      setLastAttendance(lastAttendance);
+      setMe(me);
+      setUserShift(userShift);
+    };
+
+    fetchData();
+  }, []);
 
   // Get last attendance for today
-  const lastAttendance = await getAttendance();
+  // const lastAttendance = await getAttendance();
   console.log("lastAttendance", lastAttendance);
-  const attDate = +dayjs(Number(lastAttendance.attendanceDate));
+  const attDate = lastAttendance
+    ? dayjs(Number(lastAttendance.attendanceDate))
+    : dayjs();
   const attendanceDate = dayjs(attDate).startOf("day").valueOf();
   console.log("attendance Date : ", attendanceDate);
-  const me = await getProfile();
+  // const me = await getProfile();
 
   // Function to get user shift today
-  const userShift = await getShiftToday(me.id);
+  // const userShift = await getShiftToday(me.id);
 
   console.log("userShift : ", userShift);
   const shiftToday = () => {
@@ -66,20 +88,24 @@ export default async function Page() {
     }
   };
 
-  const checkInTime = dayjs(Number(lastAttendance.checkInTime))
-    .tz(userTimezone)
-    .format("HH:mm")
-    .toString();
-  const checkOutTime = dayjs(Number(lastAttendance.checkOutTime))
-    .tz(userTimezone)
-    .format("HH:mm")
-    .toString();
+  const checkInTime = lastAttendance
+    ? dayjs(Number(lastAttendance.checkInTime))
+        .tz(userTimezone)
+        .format("HH:mm")
+        .toString()
+    : "--:--";
+  const checkOutTime = lastAttendance
+    ? dayjs(Number(lastAttendance.checkOutTime))
+        .tz(userTimezone)
+        .format("HH:mm")
+        .toString()
+    : "--:--";
 
   // Function to display check in time
   const displayCheckInDate = () => {
     if (
       dayjs(attendanceDate).isSame(today, "day") &&
-      lastAttendance.checkInTime
+      lastAttendance?.checkInTime
     ) {
       return (
         <span className="text-success py-4 flex justify-center items-center gap-2">
@@ -88,7 +114,9 @@ export default async function Page() {
         </span>
       );
     } else if (
-      dayjs(Number(lastAttendance.checkOutTime)).add(4, "hours").isAfter(now) &&
+      dayjs(Number(lastAttendance?.checkOutTime))
+        .add(4, "hours")
+        .isAfter(now) &&
       dayjs(attendanceDate).isSame(today, "day")
     ) {
       return (
@@ -108,7 +136,7 @@ export default async function Page() {
   const displayCheckOutDate = () => {
     if (
       dayjs(attendanceDate).isSame(today, "day") &&
-      lastAttendance.checkOutTime
+      lastAttendance?.checkOutTime
     ) {
       return (
         <span className="text-error py-4 flex justify-center items-center gap-2">
@@ -117,7 +145,7 @@ export default async function Page() {
         </span>
       );
     } else if (
-      dayjs(Number(lastAttendance.checkOutTime)).add(4, "hours").isAfter(now)
+      dayjs(Number(lastAttendance?.checkOutTime)).add(4, "hours").isAfter(now)
     ) {
       return (
         <span className="text-error py-4 flex justify-center items-center gap-2">
@@ -147,7 +175,7 @@ export default async function Page() {
             <div>
               <h2>
                 Today [{" "}
-                {dayjs(today).tz("Asia/Jakarta").format("dddd, MMM D, YYYY")} ]
+                {dayjs(today).tz(userTimezone).format("dddd, MMM D, YYYY")} ]
               </h2>
               {shiftToday()}
             </div>
@@ -156,9 +184,6 @@ export default async function Page() {
           <div className="mt-4">
             <div className="grid grid-cols-2 py-2 gap-1">
               <div className="flex flex-col gap-2 items-center">
-                {/* <p className="text-success font-semibold text-lg py-4">
-                  {startDay === attendanceDate ? checkInTime : "--:--"}
-                </p> */}
                 {displayCheckInDate()}
                 <ButtonAtt
                   label="Masuk"
@@ -167,11 +192,6 @@ export default async function Page() {
                 />
               </div>
               <div className="flex flex-col gap-2 items-center">
-                {/* <p className="text-error font-semibold text-lg py-4">
-                  {startDay === attendanceDate && lastAttendance.checkOutTime
-                    ? checkOutTime
-                    : "--:--"}
-                </p> */}
                 {displayCheckOutDate()}
                 <ButtonAtt
                   label="Pulang"
