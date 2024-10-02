@@ -50,8 +50,8 @@ export default function Page() {
   const attDate = lastAttendance
     ? dayjs(Number(lastAttendance.attendanceDate))
     : dayjs();
-  const attendanceDate = dayjs(attDate).startOf("day").valueOf();
-  console.log("attendance Date : ", attendanceDate);
+  // const attendanceDate = dayjs(attDate).startOf("day").valueOf();
+  console.log("attendance Date : ", lastAttendance?.attendanceDate);
   // const me = await getProfile();
 
   // Function to get user shift today
@@ -102,7 +102,8 @@ export default function Page() {
   // Function to display check in time
   const displayCheckInDate = () => {
     if (
-      dayjs(attendanceDate).isSame(today, "day") &&
+      // dayjs(attendanceDate).isSame(today, "day") &&
+      // lastAttendance?.checkInTime
       lastAttendance?.checkInTime
     ) {
       return (
@@ -115,7 +116,8 @@ export default function Page() {
       dayjs(Number(lastAttendance?.checkOutTime))
         .add(4, "hours")
         .isAfter(now) &&
-      dayjs(attendanceDate).isSame(today, "day")
+      // dayjs(attendanceDate).isSame(today, "day")
+      dayjs(Number(lastAttendance?.attendanceDate)).isSame(today, "day")
     ) {
       return (
         <span className="text-success py-4 flex justify-center items-center gap-2">
@@ -133,7 +135,8 @@ export default function Page() {
 
   const displayCheckOutDate = () => {
     if (
-      dayjs(attendanceDate).isSame(today, "day") &&
+      // dayjs(attendanceDate).isSame(today, "day") &&
+      // lastAttendance?.checkOutTime
       lastAttendance?.checkOutTime
     ) {
       return (
