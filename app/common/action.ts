@@ -104,15 +104,8 @@ export async function createAttendance(formData: FormData) {
   return response;
 }
 
-export async function updateAttendance(
-  attendanceId: string,
-  formData: FormData
-) {
-  console.log("attendanceId action : ", attendanceId);
-  const response = await post(
-    `attendances/${attendanceId}/check-out`,
-    formData
-  );
+export async function updateAttendance(formData: FormData) {
+  const response = await post(`attendances/check-out`, formData);
   revalidateTag("attendance");
   return response;
 }

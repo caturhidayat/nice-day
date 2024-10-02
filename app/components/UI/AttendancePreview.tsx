@@ -191,7 +191,7 @@ export default function AttendancePreview({
     const response =
       mode === "in"
         ? await createAttendance(formData)
-        : await updateAttendance(attendanceId || "", formData);
+        : await updateAttendance(formData);
     handleResponse(response);
 
     // if (mode === "in") {
