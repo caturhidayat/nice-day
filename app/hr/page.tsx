@@ -27,9 +27,7 @@ export default function Page() {
   const endDay = dayjs().endOf("day").valueOf();
   const now = dayjs().valueOf();
 
-  const [lastAttendance, setLastAttendance] = useState<Attendance | undefined>(
-    undefined
-  );
+  const [lastAttendance, setLastAttendance] = useState<Attendance>();
   const [me, setMe] = useState<ProfileProps>();
   const [userShift, setUserShift] = useState<any>();
 
