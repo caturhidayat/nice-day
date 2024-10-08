@@ -194,26 +194,6 @@ export default function AttendancePreview({
         : await updateAttendance(formData);
     handleResponse(response);
 
-    // if (mode === "in") {
-    //     const response = await createAttendance(formData);
-    //     if (response && response.error) {
-    //         ToastWrap.error("Error", response.error);
-    //         router.push("/hr");
-    //     } else {
-    //         ToastWrap.success("Success", response.data.message);
-    //         setResponse(response.data);
-    //     }
-    // } else if (mode === "out") {
-    //     const response = await updateAttendance(attendanceId, formData);
-    //     if (response && response.error) {
-    //         ToastWrap.error("Error", response.error);
-    //         router.push("/hr");
-    //     } else {
-    //         ToastWrap.success("Success", response.data.message);
-    //         setResponse(response.data);
-    // }
-
-    // router.push("/hr");
   };
 
   return (
