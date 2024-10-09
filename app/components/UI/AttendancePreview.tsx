@@ -5,17 +5,17 @@ import dynamic from "next/dynamic";
 import L, { LatLngExpression, Map as leafletMap } from "leaflet";
 import Image from "next/image";
 import "leaflet/dist/leaflet.css";
-import { FormResponse } from "@/app/common/interfaces/form-response.interface";
+import { FormResponse } from "@/app/lib/interfaces/form-response.interface";
 
 import dayjs from "dayjs";
 import LocalizeFormat from "dayjs/plugin/localizedFormat";
 
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { createAttendance, updateAttendance } from "@/app/common/action";
+import { createAttendance, updateAttendance } from "@/app/lib/action";
 import { CircleCheck, CircleX } from "lucide-react";
-import { ToastWrap } from "@/app/common/ToastC";
-import { AttendancePreviewProps } from "@/app/common/interfaces/attendance.interface";
+import { ToastWrap } from "@/app/lib/ToastC";
+import { AttendancePreviewProps } from "@/app/lib/interfaces/attendance.interface";
 
 dayjs.extend(LocalizeFormat);
 

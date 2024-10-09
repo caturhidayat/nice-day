@@ -1,7 +1,7 @@
 "use client";
 
 // import { login } from "@/app/common/action";
-import { ActionState } from "@/app/common/interfaces/action-state-type";
+import { ActionState } from "@/app/lib/interfaces/action-state-type";
 import { startTransition, useActionState } from "react";
 import { useFormState } from "react-dom";
 import login from "./login";

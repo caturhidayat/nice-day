@@ -1,7 +1,7 @@
 "use client";
 
 import logout from "@/app/auth/logout";
-import { getProfile } from "@/app/common/action";
+import { getProfile } from "@/app/lib/action";
 import React, { useEffect, useState } from "react";
 
 export default function Page() {

@@ -1,5 +1,3 @@
-"use client";
-
 import ButtonAtt from "../components/ButtonAttendance";
 import {
     Attendance,
@@ -7,154 +5,42 @@ import {
     getProfile,
     getShiftToday,
     ProfileProps,
-} from "../common/action";
+    UserShift,
+} from "../lib/action";
 import { MapPinned } from "lucide-react";
-import { useEffect, useState } from "react";
-import { format, endOfDay, getTime } from "date-fns";
 
-export default function Page() {
+const today = startOfToday().getTime();
 
-    const [today, setToday] = useState(getTime(new Date()));
+import { format, endOfDay, getTime, startOfToday } from "date-fns";
+import { TZDate } from "@date-fns/tz";
 
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setToday(getTime(new Date()));
-      }, 1000); // Update every second
-
-      return () => clearInterval(interval); // Cleanup on unmount
-    }, []);
-    console.log("startDay", today);
-    const endDay = getTime(endOfDay(new Date()));
-    const now = getTime(new Date());
-
-    const [lastAttendance, setLastAttendance] = useState<Attendance>();
-    const [me, setMe] = useState<ProfileProps>();
-    const [userShift, setUserShift] = useState<any>();
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const lastAttendance = await getAttendance();
-            const me = await getProfile();
-            const userShift = await getShiftToday(me.id);
-            setLastAttendance(lastAttendance);
-            setMe(me);
-            setUserShift(userShift);
-        };
-
-        fetchData();
-    }, []);
-
-    // Get last attendance for today
-    // const lastAttendance = await getAttendance();
-    console.log("lastAttendance", lastAttendance);
-    const attDate = lastAttendance
-        ? new Date(Number(lastAttendance.attendanceDate))
-        : new Date();
-    // const attendanceDate = dayjs(attDate).startOf("day").valueOf();
-    console.log("attendance Date : ", lastAttendance?.attendanceDate);
-    // const me = await getProfile();
-
-    // Function to get user shift today
-    // const userShift = await getShiftToday(me.id);
-
-    console.log("userShift : ", userShift);
-    const shiftToday = () => {
-        if (userShift) {
-            if (userShift.name === "OFF") {
-                return (
-                    <p className="mt-1 text-xs font-medium text-error">
-                        Shift : [ {userShift.name} ] - {format(today, "EEEE")}
-                    </p>
-                );
-            } else {
-                return (
-                    <p className="mt-1 text-xs font-medium text-gray-600">
-                        Shift :{" "}
-                        {format(new Date(Number(userShift.startTime)), "HH:mm")}
-                        - {format(new Date(Number(userShift.endTime)), "HH:mm")}
-                    </p>
-                );
-            }
-        } else {
-            return (
-                <p className="mt-1 text-xs font-medium text-gray-600">
-                    Shift : -
-                </p>
-            );
-        }
-    };
-
-    const checkInTime = lastAttendance
-        ? format(new Date(Number(lastAttendance.checkInTime)), "HH:mm")
+// function to return component for check in time and check out time
+async function displayCheckInDate() {
+    const attendance = await getAttendance();
+    console.log("attendance", attendance);
+    const checkInDate = attendance && attendance.checkInTime
+        ? format(new TZDate(new Date(Number(attendance.checkInTime))), "HH:mm")
         : "--:--";
-    const checkOutTime = lastAttendance
-        ? format(new Date(Number(lastAttendance.checkOutTime)), "HH:mm")
+    return <p className="text-sm">{checkInDate}</p>;
+}
+
+async function displayCheckOutDate() {
+    const attendance = await getAttendance();
+    const checkOutDate = attendance && attendance.checkOutTime
+        ? format(new TZDate(new Date(Number(attendance.checkOutTime))), "HH:mm")
         : "--:--";
+    return <p className="text-sm">{checkOutDate}</p>;
+}
 
-    // Function to display check in time
-    const displayCheckInDate = () => {
-        if (
-            // dayjs(attendanceDate).isSame(today, "day") &&
-            // lastAttendance?.checkInTime
-            lastAttendance?.checkInTime
-        ) {
-            return (
-                <span className="text-success py-4 flex justify-center items-center gap-2">
-                    <p className="font-semibold text-lg">{checkInTime}</p>
-                    <MapPinned size={16} />
-                </span>
-            );
-        } else if (
-            lastAttendance?.checkOutTime &&
-            new Date(Number(lastAttendance.checkOutTime)).getTime() +
-                4 * 60 * 60 * 1000 >
-                now &&
-            format(attDate, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
-        ) {
-            return (
-                <span className="text-success py-4 flex justify-center items-center gap-2">
-                    <p className="font-semibold text-lg">--:--</p>;
-                </span>
-            );
-        } else {
-            return (
-                <span className="text-success py-4 flex justify-center items-center gap-2">
-                    <p className="font-semibold text-lg">--:--</p>;
-                </span>
-            );
-        }
-    };
-
-    const displayCheckOutDate = () => {
-        if (
-            // dayjs(attendanceDate).isSame(today, "day") &&
-            // lastAttendance?.checkOutTime
-            lastAttendance?.checkOutTime
-        ) {
-            return (
-                <span className="text-error py-4 flex justify-center items-center gap-2">
-                    <p className="font-semibold text-lg">{checkOutTime}</p>
-                    <MapPinned size={16} />
-                </span>
-            );
-        } else if (
-            new Date(Number(lastAttendance?.checkOutTime)).getTime() +
-                4 * 60 * 60 * 1000 >
-            now
-        ) {
-            return (
-                <span className="text-error py-4 flex justify-center items-center gap-2">
-                    <p className="font-semibold text-lg">--:--</p>
-                </span>
-            );
-        } else {
-            return (
-                <span className="text-error py-4 flex justify-center items-center gap-2">
-                    <p className="font-semibold text-lg">--:--</p>
-                </span>
-            );
-        }
-    };
+export default async function Page() {
+    const me = await getProfile();
+    // 1. Get Profile
+    // 2. Get Attendance
+    // 3. Get Shift Today
+    // 4. check if today is the same as the last attendance
+    // 5. if not, render --:-- for check in and check out
+    // 6. if yes, render the check in and check out time
+    // 7. if check out time 4 hours before current time, render check out as --:--
 
     return (
         <div className="bg-base-100">
@@ -172,9 +58,13 @@ export default function Page() {
                         <div>
                             <h2>
                                 Today [{" "}
-                                {format(new Date(today), "EEEE, MMM d, yyyy")}]
+                                {format(
+                                    new TZDate(new Date(today)),
+                                    "EEEE, MMM d, yyyy"
+                                )}
+                                ]
                             </h2>
-                            {shiftToday()}
+                            {/* {shiftToday()} */}
                         </div>
                     </div>
 
