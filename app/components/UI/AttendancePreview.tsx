@@ -7,8 +7,6 @@ import Image from "next/image";
 import "leaflet/dist/leaflet.css";
 import { FormResponse } from "@/app/lib/interfaces/form-response.interface";
 
-import dayjs from "dayjs";
-import LocalizeFormat from "dayjs/plugin/localizedFormat";
 
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -16,8 +14,8 @@ import { createAttendance, updateAttendance } from "@/app/lib/action";
 import { CircleCheck, CircleX } from "lucide-react";
 import { ToastWrap } from "@/app/lib/ToastC";
 import { AttendancePreviewProps } from "@/app/lib/interfaces/attendance.interface";
+import { format } from "date-fns";
 
-dayjs.extend(LocalizeFormat);
 
 // Dynamic import komponen Map
 const MapView = dynamic(() => import("./MapView"), {
@@ -48,6 +46,7 @@ export default function AttendancePreview({
   const [inRadius, setInRadius] = useState(false);
   const [response, setResponse] = useState<FormResponse>();
   const [checkInTime, setCheckInTime] = useState<number>();
+  const [checkOutTime, setCheckOutTime] = useState<number>();
 
   // * Router
   const router = useRouter();
@@ -126,7 +125,8 @@ export default function AttendancePreview({
   useEffect(() => {
     startCamera();
     getLocation();
-    setCheckInTime(dayjs().valueOf());
+    setCheckInTime(Date.now());
+    setCheckOutTime(Date.now());
 
     return () => {
       stopCamera();
@@ -170,7 +170,7 @@ export default function AttendancePreview({
     } else if (mode === "out") {
       formData.append("outLatitude", (location as any).lat);
       formData.append("outLongitude", (location as any).lng);
-      formData.append("checkOutTime", checkInTime?.toString() || "");
+      formData.append("checkOutTime", checkOutTime?.toString() || "");
     }
 
     // console.log("check In time : ", checkInTime);
@@ -208,7 +208,7 @@ export default function AttendancePreview({
             />
             <div className="grid justify-center py-4">
               <h1 className="font-semibold text-lg">
-                {dayjs(checkInTime).format("LLL")}
+                {checkInTime && format(new Date(checkInTime), "PPpp")}
               </h1>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">

@@ -9,7 +9,12 @@ export default function EmplyAttendance() {
             <div className="flex items-center justify-center pt-32 w-full bg-white px-4">
                 <div className="text-center">
                     <div className="flex justify-center">
-                        <Image src="/images/No_data.png" alt="no_data" width={200} height={200} />
+                        <Image
+                            src="/images/No_data.png"
+                            alt="no_data"
+                            width={200}
+                            height={200}
+                        />
                     </div>
 
                     <h1 className="mt-6 text-3xl font-bold tracking-tight text-orange-600 sm:text-4xl">

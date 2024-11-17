@@ -12,7 +12,6 @@
     "@date-fns/tz": "^1.1.2",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
-    "dayjs": "^1.11.13",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",

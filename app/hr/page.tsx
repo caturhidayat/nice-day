@@ -11,7 +11,7 @@ import { MapPinned } from "lucide-react";
 
 const today = startOfToday().getTime();
 
-import { format, endOfDay, getTime, startOfToday } from "date-fns";
+import { format, startOfToday } from "date-fns";
 import { TZDate } from "@date-fns/tz";
 
 // function to return component for check in time and check out time
@@ -46,7 +46,7 @@ export default async function Page() {
         <div className="bg-base-100">
             <div className="grid justify-center py-4 max-w-xl px-4">
                 <h2 className="text-xl font-bold sm:text-2xl ">
-                    Hello {me?.name}!
+                    Hello {me?.name}! 👋
                 </h2>
                 <p className="mt-4 text-base-content">Semangat Kerja ya!</p>
             </div>
@@ -64,7 +64,6 @@ export default async function Page() {
                                 )}
                                 ]
                             </h2>
-                            {/* {shiftToday()} */}
                         </div>
                     </div>
 
