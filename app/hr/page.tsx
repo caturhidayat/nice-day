@@ -17,7 +17,7 @@ import { TZDate } from "@date-fns/tz";
 // function to return component for check in time and check out time
 async function displayCheckInDate() {
     const attendance = await getAttendance();
-    console.log("attendance", attendance);
+    // console.log("attendance", attendance);
     const checkInDate = attendance && attendance.checkInTime
         ? format(new TZDate(new Date(Number(attendance.checkInTime))), "HH:mm")
         : "--:--";

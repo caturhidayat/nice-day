@@ -10,7 +10,7 @@ export default async function Page() {
     // Get 3 last attendance records
     const attendance = await getAttendances();
     const userTimezone = "Asia/Jakarta";
-    console.log("attendance page : ", attendance);
+    // console.log("attendance page : ", attendance);
 
     const me = await getProfile();
 
