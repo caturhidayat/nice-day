@@ -5,19 +5,17 @@ import dynamic from "next/dynamic";
 import L, { LatLngExpression, Map as leafletMap } from "leaflet";
 import Image from "next/image";
 import "leaflet/dist/leaflet.css";
-import { FormResponse } from "@/app/common/interfaces/form-response.interface";
+import { FormResponse } from "@/app/lib/interfaces/form-response.interface";
 
-import dayjs from "dayjs";
-import LocalizeFormat from "dayjs/plugin/localizedFormat";
 
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { createAttendance, updateAttendance } from "@/app/common/action";
+import { createAttendance, updateAttendance } from "@/app/lib/action";
 import { CircleCheck, CircleX } from "lucide-react";
-import { ToastWrap } from "@/app/common/ToastC";
-import { AttendancePreviewProps } from "@/app/common/interfaces/attendance.interface";
+import { ToastWrap } from "@/app/lib/ToastC";
+import { AttendancePreviewProps } from "@/app/lib/interfaces/attendance.interface";
+import { format } from "date-fns";
 
-dayjs.extend(LocalizeFormat);
 
 // Dynamic import komponen Map
 const MapView = dynamic(() => import("./MapView"), {
@@ -48,6 +46,7 @@ export default function AttendancePreview({
   const [inRadius, setInRadius] = useState(false);
   const [response, setResponse] = useState<FormResponse>();
   const [checkInTime, setCheckInTime] = useState<number>();
+  const [checkOutTime, setCheckOutTime] = useState<number>();
 
   // * Router
   const router = useRouter();
@@ -57,7 +56,7 @@ export default function AttendancePreview({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mapRef = useRef<leafletMap | null>(null);
 
-  // Function to get user location
+  // * Function to get user location
   const getLocation = async () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -126,6 +125,8 @@ export default function AttendancePreview({
   useEffect(() => {
     startCamera();
     getLocation();
+    setCheckInTime(Date.now());
+    setCheckOutTime(Date.now());
 
     return () => {
       stopCamera();
@@ -144,16 +145,16 @@ export default function AttendancePreview({
       const context = canvasRef.current.getContext("2d");
       context?.drawImage(videoRef.current, 0, 0, width, height);
       setPhoto(canvasRef.current.toDataURL("image/png"));
-      if (!checkInTime) {
-        setCheckInTime(dayjs().valueOf());
-        console.log("checkInTime", checkInTime);
-      }
+      // if (!checkInTime) {
+      //   setCheckInTime(dayjs().valueOf());
+      //   console.log("checkInTime", checkInTime);
+      // }
       setIsCameraOn(false);
       stopCamera();
     }
   };
 
-  // Save attendance
+  // * Save attendance
   const saveAttendance = async () => {
     // if (!photo || !location) return;
 
@@ -169,7 +170,7 @@ export default function AttendancePreview({
     } else if (mode === "out") {
       formData.append("outLatitude", (location as any).lat);
       formData.append("outLongitude", (location as any).lng);
-      formData.append("checkOutTime", checkInTime?.toString() || "");
+      formData.append("checkOutTime", checkOutTime?.toString() || "");
     }
 
     // console.log("check In time : ", checkInTime);
@@ -190,29 +191,9 @@ export default function AttendancePreview({
     const response =
       mode === "in"
         ? await createAttendance(formData)
-        : await updateAttendance(attendanceId || "", formData);
+        : await updateAttendance(formData);
     handleResponse(response);
 
-    // if (mode === "in") {
-    //     const response = await createAttendance(formData);
-    //     if (response && response.error) {
-    //         ToastWrap.error("Error", response.error);
-    //         router.push("/hr");
-    //     } else {
-    //         ToastWrap.success("Success", response.data.message);
-    //         setResponse(response.data);
-    //     }
-    // } else if (mode === "out") {
-    //     const response = await updateAttendance(attendanceId, formData);
-    //     if (response && response.error) {
-    //         ToastWrap.error("Error", response.error);
-    //         router.push("/hr");
-    //     } else {
-    //         ToastWrap.success("Success", response.data.message);
-    //         setResponse(response.data);
-    // }
-
-    // router.push("/hr");
   };
 
   return (
@@ -227,7 +208,7 @@ export default function AttendancePreview({
             />
             <div className="grid justify-center py-4">
               <h1 className="font-semibold text-lg">
-                {dayjs(checkInTime).format("LLL")}
+                {checkInTime && format(new Date(checkInTime), "PPpp")}
               </h1>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">

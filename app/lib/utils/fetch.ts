@@ -17,6 +17,7 @@ export const post = async (path: string, data: FormData) => {
     body: JSON.stringify(Object.fromEntries(data)),
   });
 
+  console.log("res", res);
   const parsedRes = await res.json();
   console.log("parsedRes", parsedRes);
   if (!res.ok) {

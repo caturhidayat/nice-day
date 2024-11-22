@@ -1,139 +1,94 @@
-import dayjs from "dayjs";
-import LocalizeFormat from "dayjs/plugin/localizedFormat";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
-import isBetween from "dayjs/plugin/isBetween";
-
 import ButtonAtt from "../components/ButtonAttendance";
-import LocalTimeView from "../components/LocalTimeView";
-import { getAttendance, getProfile } from "../common/action";
+import {
+    Attendance,
+    getAttendance,
+    getProfile,
+    getShiftToday,
+    ProfileProps,
+    UserShift,
+} from "../lib/action";
+import { MapPinned } from "lucide-react";
 
-dayjs.extend(LocalizeFormat);
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.extend(isBetween);
+const today = startOfToday().getTime();
+
+import { format, startOfToday } from "date-fns";
+import { TZDate } from "@date-fns/tz";
+
+// function to return component for check in time and check out time
+async function displayCheckInDate() {
+    const attendance = await getAttendance();
+    // console.log("attendance", attendance);
+    const checkInDate = attendance && attendance.checkInTime
+        ? format(new TZDate(new Date(Number(attendance.checkInTime))), "HH:mm")
+        : "--:--";
+    return <p className="text-sm">{checkInDate}</p>;
+}
+
+async function displayCheckOutDate() {
+    const attendance = await getAttendance();
+    const checkOutDate = attendance && attendance.checkOutTime
+        ? format(new TZDate(new Date(Number(attendance.checkOutTime))), "HH:mm")
+        : "--:--";
+    return <p className="text-sm">{checkOutDate}</p>;
+}
 
 export default async function Page() {
-  const userTimezone = "Asia/Jakarta";
-  const today = dayjs().valueOf();
-  console.log("startDay", today);
-  const endDay = dayjs().endOf("day").valueOf();
-  const now = dayjs().valueOf();
+    const me = await getProfile();
+    // 1. Get Profile
+    // 2. Get Attendance
+    // 3. Get Shift Today
+    // 4. check if today is the same as the last attendance
+    // 5. if not, render --:-- for check in and check out
+    // 6. if yes, render the check in and check out time
+    // 7. if check out time 4 hours before current time, render check out as --:--
 
-  const lastAttendance = await getAttendance();
-  console.log("lastAttendance", lastAttendance);
-  const attDate = +dayjs(Number(lastAttendance.attendanceDate));
-  const attendanceDate = dayjs(attDate).startOf("day").valueOf();
-  console.log("attendance Date : ", attendanceDate);
-  const me = await getProfile();
-
-  const checkInTime = dayjs(Number(lastAttendance.checkInTime))
-    .tz(userTimezone)
-    .format("HH:mm")
-    .toString();
-  const checkOutTime = dayjs(Number(lastAttendance.checkOutTime))
-    .tz(userTimezone)
-    .format("HH:mm")
-    .toString();
-
-  const displayCheckInDate = () => {
-    if (
-      dayjs(attendanceDate).isSame(today, "day") &&
-      lastAttendance.checkInTime
-    ) {
-      return (
-        <p className="text-success font-semibold text-lg py-4">{checkInTime}</p>
-      );
-    } else if (
-      dayjs(Number(lastAttendance.checkOutTime)).add(4, "hours").isAfter(now) &&
-      dayjs(attendanceDate).isSame(today, "day")
-    ) {
-      return <p className="text-success font-semibold text-lg py-4">--:--</p>;
-    } else {
-      return <p className="text-success font-semibold text-lg py-4">--:--</p>;
-    }
-  };
-
-  const displayCheckOutDate = () => {
-    if (
-      dayjs(attendanceDate).isSame(today, "day") &&
-      lastAttendance.checkOutTime
-    ) {
-      return (
-        <p className="text-error font-semibold text-lg py-4">{checkOutTime}</p>
-      );
-    } else if (
-      dayjs(Number(lastAttendance.checkOutTime)).add(4, "hours").isAfter(now)
-    ) {
-      return <p className="text-error font-semibold text-lg py-4">--:--</p>;
-    } else {
-      return <p className="text-error font-semibold text-lg py-4">--:--</p>;
-    }
-  };
-
-  // if (
-  //   +dayjs(lastAttendance.attendanceDate) > startDay &&
-  //   +dayjs(lastAttendance.attendanceDate) < endDay
-  // ) {
-  // }
-
-  //   console.log("lastAttendance checkIn : ", lastAttendance);
-  // const today = dayjs()
-  //   .tz("Asia/Jakarta")
-  //   .format("dddd, MMM D, YYYY h:mm A")
-  //   .toString();
-  // console.log("me", me);
-
-  return (
-    <div className="bg-base-100">
-      <div className="grid justify-center py-4 max-w-xl px-4">
-        <h2 className="text-xl font-bold sm:text-2xl ">Hello {me?.name}!</h2>
-        <p className="mt-4 text-base-content">Semangat Kerja ya!</p>
-      </div>
-      <div className="p-4 bg-slate-50 rounded-xl min-h-max pb-16">
-        <div className="relative block overflow-hidden rounded-xl bg-base-100 border-gray-100 p-4 sm:p-6 lg:p-8 shadow-lg">
-          <span className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
-
-          <div className="sm:flex sm:justify-between sm:gap-4">
-            <div>
-              <h2>{dayjs(today).tz("Asia/Jakarta").format("dddd, MM D, YYYY")}</h2>
-
-              <p className="mt-1 text-xs font-medium text-gray-600">
-                Jam kerja Kamu pukul 08:00 - 17:00
-              </p>
+    return (
+        <div className="bg-base-100">
+            <div className="grid justify-center py-4 max-w-xl px-4">
+                <h2 className="text-xl font-bold sm:text-2xl ">
+                    Hello {me?.name}! 👋
+                </h2>
+                <p className="mt-4 text-base-content">Semangat Kerja ya!</p>
             </div>
-          </div>
+            <div className="p-4 bg-base-200 rounded-lg min-h-max pb-16">
+                <div className="relative block overflow-hidden rounded-lg bg-base-100 border-gray-100 p-4 sm:p-6 lg:p-8 shadow-lg">
+                    <span className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
 
-          <div className="mt-4">
-            <div className="grid grid-cols-2 py-2 gap-1">
-              <div className="flex flex-col gap-2 items-center">
-                {/* <p className="text-success font-semibold text-lg py-4">
-                  {startDay === attendanceDate ? checkInTime : "--:--"}
-                </p> */}
-                {displayCheckInDate()}
-                <ButtonAtt
-                  label="Masuk"
-                  param1="hr/preview/in"
-                  style="primary"
-                />
-              </div>
-              <div className="flex flex-col gap-2 items-center">
-                {/* <p className="text-error font-semibold text-lg py-4">
-                  {startDay === attendanceDate && lastAttendance.checkOutTime
-                    ? checkOutTime
-                    : "--:--"}
-                </p> */}
-                {displayCheckOutDate()}
-                <ButtonAtt
-                  label="Pulang"
-                  param1="hr/preview/out"
-                  style="outline"
-                />
-              </div>
+                    <div className="sm:flex sm:justify-between sm:gap-4">
+                        <div>
+                            <h2>
+                                Today [{" "}
+                                {format(
+                                    new TZDate(new Date(today)),
+                                    "EEEE, MMM d, yyyy"
+                                )}
+                                ]
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div className="mt-4">
+                        <div className="grid grid-cols-2 py-2 gap-1">
+                            <div className="flex flex-col gap-2 items-center">
+                                {displayCheckInDate()}
+                                <ButtonAtt
+                                    label="Masuk"
+                                    param1="hr/preview/in"
+                                    style="primary"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2 items-center">
+                                {displayCheckOutDate()}
+                                <ButtonAtt
+                                    label="Pulang"
+                                    param1="hr/preview/out"
+                                    style="outline"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }

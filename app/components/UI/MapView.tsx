@@ -2,7 +2,7 @@
 
 import "leaflet/dist/leaflet.css";
 import L, { LatLngExpression } from "leaflet";
-import { PreviewRecordProps } from "@/app/common/interfaces/preview-record";
+import { PreviewRecordProps } from "@/app/lib/interfaces/preview-record";
 import { useEffect } from "react";
 import {
     MapContainer,

@@ -1,10 +1,7 @@
 "use client";
 
-import dayjs from "dayjs";
-import LocalizeFormat from "dayjs/plugin/localizedFormat";
 import { Suspense } from "react";
-
-dayjs.extend(LocalizeFormat);
+import { format, parseISO } from "date-fns";
 
 type LocalTimeViewProps = {
   dbTime: string;
@@ -18,7 +15,7 @@ export default function LocalTimeView({
   style,
 }: LocalTimeViewProps) {
   console.log("dbTime : ", dbTime);
-  const localTime = dayjs(dbTime).format("LT");
+  const localTime = format(parseISO(dbTime), "p");
   return (
     <Suspense fallback={<h2>Loading...</h2>}>
       <h2 className={`text-lg text-${style} font-bold py-4`}>
