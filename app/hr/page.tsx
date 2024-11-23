@@ -1,13 +1,5 @@
 import ButtonAtt from "../components/ButtonAttendance";
-import {
-    Attendance,
-    getAttendance,
-    getProfile,
-    getShiftToday,
-    ProfileProps,
-    UserShift,
-} from "../lib/action";
-import { MapPinned } from "lucide-react";
+import { getAttendance, getProfile } from "../lib/action";
 
 const today = startOfToday().getTime();
 
