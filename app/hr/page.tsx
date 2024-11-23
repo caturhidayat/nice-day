@@ -18,17 +18,31 @@ import { TZDate } from "@date-fns/tz";
 async function displayCheckInDate() {
     const attendance = await getAttendance();
     // console.log("attendance", attendance);
-    const checkInDate = attendance && attendance.checkInTime
-        ? format(new TZDate(new Date(Number(attendance.checkInTime))), "HH:mm")
-        : "--:--";
+    const checkInDate =
+        attendance && attendance.checkInTime
+            ? format(
+                  new TZDate(
+                      new Date(Number(attendance.checkInTime)),
+                      "Asia/Jakarta"
+                  ),
+                  "HH:mm"
+              )
+            : "--:--";
     return <p className="text-sm">{checkInDate}</p>;
 }
 
 async function displayCheckOutDate() {
     const attendance = await getAttendance();
-    const checkOutDate = attendance && attendance.checkOutTime
-        ? format(new TZDate(new Date(Number(attendance.checkOutTime))), "HH:mm")
-        : "--:--";
+    const checkOutDate =
+        attendance && attendance.checkOutTime
+            ? format(
+                  new TZDate(
+                      new Date(Number(attendance.checkOutTime)),
+                      "Asia/Jakarta"
+                  ),
+                  "HH:mm"
+              )
+            : "--:--";
     return <p className="text-sm">{checkOutDate}</p>;
 }
 
