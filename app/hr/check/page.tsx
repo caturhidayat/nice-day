@@ -9,8 +9,8 @@ import Image from "next/image";
 interface AttendanceProps {
     userId: string;
 }
-
-const AttendanceTracking: React.FC<AttendanceProps> = ({ userId }) => {
+export default function AttendanceTracking() {
+// const AttendanceTracking: React.FC<AttendanceProps> = ({ userId }) => {
     const [location, setLocation] = useState<{
         latitude: number;
         longitude: number;
@@ -37,7 +37,7 @@ const AttendanceTracking: React.FC<AttendanceProps> = ({ userId }) => {
 
                 // Kirim data check-in ke backend
                 const checkInData = {
-                    userId,
+                    // userId,
                     checkInTime: Date.now(), // epoch millis
                     inLatitude: latitude,
                     inLongitude: longitude,
@@ -59,7 +59,7 @@ const AttendanceTracking: React.FC<AttendanceProps> = ({ userId }) => {
                 const { latitude, longitude } = position.coords;
 
                 const checkOutData = {
-                    userId,
+                    // userId,
                     checkOutTime: Date.now(), // epoch millis
                     outLatitude: latitude,
                     outLongitude: longitude,
@@ -132,4 +132,4 @@ const AttendanceTracking: React.FC<AttendanceProps> = ({ userId }) => {
     );
 };
 
-export default AttendanceTracking;
+// export default AttendanceTracking;
