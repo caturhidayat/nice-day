@@ -180,13 +180,13 @@ export default function AttendancePreview({
       formData.append("inLatitude", (location as any).lat);
       formData.append("inLongitude", (location as any).lng);
       formData.append("checkInTime", checkInTime?.toString() || "");
-      formData.append("checkInPhotoUrl", await uploadPhoto(checkInPhoto as File));
+      // formData.append("checkInPhotoUrl", await uploadPhoto(checkInPhoto as File));
       
     } else if (mode === "out") {
       formData.append("outLatitude", (location as any).lat);
       formData.append("outLongitude", (location as any).lng);
       formData.append("checkOutTime", checkOutTime?.toString() || "");
-      formData.append("checkOutPhotoUrl", await uploadPhoto(checkOutPhoto as File));
+      // formData.append("checkOutPhotoUrl", await uploadPhoto(checkOutPhoto as File));
     }
 
     // console.log("check In time : ", checkInTime);
