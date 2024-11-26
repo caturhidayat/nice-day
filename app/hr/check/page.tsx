@@ -10,7 +10,7 @@ interface AttendanceProps {
     userId: string;
 }
 export default function AttendanceTracking() {
-// const AttendanceTracking: React.FC<AttendanceProps> = ({ userId }) => {
+    // const AttendanceTracking: React.FC<AttendanceProps> = ({ userId }) => {
     const [location, setLocation] = useState<{
         latitude: number;
         longitude: number;
@@ -41,7 +41,7 @@ export default function AttendanceTracking() {
                     checkInTime: Date.now(), // epoch millis
                     inLatitude: latitude,
                     inLongitude: longitude,
-                    checkInPhotoUrl: await uploadPhoto(checkInPhoto),
+                    // checkInPhotoUrl: await uploadPhoto(checkInPhoto),
                 };
 
                 // const response = await axios.post('/api/attendance/check-in', checkInData);
@@ -63,9 +63,9 @@ export default function AttendanceTracking() {
                     checkOutTime: Date.now(), // epoch millis
                     outLatitude: latitude,
                     outLongitude: longitude,
-                    checkOutPhotoUrl: checkInPhoto
-                        ? await uploadPhoto(checkInPhoto)
-                        : null,
+                    // checkOutPhotoUrl: checkInPhoto
+                    //     ? await uploadPhoto(checkInPhoto)
+                    //     : null,
                 };
 
                 // const response = await axios.post('/api/attendance/check-out', checkOutData);
@@ -93,13 +93,14 @@ export default function AttendanceTracking() {
             <h2 className="">Kehadiran Hari Ini</h2>
             <p>Tanggal: {format(new Date(), "dd MMMM yyyy")}</p>
 
-            {isCameraOpen ? (
+            {/* {isCameraOpen ? (
                 <CameraCapture onCapture={handlePhotoCapture} />
-            ) : (
-                <button onClick={() => setIsCameraOpen(true)} className="btn btn-secondary">
+                ) : (
+                    <button onClick={() => setIsCameraOpen(true)} className="btn btn-secondary">
                     Buka Kamera
-                </button>
-            )}
+                    </button>
+                    )} */}
+            <CameraCapture onCapture={handlePhotoCapture} />
 
             {checkInPhoto && (
                 <div>
@@ -130,6 +131,6 @@ export default function AttendanceTracking() {
             )}
         </div>
     );
-};
+}
 
 // export default AttendanceTracking;

@@ -11,10 +11,10 @@ import { FormResponse } from "@/app/lib/interfaces/form-response.interface";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { createAttendance, updateAttendance } from "@/app/lib/action";
-import { CircleCheck, CircleX } from "lucide-react";
-import { ToastWrap } from "@/app/lib/ToastC";
 import { AttendancePreviewProps } from "@/app/lib/interfaces/attendance.interface";
 import { format } from "date-fns";
+import axios from "axios";
+import { API_URL } from "@/app/lib/constants/api";
 
 
 // Dynamic import komponen Map
@@ -47,6 +47,9 @@ export default function AttendancePreview({
   const [response, setResponse] = useState<FormResponse>();
   const [checkInTime, setCheckInTime] = useState<number>();
   const [checkOutTime, setCheckOutTime] = useState<number>();
+
+  const [checkInPhoto, setCheckInPhoto] = useState<File | null>(null);
+  const [checkOutPhoto, setCheckOutPhoto] = useState<File | null>(null);
 
   // * Router
   const router = useRouter();
@@ -154,6 +157,17 @@ export default function AttendancePreview({
     }
   };
 
+  const uploadPhoto = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await axios.post(`${API_URL}/attendances/${attendanceId}/image`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return response.data.fileUrl;
+};
+
   // * Save attendance
   const saveAttendance = async () => {
     // if (!photo || !location) return;
@@ -166,11 +180,13 @@ export default function AttendancePreview({
       formData.append("inLatitude", (location as any).lat);
       formData.append("inLongitude", (location as any).lng);
       formData.append("checkInTime", checkInTime?.toString() || "");
-      // formData.append("attedanceDate", dayjs().valueOf().toString());
+      // formData.append("checkInPhotoUrl", await uploadPhoto(checkInPhoto as File));
+      
     } else if (mode === "out") {
       formData.append("outLatitude", (location as any).lat);
       formData.append("outLongitude", (location as any).lng);
       formData.append("checkOutTime", checkOutTime?.toString() || "");
+      // formData.append("checkOutPhotoUrl", await uploadPhoto(checkOutPhoto as File));
     }
 
     // console.log("check In time : ", checkInTime);
