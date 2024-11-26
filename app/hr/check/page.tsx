@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import axios from "axios";
 import CameraCapture from "./Capture";
 import Image from "next/image";
+import { createAttendance, updateAttendance } from "@/app/lib/action";
 
 interface AttendanceProps {
     userId: string;
@@ -36,16 +37,26 @@ export default function AttendanceTracking() {
                 setLocation({ latitude, longitude });
 
                 // Kirim data check-in ke backend
-                const checkInData = {
-                    // userId,
-                    checkInTime: Date.now(), // epoch millis
-                    inLatitude: latitude,
-                    inLongitude: longitude,
-                    // checkInPhotoUrl: await uploadPhoto(checkInPhoto),
-                };
+                // const checkInData = {
+                //     // userId,
+                //     checkInTime: Date.now(), // epoch millis
+                //     inLatitude: latitude,
+                //     inLongitude: longitude,
+                //     // checkInPhotoUrl: await uploadPhoto(checkInPhoto),
+                // };
+
+                const checkInData = new FormData();
+                checkInData.append("checkInTime", Date.now().toString());
+                checkInData.append("inLatitude", latitude.toString());
+                checkInData.append("inLongitude", longitude.toString());
 
                 // const response = await axios.post('/api/attendance/check-in', checkInData);
                 // console.log('Check-in berhasil:', response.data);
+
+                console.log("Check-in data:", checkInData);
+
+                await createAttendance(checkInData);
+
                 console.log("Check-in data:", checkInData);
             });
         } catch (error) {
@@ -58,15 +69,24 @@ export default function AttendanceTracking() {
             navigator.geolocation.getCurrentPosition(async (position) => {
                 const { latitude, longitude } = position.coords;
 
-                const checkOutData = {
-                    // userId,
-                    checkOutTime: Date.now(), // epoch millis
-                    outLatitude: latitude,
-                    outLongitude: longitude,
-                    // checkOutPhotoUrl: checkInPhoto
-                    //     ? await uploadPhoto(checkInPhoto)
-                    //     : null,
-                };
+                // const checkOutData = {
+                //     // userId,
+                //     checkOutTime: Date.now(), // epoch millis
+                //     outLatitude: latitude,
+                //     outLongitude: longitude,
+                //     // checkOutPhotoUrl: checkInPhoto
+                //     //     ? await uploadPhoto(checkInPhoto)
+                //     //     : null,
+                // };
+
+                const checkOutData = new FormData();
+                checkOutData.append("checkOutTime", Date.now().toString());
+                checkOutData.append("outLatitude", latitude.toString());
+                checkOutData.append("outLongitude", longitude.toString());
+
+                console.log("Check-out data:", checkOutData);
+
+                await updateAttendance(checkOutData);
 
                 // const response = await axios.post('/api/attendance/check-out', checkOutData);
                 // console.log('Check-out berhasil:', response.data);

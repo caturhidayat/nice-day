@@ -45,7 +45,20 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture }) => {
         }
       }, 'image/jpeg');
     }
+
+    stopCamera();
   };
+
+  const stopCamera = () => {
+    if (videoRef.current) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      const tracks = stream.getTracks();
+
+      tracks.forEach(track => track.stop());
+      videoRef.current.srcObject = null;
+      setStreaming(false);
+    }
+  }
 
   return (
     <div>
