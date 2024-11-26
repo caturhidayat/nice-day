@@ -5,8 +5,8 @@ import { format, startOfToday } from "date-fns";
 import { TZDate } from "@date-fns/tz";
 import MenuList from "../components/UI/MenuList";
 
-// const today = startOfToday().getTime();
-const today = Date.now();
+// const today = Date.now();
+const today = startOfToday().getTime();
 
 // function to return component for check in time and check out time
 async function displayCheckInDate() {
