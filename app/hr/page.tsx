@@ -1,18 +1,31 @@
 import ButtonAtt from "../components/ButtonAttendance";
 import { getAttendance, getProfile } from "../lib/action";
 
-const today = startOfToday().getTime();
-
 import { format, startOfToday } from "date-fns";
 import { TZDate } from "@date-fns/tz";
 import MenuList from "../components/UI/MenuList";
 
+// const today = startOfToday().getTime();
+const today = Date.now();
+
 // function to return component for check in time and check out time
 async function displayCheckInDate() {
     const attendance = await getAttendance();
+    if (!attendance) return false;
+
+    const attendanceDate = new TZDate(
+        new Date(Number(attendance.attendanceDate)),
+        "Asia/Jakarta"
+    );
+    const todayDate = new TZDate(new Date(today), "Asia/Jakarta");
+
+    const isSameDate =
+        format(attendanceDate, "yyyy-MM-dd") ===
+        format(todayDate, "yyyy-MM-dd");
+
     // console.log("attendance", attendance);
     const checkInDate =
-        attendance && attendance.checkInTime
+        isSameDate && attendance.checkInTime
             ? format(
                   new TZDate(
                       new Date(Number(attendance.checkInTime)),
@@ -26,8 +39,21 @@ async function displayCheckInDate() {
 
 async function displayCheckOutDate() {
     const attendance = await getAttendance();
+
+    if (!attendance) return false;
+
+    const attendanceDate = new TZDate(
+        new Date(Number(attendance.attendanceDate)),
+        "Asia/Jakarta"
+    );
+    const todayDate = new TZDate(new Date(today), "Asia/Jakarta");
+
+    const isSameDate =
+        format(attendanceDate, "yyyy-MM-dd") ===
+        format(todayDate, "yyyy-MM-dd");
+
     const checkOutDate =
-        attendance && attendance.checkOutTime
+        isSameDate && attendance.checkOutTime
             ? format(
                   new TZDate(
                       new Date(Number(attendance.checkOutTime)),
@@ -38,6 +64,9 @@ async function displayCheckOutDate() {
             : "--:--";
     return <p className="text-sm">{checkOutDate}</p>;
 }
+
+// Get Time Today
+const timeToday = new Date();
 
 export default async function Page() {
     const me = await getProfile();
