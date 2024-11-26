@@ -17,11 +17,17 @@ async function displayCheckInDate() {
         new Date(Number(attendance.attendanceDate)),
         "Asia/Jakarta"
     );
+    console.log("attendanceDate", attendanceDate);
+
     const todayDate = new TZDate(new Date(today), "Asia/Jakarta");
+    const isToday = new TZDate(new Date(today), "Asia/Jakarta");
+    console.log("todayDate", todayDate);
 
     const isSameDate =
         format(attendanceDate, "yyyy-MM-dd") ===
         format(todayDate, "yyyy-MM-dd");
+
+    console.log("isSameDate", isSameDate);
 
     // console.log("attendance", attendance);
     const checkInDate =
@@ -52,6 +58,8 @@ async function displayCheckOutDate() {
         format(attendanceDate, "yyyy-MM-dd") ===
         format(todayDate, "yyyy-MM-dd");
 
+    console.log("isSameDate", isSameDate);
+
     const checkOutDate =
         isSameDate && attendance.checkOutTime
             ? format(
@@ -64,9 +72,6 @@ async function displayCheckOutDate() {
             : "--:--";
     return <p className="text-sm">{checkOutDate}</p>;
 }
-
-// Get Time Today
-const timeToday = new Date();
 
 export default async function Page() {
     const me = await getProfile();
