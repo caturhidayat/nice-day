@@ -5,8 +5,8 @@ import { format, startOfToday } from "date-fns";
 import { TZDate } from "@date-fns/tz";
 import MenuList from "../components/UI/MenuList";
 
-// const today = startOfToday().getTime();
-const today = Date.now();
+// const today = Date.now();
+const today = startOfToday().getTime();
 
 // function to return component for check in time and check out time
 async function displayCheckInDate() {
@@ -17,35 +17,28 @@ async function displayCheckInDate() {
         new Date(Number(attendance.attendanceDate)),
         "Asia/Jakarta"
     );
-    console.log("attendanceDate", attendanceDate);
-
     const todayDate = new TZDate(new Date(today), "Asia/Jakarta");
-    const isToday = new TZDate(new Date(today), "Asia/Jakarta");
-    console.log("todayDate", todayDate);
 
     const isSameDate =
         format(attendanceDate, "yyyy-MM-dd") ===
         format(todayDate, "yyyy-MM-dd");
 
-    console.log("isSameDate", isSameDate);
+    if (!isSameDate) return <p className="text-sm">--:--</p>;
 
-    // console.log("attendance", attendance);
-    const checkInDate =
-        isSameDate && attendance.checkInTime
-            ? format(
-                  new TZDate(
-                      new Date(Number(attendance.checkInTime)),
-                      "Asia/Jakarta"
-                  ),
-                  "HH:mm"
-              )
-            : "--:--";
+    const checkInDate = attendance.checkInTime
+        ? format(
+              new TZDate(
+                  new Date(Number(attendance.checkInTime)),
+                  "Asia/Jakarta"
+              ),
+              "HH:mm"
+          )
+        : "--:--";
     return <p className="text-sm">{checkInDate}</p>;
 }
 
 async function displayCheckOutDate() {
     const attendance = await getAttendance();
-
     if (!attendance) return false;
 
     const attendanceDate = new TZDate(
@@ -58,18 +51,17 @@ async function displayCheckOutDate() {
         format(attendanceDate, "yyyy-MM-dd") ===
         format(todayDate, "yyyy-MM-dd");
 
-    console.log("isSameDate", isSameDate);
+    if (!isSameDate) return <p className="text-sm">--:--</p>;
 
-    const checkOutDate =
-        isSameDate && attendance.checkOutTime
-            ? format(
-                  new TZDate(
-                      new Date(Number(attendance.checkOutTime)),
-                      "Asia/Jakarta"
-                  ),
-                  "HH:mm"
-              )
-            : "--:--";
+    const checkOutDate = attendance.checkOutTime
+        ? format(
+              new TZDate(
+                  new Date(Number(attendance.checkOutTime)),
+                  "Asia/Jakarta"
+              ),
+              "HH:mm"
+          )
+        : "--:--";
     return <p className="text-sm">{checkOutDate}</p>;
 }
 
