@@ -1,25 +1,67 @@
-import { Button } from "@/components/ui/button";
-import {
-  CalendarCheck,
-  CircleArrowOutDownRight,
-  ClockArrowUp,
-} from "lucide-react";
+"use client";
+
+import { AuthContext } from "@/app/auth/auth-context";
+import { CalendarArrowDown, CircleArrowOutDownRight } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useContext } from "react";
+
+export type menuListItem = {
+  icon: JSX.Element;
+  text: string;
+  path: string;
+};
+
+export const menuList: menuListItem[] = [
+  {
+    icon: <CalendarArrowDown />,
+    text: "Leave Request",
+    path: "/hr/leaves",
+  },
+  {
+    icon: <CircleArrowOutDownRight />,
+    text: "Overtime",
+    path: "/hr/overtime",
+  },
+  {
+    icon: <CircleArrowOutDownRight />,
+    text: "Undertime",
+    path: "/hr/undertime",
+  },
+];
+
+const MenuListItem = ({ icon, text, path }: menuListItem) => {
+  const currentPath = usePathname();
+  return (
+    <Link
+      href={path}
+      className={`px-4 group hover:text-primary-content ${
+        currentPath === path ? "text-primary" : ""
+      }`}
+    >
+      <button
+        className={`inline-flex space-y-2 flex-col items-center justify-center text-gray-600 group-hover:text-primary ${
+          currentPath === path ? "text-primary" : ""
+        }`}
+      >
+        {icon}
+        <span className="text-xs">{text}</span>
+      </button>
+    </Link>
+  );
+};
 
 export default function MenuList() {
+  const isAuthenticated = useContext(AuthContext);
   return (
-    <div className="grid grid-cols-3 gap-4 lg:grid-cols-3 lg:gap-8 p-4 bg-base-200 px-2">
-      <Link href={"/hr/leaves"}>
-        <div className="rounded-lg  flex items-center justify-center">
-          <ClockArrowUp size={39} className="text-primary" />
+    <div>
+      {isAuthenticated ? (
+        <div className="flex gap-2 p-4">
+          {menuList.map((button, index) => (
+            <MenuListItem key={index} {...button} />
+          ))}
         </div>
-      </Link>
-      <div className="rounded-lg  flex items-center justify-center">
-        <CircleArrowOutDownRight size={39} className="text-primary" />
-      </div>
-      <div className="rounded-lg  flex items-center justify-center">
-        <CalendarCheck size={39} className="text-primary" />
-      </div>
+      ) : null}
     </div>
   );
 }
