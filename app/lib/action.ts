@@ -83,7 +83,7 @@ export async function getProfile() {
 }
 
 export async function getAttendance() {
-  return get<Attendance>("attendances/last-attendance");
+  return get<Attendance>("attendances/today");
 }
 
 export async function getAttendances() {
