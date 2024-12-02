@@ -30,28 +30,7 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
-
-const FormSchema = z.object({
-  // userId: z.string(),
-  startDate: z.date(),
-  endDate: z.date(),
-  reason: z.string(),
-  leaveType: z.string(),
-  status: z.string(),
-  approvedById: z.string(),
-  dayUsed: z.number(),
-  imageUrl: z.string(),
-});
-// userId       String
-//   user         User          @relation(fields: [userId], references: [id])
-//   startDate    BigInt?
-//   endDate      BigInt?
-//   reason       String?
-//   leaveType    LeaveType
-//   status       RequestStatus @default(PENDING)
-//   approvedById String?
-//   dayUsed      Float
-//   imageUrl     String?
+import { Textarea } from "@/components/ui/textarea";
 
 const LeaveType = [
   "SICK",
@@ -64,26 +43,34 @@ const LeaveType = [
   "OTHER",
 ];
 
-// SICK,
-//   ANNUAL,
-//   UNPAID
-//   MATERNITY
-//   PATERNITY
-//   BEREAVEMENT
-//   STUDY
-//   OTHER
+const FormSchema = z.object({
+  startDate: z.date({
+    required_error: "Start date is required",
+  }),
+  endDate: z.date({
+    required_error: "End date is required",
+  }),
+  reason: z
+    .string({
+      required_error: "Reason is required",
+    })
+    .min(8, {
+      message: "Reason must be at least 8 characters.",
+    }),
+  leaveType: z.string({
+    required_error: "Leave type is required",
+  }),
+  imageUrl: z.string().min(8, {
+    message: "Please Select an Image",
+  }),
+});
+
 export function InputForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      // userId: "",
-      // startDate: new Date(),
-      // endDate: new Date(),
       reason: "",
       leaveType: "",
-      status: "",
-      approvedById: "",
-      dayUsed: 0,
       imageUrl: "",
     },
   });
@@ -98,20 +85,6 @@ export function InputForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-5/6 space-y-2 m-auto"
       >
-        {/* <FormField
-          control={form.control}
-          name="userId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-
         <FormField
           control={form.control}
           name="leaveType"
@@ -119,14 +92,18 @@ export function InputForm() {
             <FormItem>
               <FormLabel>Leave Type</FormLabel>
               <FormControl>
-                <Select>
+                <Select onValueChange={field.onChange}>
                   <SelectTrigger>
                     <SelectValue placeholder="Leave Type" />
                   </SelectTrigger>
                   <SelectContent>
                     {LeaveType.map((leaveType) => (
                       <SelectItem key={leaveType} value={leaveType}>
-                        {leaveType}
+                        {field.value === leaveType ? (
+                          <strong>{leaveType}</strong>
+                        ) : (
+                          leaveType
+                        )}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -150,7 +127,7 @@ export function InputForm() {
                       variant={"outline"}
                       className={cn(
                         "w-full pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
+                        "flex-grow"
                       )}
                     >
                       {field.value ? (
@@ -189,11 +166,11 @@ export function InputForm() {
                       variant={"outline"}
                       className={cn(
                         "w-full pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
+                        "flex-grow"
                       )}
                     >
                       {field.value ? (
-                        format(field.value, "PPP")
+                        format(field.value, "dd, MMMM yyyy")
                       ) : (
                         <span>Pick a date</span>
                       )}
@@ -206,6 +183,7 @@ export function InputForm() {
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
+                    // disabled={(date) => (startDate ? date < startDate : false)}
                     initialFocus
                   />
                 </PopoverContent>
@@ -222,21 +200,7 @@ export function InputForm() {
             <FormItem>
               <FormLabel>Reason</FormLabel>
               <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="dayUsed"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Day Used</FormLabel>
-              <FormControl>
-                <Input type="number" {...field} />
+                <Textarea placeholder="Please enter your reason" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
