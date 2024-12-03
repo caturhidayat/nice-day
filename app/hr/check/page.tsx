@@ -6,7 +6,10 @@ import axios from "axios";
 import CameraCapture from "./Capture";
 import Image from "next/image";
 import { createAttendance, updateAttendance } from "@/app/lib/action";
-import MapView from "@/app/components/UI/MapView";
+import dynamic from "next/dynamic";
+const MapView = dynamic(() => import("@/app/components/UI/MapView"), {
+  ssr: false,
+});
 import { LatLngExpression } from "leaflet";
 
 interface AttendanceProps {
