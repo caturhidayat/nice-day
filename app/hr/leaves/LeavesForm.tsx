@@ -31,6 +31,8 @@ import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
+import { API_URL } from "@/app/lib/constants/api";
+import { createLeaves } from "./actions";
 
 const LeaveType = [
   "SICK",
@@ -60,9 +62,7 @@ const FormSchema = z.object({
   leaveType: z.string({
     required_error: "Leave type is required",
   }),
-  imageUrl: z.string().min(8, {
-    message: "Please Select an Image",
-  }),
+  imageUrl: z.string(),
 });
 
 export function InputForm() {
@@ -75,8 +75,18 @@ export function InputForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
+    const formData = new FormData();
+    formData.append("startDate", data.startDate.getTime().toString());
+    formData.append("endDate", data.endDate.getTime().toString());
+    formData.append("reason", data.reason);
+    formData.append("leaveType", data.leaveType);
+    formData.append("imageUrl", data.imageUrl);
+
+    const res = await createLeaves(formData);
+
+    console.log("res", res);
   }
 
   return (
