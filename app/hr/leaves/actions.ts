@@ -1,11 +1,18 @@
-'use server';
+"use server";
 
-import { post } from "@/app/lib/utils/fetch";
+import { Leaves } from "@/app/lib/action";
+import { get, post } from "@/app/lib/utils/fetch";
+import { revalidateTag } from "next/cache";
 
 export async function createLeaves(formData: FormData) {
+  console.log("formData", formData);
+  const response = await post(`leaves`, formData);
+  revalidateTag("leaves");
+  return response;
+}
 
-    console.log("formData", formData);
-    const response = await post(`leaves`, formData);
-    // revalidateTag("attendance");
-    return response;
-  }
+
+
+export async function getLeaves() {
+  return get<Leaves[]>(`leaves`);
+}
