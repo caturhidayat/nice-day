@@ -57,6 +57,18 @@ export type UserShift = {
   updatedAt: string;
 };
 
+export interface Leaves {
+  id: string;
+  startDate: string;
+  endDate: string;
+  reason: string;
+  leaveType: string;
+  status: string;
+  approvedById: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // export const login = validatedAction(loginSchema, async (data, FormData) => {
 //   // const { username, password } = data;
 //   const res = await fetch(`${API_URL}/auth/login`, {

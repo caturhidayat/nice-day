@@ -7,7 +7,6 @@ import Image from "next/image";
 import "leaflet/dist/leaflet.css";
 import { FormResponse } from "@/app/lib/interfaces/form-response.interface";
 
-
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { createAttendance, updateAttendance } from "@/app/lib/action";
@@ -15,7 +14,6 @@ import { AttendancePreviewProps } from "@/app/lib/interfaces/attendance.interfac
 import { format } from "date-fns";
 import axios from "axios";
 import { API_URL } from "@/app/lib/constants/api";
-
 
 // Dynamic import komponen Map
 const MapView = dynamic(() => import("./MapView"), {
@@ -161,12 +159,16 @@ export default function AttendancePreview({
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await axios.post(`${API_URL}/attendances/${attendanceId}/image`, formData, {
+    const response = await axios.post(
+      `${API_URL}/attendances/${attendanceId}/image`,
+      formData,
+      {
         headers: { "Content-Type": "multipart/form-data" },
-    });
+      }
+    );
 
     return response.data.fileUrl;
-};
+  };
 
   // * Save attendance
   const saveAttendance = async () => {
@@ -181,7 +183,6 @@ export default function AttendancePreview({
       formData.append("inLongitude", (location as any).lng);
       formData.append("checkInTime", checkInTime?.toString() || "");
       // formData.append("checkInPhotoUrl", await uploadPhoto(checkInPhoto as File));
-      
     } else if (mode === "out") {
       formData.append("outLatitude", (location as any).lat);
       formData.append("outLongitude", (location as any).lng);
@@ -195,10 +196,62 @@ export default function AttendancePreview({
 
     const handleResponse = (response: any) => {
       if (response && response.error) {
-        toast.error(response.error);
+        toast.custom((t) => (
+          <div
+            className={`${
+              t.visible ? "animate-enter" : "animate-leave"
+            } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+          >
+            <div className="flex-1 w-0 p-4">
+              <div className="flex items-start">
+                <div className="ml-3 flex-1">
+                  <p className="text-sm font-medium text-gray-900">
+                    There is an error!
+                  </p>
+                  <p className="mt-1 text-sm text-gray-500">
+                    ❌ {response.error}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex border-l border-gray-200">
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        ));
         router.push("/hr");
       } else {
-        toast.success("Attendance saved successfully", response.data.message);
+        toast.custom((t) => (
+          <div
+            className={`${
+              t.visible ? "animate-enter" : "animate-leave"
+            } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+          >
+            <div className="flex-1 w-0 p-4">
+              <div className="flex items-start">
+                <div className="ml-3 flex-1">
+                  <p className="text-sm font-medium text-gray-900">Success!</p>
+                  <p className="mt-1 text-sm text-gray-500">
+                    ✅ Attendance saved successfully
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex border-l border-gray-200">
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        ));
         setResponse(response.data);
         router.push("/hr");
       }
@@ -209,7 +262,6 @@ export default function AttendancePreview({
         ? await createAttendance(formData)
         : await updateAttendance(formData);
     handleResponse(response);
-
   };
 
   return (
