@@ -23,15 +23,10 @@ export const buttons: ButtonItem[] = [
     text: "Attendance",
     path: "/hr/attendance",
   },
-  // {
-  //     icon: <CalendarCog />,
-  //     text: "Check",
-  //     path: "/hr/check",
-  // },
   {
     icon: <ClockArrowUp />,
     text: "Overtime",
-    path: "/hr/corrections",
+    path: "/hr/overtime",
   },
   {
     icon: <UserRound />,

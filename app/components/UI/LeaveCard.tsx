@@ -37,6 +37,13 @@ export default async function LeaveCard({ leave }: { leave: Leaves }) {
                 {format(new Date(Number(leave.endDate)), "dd/MM/yyyy")}
               </dd>
             </div>
+            
+            <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+              <dt className="font-medium text-gray-900">Reason</dt>
+              <dd className="text-gray-700 sm:col-span-2">
+                {leave.reason}
+              </dd>
+            </div>
 
             <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
               <dt className="font-medium text-gray-900">Status</dt>
@@ -45,6 +52,8 @@ export default async function LeaveCard({ leave }: { leave: Leaves }) {
                   className={
                     leave.status === "APPROVED"
                       ? "bg-green-100 text-green-800"
+                      : leave.status === "PENDING"
+                      ? "bg-yellow-100 text-yellow-800"
                       : leave.status === "REJECTED"
                       ? "bg-red-100 text-red-800"
                       : ""
