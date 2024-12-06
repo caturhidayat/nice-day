@@ -1,7 +1,7 @@
 "use client";
 
 import { AuthContext } from "@/app/auth/auth-context";
-import { CalendarArrowDown, CircleArrowOutDownRight } from "lucide-react";
+import { CalendarArrowDown, CircleArrowOutDownRight, RefreshCcw } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useContext } from "react";
@@ -14,20 +14,20 @@ export type menuListItem = {
 
 export const menuList: menuListItem[] = [
   {
-    icon: <CalendarArrowDown />,
+    icon: <CalendarArrowDown className="text-teal-600" />,
     text: "Leave Request",
     path: "/hr/leaves",
   },
   {
-    icon: <CircleArrowOutDownRight />,
-    text: "Overtime",
-    path: "/hr/overtime",
+    icon: <RefreshCcw className="text-orange-600" />,
+    text: "Future Update",
+    path: "",
   },
-  {
-    icon: <CircleArrowOutDownRight />,
-    text: "Undertime",
-    path: "/hr/undertime",
-  },
+  // {
+  //   icon: <CircleArrowOutDownRight className="text-purple-600" />,
+  //   text: "Undertime",
+  //   path: "/hr/undertime",
+  // },
 ];
 
 const MenuListItem = ({ icon, text, path }: menuListItem) => {
@@ -35,7 +35,7 @@ const MenuListItem = ({ icon, text, path }: menuListItem) => {
   return (
     <Link
       href={path}
-      className={`px-4 group hover:text-primary-content ${
+      className={`p-4 group hover:text-primary-content hover:bg-gray-100 rounded-md ${
         currentPath === path ? "text-primary" : ""
       }`}
     >

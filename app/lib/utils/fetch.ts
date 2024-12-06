@@ -41,3 +41,10 @@ export const get = async <T>(path: string) => {
   });
   return res.json() as T;
 };
+
+export const getOne = async <T>(path: string, id: string) => {
+  const res = await fetch(`${API_URL}/${path}/${id}`, {
+    headers: { ...getHeaders() },
+  });
+  return res.json() as T;
+};

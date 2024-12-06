@@ -1,7 +1,7 @@
 "use server";
 
 import { Leaves } from "@/app/lib/action";
-import { get, post } from "@/app/lib/utils/fetch";
+import { get, getOne, post } from "@/app/lib/utils/fetch";
 import { revalidateTag } from "next/cache";
 
 export async function createLeaves(formData: FormData) {
@@ -11,8 +11,12 @@ export async function createLeaves(formData: FormData) {
   return response;
 }
 
-
-
+// Get ALl Leaves by userId
 export async function getLeaves() {
   return get<Leaves[]>(`leaves`);
+}
+
+// Get Single Leaves by id
+export async function getLeave(id: string) {
+  return getOne<Leaves>("leaves", id);
 }

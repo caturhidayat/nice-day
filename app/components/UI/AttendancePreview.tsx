@@ -27,7 +27,7 @@ const TargetLocations = [
   { lat: -6.130013, lng: 106.942239 }, // Office Nagrak
 ];
 
-const RADIUS = 150;
+const RADIUS = 200;
 
 export default function AttendancePreview({
   mode,
