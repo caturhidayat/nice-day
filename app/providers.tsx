@@ -1,7 +1,6 @@
 "use client";
 
 import { AuthContext } from "./auth/auth-context";
-import { AttendanceContext } from "./hr/attendance/attendance-context";
 
 interface ProviderProps {
   children: React.ReactNode;
