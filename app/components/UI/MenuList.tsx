@@ -54,9 +54,9 @@ const MenuListItem = ({ icon, text, path }: menuListItem) => {
 export default function MenuList() {
   const isAuthenticated = useContext(AuthContext);
   return (
-    <div>
+    <div className="pb-8">
       {isAuthenticated ? (
-        <div className="flex gap-2 p-4">
+        <div className="flex gap-2">
           {menuList.map((button, index) => (
             <MenuListItem key={index} {...button} />
           ))}
