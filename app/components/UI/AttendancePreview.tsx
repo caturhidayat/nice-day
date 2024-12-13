@@ -14,6 +14,7 @@ import { AttendancePreviewProps } from "@/app/lib/interfaces/attendance.interfac
 import { format } from "date-fns";
 import axios from "axios";
 import { API_URL } from "@/app/lib/constants/api";
+import { Button } from "@/components/ui/button";
 
 // Dynamic import komponen Map
 const MapView = dynamic(() => import("./MapView"), {
@@ -300,24 +301,23 @@ export default function AttendancePreview({
               ></video>
               <canvas ref={canvasRef} className="hidden"></canvas>
             </div>
-            <div className="grid items-center justify-center gap-2">
+            <div className="grid gap-2 p-2">
               {isCameraOn ? (
-                <button className="btn btn-primary" onClick={takePhoto}>
-                  Take Photo
-                </button>
+                <Button onClick={takePhoto} className="w-full">Take Photo</Button>
               ) : null}
             </div>
           </div>
         )}
       </div>
-      <div className="flex flex-col items-center justify-center gap-2">
+      <div className="flex flex-col items-center justify-center gap-2 p-2">
         {!isCameraOn && (
-          <button
-            className={`btn ${inRadius ? "btn-primary" : "btn-error"}`}
+          <Button
+            variant={inRadius ? "default" : "destructive"}
             onClick={inRadius ? saveAttendance : getLocation}
+            className="w-full"
           >
             {inRadius ? "Save Attendance" : "Refresh Location"}
-          </button>
+          </Button>
         )}
       </div>
       <div className=""></div>

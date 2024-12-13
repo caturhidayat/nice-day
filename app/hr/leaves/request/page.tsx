@@ -8,8 +8,8 @@ export default function LeavesRequest() {
     <div className="grid gap-2 m-auto p-4">
       <div className="flex justify-start">
         <Link href={"/hr/leaves"}>
-          <Button variant={"outline"}>
-            <SquareChevronLeft className="h-4 w-4" />
+          <Button variant={"outline"} className="text-amber-600">
+            <SquareChevronLeft className=" h-4 w-4" />
             Back
           </Button>
         </Link>
