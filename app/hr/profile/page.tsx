@@ -4,6 +4,7 @@ import logout from "@/app/auth/logout";
 import { getProfile } from "@/app/lib/action";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 export default function Page() {
@@ -81,6 +82,9 @@ export default function Page() {
                     </dd>
                 </div> */}
         <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+          <Button variant={"outline"} asChild>
+            <Link href="/hr/profile/change-password">Change Password</Link>
+          </Button>
           <Button onClick={handleLogout} variant={"destructive"}>
             Logout
           </Button>

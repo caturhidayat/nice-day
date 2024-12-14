@@ -48,3 +48,12 @@ export const getOne = async <T>(path: string, id: string) => {
   });
   return res.json() as T;
 };
+
+export const patch = async (path: string, data: FormData) => {
+  const res = await fetch(`${API_URL}/${path}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...getHeaders() },
+    body: JSON.stringify(Object.fromEntries(data)),
+  });
+  return res.json();
+};
