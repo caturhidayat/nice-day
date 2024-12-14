@@ -55,18 +55,20 @@ export function AttendanceCard({
     //   </div>
     // </div>
     <Card>
-      <CardHeader>
-        {/* <h1 className="text-md">Today [ {format(new Date(), "EEEE dd, MMM yyyy")} ]</h1> */}
-        <Alert>
-          <AlertDescription>
-            <span className="flex items-center">
-              <OctagonAlert className="text-amber-600 h-4 w-4 mr-2" />
-              Selfie photo is required for attendance
-            </span>
-          </AlertDescription>
-        </Alert>
-      </CardHeader>
+      {/* <CardHeader>
+        
+      </CardHeader> */}
       <CardContent>
+        <div className="py-4">
+          <Alert>
+            <AlertDescription>
+              <span className="flex items-center">
+                <OctagonAlert className="text-amber-600 h-4 w-4 mr-2" />
+                Selfie photo is required for attendance
+              </span>
+            </AlertDescription>
+          </Alert>
+        </div>
         <div className="grid grid-cols-2 py-2 gap-1">
           <div className="flex flex-col gap-2 items-center">
             <p className="text-md font-bold text-2xl pb-4">
