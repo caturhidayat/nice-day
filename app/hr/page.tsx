@@ -21,8 +21,8 @@ export default async function Page() {
         <p className="mt-4 text-center text-xl font-semibold text-secondary">
           Live Attendance
         </p>
-        {/* <ClockDisplay /> */}
-        <div className="flex flex-col gap-2">
+        <ClockDisplay />
+        {/* <div className="flex flex-col gap-2">
           <div className="flex items-center justify-center">
             <div className="text-5xl font-bold text-secondary">
               {format(new TZDate(new Date(), "Asia/Jakarta"), "HH:mm")}
@@ -33,7 +33,7 @@ export default async function Page() {
               <h2>{format(new Date(), "EEE, dd MMM yyyy")}</h2>
             </span>
           </div>
-        </div>
+        </div> */}
         <div className="p-1">
           <AttendanceCard attendance={attendance} />
         </div>
