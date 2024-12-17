@@ -35,6 +35,8 @@ import { API_URL } from "@/app/lib/constants/api";
 import { createLeaves } from "./actions";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import ImageUplaod from "./ImageUplaod";
 
 const LeaveType = [
   "SICK",
@@ -64,71 +66,91 @@ const FormSchema = z.object({
   leaveType: z.string({
     required_error: "Leave type is required",
   }),
-  imageUrl: z.string(),
+  image: z.instanceof(File).optional(),
 });
 
 export function InputForm() {
   const router = useRouter();
+  const handleImageUpload = (file: File) => {
+    console.log("File Uplaod", file);
+  };
 
   const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+    // resolver: zodResolver(FormSchema),
     defaultValues: {
       reason: "",
+      // startDate: new Date(),
+      // endDate: new Date(),
       leaveType: "",
-      imageUrl: "",
+      // image: undefined,
     },
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
     const formData = new FormData();
-    formData.append("startDate", data.startDate.getTime().toString());
-    formData.append("endDate", data.endDate.getTime().toString());
+    // formData.append("startDate", data?.startDate.getTime().toString());
+    // formData.append("endDate", data?.endDate.getTime().toString());
     formData.append("reason", data.reason);
     formData.append("leaveType", data.leaveType);
-    formData.append("imageUrl", data.imageUrl);
+    formData.append("image", data.image[0]);
 
-    const res = await createLeaves(formData);
+    console.log("Form Data RAW : ", formData);
 
-    if (res.error) {
-      return { error: res.error, success: "" };
-    } else {
-      toast.custom((t) => (
-        <div
-          className={`${
-            t.visible ? "animate-enter" : "animate-leave"
-          } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-        >
-          <div className="flex-1 w-0 p-4">
-            <div className="flex items-start">
-              <div className="ml-3 flex-1">
-                <p className="text-sm font-medium text-gray-900">Success!</p>
-                <p className="mt-1 text-sm text-gray-500">
-                  ✅ Leave has been created successfully
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="flex border-l border-gray-200">
-            <button
-              onClick={() => toast.dismiss(t.id)}
-              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      ));
+    // const res = await createLeaves(formData);
 
-      router.push("/hr/leaves");
-    }
+    // if (res.error) {
+    //   return { error: res.error, success: "" };
+    // } else {
+    //   toast.custom((t) => (
+    //     <div
+    //       className={`${
+    //         t.visible ? "animate-enter" : "animate-leave"
+    //       } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+    //     >
+    //       <div className="flex-1 w-0 p-4">
+    //         <div className="flex items-start">
+    //           <div className="ml-3 flex-1">
+    //             <p className="text-sm font-medium text-gray-900">Success!</p>
+    //             <p className="mt-1 text-sm text-gray-500">
+    //               ✅ Leave has been created successfully
+    //             </p>
+    //           </div>
+    //         </div>
+    //       </div>
+    //       <div className="flex border-l border-gray-200">
+    //         <button
+    //           onClick={() => toast.dismiss(t.id)}
+    //           className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    //         >
+    //           Close
+    //         </button>
+    //       </div>
+    //     </div>
+    //   ));
 
-    console.log("res", res);
+    //   router.push("/hr/leaves");
+    // }
+
+    // console.log("res", res);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+      <form
+        className="space-y-2"
+        onSubmit={form.handleSubmit(onSubmit)}
+        // action={async (formData) => {
+        //   console.log("form data raw: ", formData);
+        //   const res = await createLeaves(formData);
+
+        //   if (res.error) {
+        //     return { error: res.error, success: "" };
+        //   }
+        //   return res.data;
+
+        // }}
+      >
         <FormField
           control={form.control}
           name="leaveType"
@@ -253,18 +275,32 @@ export function InputForm() {
 
         <FormField
           control={form.control}
-          name="imageUrl"
-          render={({ field }) => (
+          name="image"
+          render={({ field: { onChange, value, ...field } }) => (
             <FormItem>
               <FormLabel>Image URL</FormLabel>
               <FormControl>
-                <Input type="file" {...field} />
+                <Input
+                  type="file"
+                  accept="image/*"
+                  // value={value?.name}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    onChange(file)
+                  }}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">Submit</Button>
+
+        {/* <ImageUplaod onUpload={handleImageUpload} /> */}
+
+        <Button className="w-full" type="submit">
+          Submit
+        </Button>
       </form>
     </Form>
   );
