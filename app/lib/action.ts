@@ -69,25 +69,6 @@ export interface Leaves {
   updatedAt: string;
 }
 
-// export const login = validatedAction(loginSchema, async (data, FormData) => {
-//   // const { username, password } = data;
-//   const res = await fetch(`${API_URL}/auth/login`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(data),
-//   });
-
-//   const parsedRes = await res.json();
-//   if (!res.ok) {
-//     return { error: getErrorMessage(parsedRes), success: "" };
-//   }
-
-//   setAuthCookie(res);
-//   redirect("/hr");
-// });
-
 export async function getProfile() {
   const result = await get<ProfileProps>("users/profile");
   // console.log("result", result);
@@ -102,29 +83,32 @@ export async function getAttendances() {
   return get<Attendance[]>("attendances/last-attendances");
 }
 
-export async function createAttendance(formData: FormData, photo: string | File) {
-  console.log("formData", formData);
+export async function createAttendance(formData: FormData) {
+  // console.log("formData", formData);
+  const image = formData.get("image");
+  formData.delete("image");
+
   const response = await post("attendances/check-in", formData);
 
   // console.log("res-action", response);
-  // const attendanceImage = formData.get("checkInPhotoUrl");
-  if (photo instanceof Blob && !response.error) {
+  if (image instanceof Blob && !response.error) {
     const fileName = response.data.id;
-    await uploadAttendanceInImage(fileName, photo);
+    await uploadAttendanceInImage(fileName, image);
   }
   revalidateTag("attendance");
-  // setAttendanceCookie(response.data);
-  // console.log("res-action", response);
   return response;
 }
 
-export async function updateAttendance(formData: FormData, photo: string | File) {
+export async function updateAttendance(formData: FormData) {
+  // console.log("formData", formData);
+  const image = formData.get("image");
+  formData.delete("image");
+
   const response = await post(`attendances/check-out`, formData);
 
-  const attendanceImage = formData.get("image");
-  if (attendanceImage instanceof Blob && !response.error) {
-    const fileName = "out" + response.data.id;
-    await uploadAttendanceOutImage(fileName, attendanceImage);
+  if (image instanceof Blob && !response.error) {
+    const fileName = response.data.id;
+    await uploadAttendanceOutImage(fileName, image);
   }
   revalidateTag("attendance");
   return response;
