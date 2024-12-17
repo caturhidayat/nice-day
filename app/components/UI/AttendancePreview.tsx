@@ -34,7 +34,7 @@ export default function AttendancePreview({
   mode,
   attendanceId,
 }: AttendancePreviewProps) {
-  console.log("attendanceId props : ", attendanceId);
+  // console.log("attendanceId props : ", attendanceId);
   //  * State
   const [location, setLocation] = useState<LatLngExpression>({
     lat: 0,
@@ -74,7 +74,7 @@ export default function AttendancePreview({
 
           mapRef.current?.flyTo(userLocation, 15, {
             animate: true,
-            duration: 1.5,
+            duration: 0.5,
           });
 
           // Calculate distance between user location and target locations
@@ -95,7 +95,7 @@ export default function AttendancePreview({
     }
   };
 
-  // Start the camera
+  // * Start the camera
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -111,7 +111,7 @@ export default function AttendancePreview({
     }
   };
 
-  // Stop the camera
+  // * Stop the camera
   const stopCamera = () => {
     const stream = videoRef.current?.srcObject as MediaStream;
     const tracks = stream?.getTracks();
@@ -123,7 +123,7 @@ export default function AttendancePreview({
     }
   };
 
-  // Get user location on page load
+  // * Get user location on page load
   useEffect(() => {
     startCamera();
     getLocation();
@@ -144,136 +144,105 @@ export default function AttendancePreview({
       canvasRef.current.height = height;
       const context = canvasRef.current.getContext("2d");
       context?.drawImage(videoRef.current, 0, 0, width, height);
-      setPhoto(canvasRef.current.toDataURL("image/jpeg"));
-      // if (!checkInTime) {
-      //   setCheckInTime(dayjs().valueOf());
-      //   console.log("checkInTime", checkInTime);
-      // }
-      setIsCameraOn(false);
-      stopCamera();
+
+      // Convert canvas data to blob
+      canvasRef.current.toBlob((blob) => {
+        if (blob) {
+          const fileName = "image.jpeg";
+          const file = new File([blob], fileName, { type: "image/jpeg" });
+
+          // Set photo based on whether it's check-in or check-out
+          if (mode === "in") {
+            setCheckInPhoto(file);
+          } else {
+            setCheckOutPhoto(file);
+          }
+
+          // Save preview
+          setPhoto(canvasRef.current!.toDataURL("image/jpeg"));
+
+          // Turn off camera after taking photo
+          setIsCameraOn(false);
+          stopCamera();
+        }
+      }, "image/jpeg", 0.8); // 0.8 quality for better file size
     }
-    // try {
-    //   const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    //   const video = document.createElement("video");
-    //   video.srcObject = stream;
-    //   await new Promise(resolve => video.onloadedmetadata = resolve);
-    //   video.play();
-    //   const canvas = document.createElement("canvas");
-    // } catch (error) {
-    //   console.error("Error capturing photo", error);
-    //   return null;
-    // }
   };
 
-  const uploadPhoto = async (file: File): Promise<string> => {
-    const formData = new FormData();
-    formData.append("file", file);
+  // const uploadPhoto = async (file: File): Promise<string> => {
+  //   const formData = new FormData();
+  //   formData.append("file", file);
 
-    const response = await axios.post(
-      `${API_URL}/attendances/${attendanceId}/image`,
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
+  //   const response = await axios.post(
+  //     `${API_URL}/attendances/${attendanceId}/image`,
+  //     formData,
+  //     {
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //     }
+  //   );
 
-    return response.data.fileUrl;
-  };
+  //   return response.data.fileUrl;
+  // };
 
   // * Save attendance
   const saveAttendance = async () => {
-    // if (!photo || !location) return;
-
-    // const blob = await fetch(photo).then((res) => res.blob());
-    const formData = new FormData();
-    const imageName = `${Date.now()}-${Math.round(Math.random() * 1e9)}.png`;
-    // formData.append("image", blob, imageName);
-    if (mode === "in") {
-      formData.append("inLatitude", (location as any).lat);
-      formData.append("inLongitude", (location as any).lng);
-      formData.append("checkInTime", checkInTime?.toString() || "");
-      // formData.append("checkInPhotoUrl", photo);
-      // formData.append("checkInPhotoUrl", await uploadPhoto(checkInPhoto as File));
-    } else if (mode === "out") {
-      formData.append("outLatitude", (location as any).lat);
-      formData.append("outLongitude", (location as any).lng);
-      formData.append("checkOutTime", checkOutTime?.toString() || "");
-      // formData.append("checkOutPhotoUrl", photo);
-      // formData.append("checkOutPhotoUrl", await uploadPhoto(checkOutPhoto as File));
-    }
-
-    // console.log("check In time : ", checkInTime);
-    // console.log("lon", (location as any).lng);
-    // console.log("lon", (location as any).lat);
-
-    const handleResponse = (response: any) => {
-      if (response && response.error) {
-        toast.custom((t) => (
-          <div
-            className={`${
-              t.visible ? "animate-enter" : "animate-leave"
-            } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-          >
-            <div className="flex-1 w-0 p-4">
-              <div className="flex items-start">
-                <div className="ml-3 flex-1">
-                  <p className="text-sm font-medium text-gray-900">
-                    There is an error!
-                  </p>
-                  <p className="mt-1 text-sm text-gray-500">
-                    ❌ {response.error}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="flex border-l border-gray-200">
-              <button
-                onClick={() => toast.dismiss(t.id)}
-                className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        ));
-        router.push("/hr");
-      } else {
-        toast.custom((t) => (
-          <div
-            className={`${
-              t.visible ? "animate-enter" : "animate-leave"
-            } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-          >
-            <div className="flex-1 w-0 p-4">
-              <div className="flex items-start">
-                <div className="ml-3 flex-1">
-                  <p className="text-sm font-medium text-gray-900">Success!</p>
-                  <p className="mt-1 text-sm text-gray-500">
-                    ✅ Attendance saved successfully
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="flex border-l border-gray-200">
-              <button
-                onClick={() => toast.dismiss(t.id)}
-                className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        ));
-        setResponse(response.data);
-        router.push("/hr");
+    try {
+      if (!location) {
+        toast.error("Lokasi tidak ditemukan");
+        return;
       }
-    };
 
-    const response =
-      mode === "in"
-        ? await createAttendance(formData, photo)
-        : await updateAttendance(formData, photo);
-    handleResponse(response);
+      const formData = new FormData();
+
+      if (mode === "in") {
+        if (!checkInPhoto) {
+          toast.error("Silakan ambil foto terlebih dahulu");
+          return;
+        }
+
+        console.log("checkInPhoto file :", checkInPhoto);
+        formData.append("inLatitude", (location as any).lat);
+        formData.append("inLongitude", (location as any).lng);
+        formData.append("checkInTime", checkInTime?.toString() || "");
+        formData.append("image", checkInPhoto);
+
+        // Upload check-in photo
+        // const checkInPhotoUrl = await uploadPhoto(checkInPhoto);
+        // formData.append("checkInPhotoUrl", checkInPhotoUrl);
+      } else if (mode === "out") {
+        if (!checkOutPhoto) {
+          toast.error("Silakan ambil foto terlebih dahulu");
+          return;
+        }
+        formData.append("outLatitude", (location as any).lat);
+        formData.append("outLongitude", (location as any).lng);
+        formData.append("checkOutTime", checkOutTime?.toString() || "");
+        formData.append("image", checkOutPhoto);
+
+        // Upload check-out photo
+        // const checkOutPhotoUrl = await uploadPhoto(checkOutPhoto);
+        // formData.append("checkOutPhotoUrl", checkOutPhotoUrl);
+      }
+
+      // Save attendance data
+      // console.log("formData : ", formData);
+      const response = await (mode === "in"
+        ? createAttendance(formData)
+        : updateAttendance(formData));
+
+      if (response?.error) {
+        toast.error(response.error);
+        return;
+      }
+
+      toast.success(
+        mode === "in" ? "Berhasil Check In!" : "Berhasil Check Out!"
+      );
+      router.push("/hr");
+    } catch (error) {
+      console.error("Error saving attendance:", error);
+      toast.error("Terjadi kesalahan saat menyimpan data");
+    }
   };
 
   return (
@@ -296,7 +265,7 @@ export default function AttendancePreview({
                 src={photo}
                 alt="Preview"
                 className="rounded-lg"
-                width={120}
+                width={180}
                 height={200}
               />
             </div>

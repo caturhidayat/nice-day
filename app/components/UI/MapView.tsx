@@ -44,9 +44,9 @@ const MapView = ({
     function FlyToUserLocation({ location }: FlyToUserLocationProps) {
         const map = useMap();
         useEffect(() => {
-            map.flyTo(location, 15, {
+            map.flyTo(location, 16, {
                 animate: true,
-                duration: 1.5,
+                duration: 1.2,
             });
 
             fixLeafletIcon();
@@ -90,8 +90,8 @@ const MapView = ({
                         <Circle
                             center={target}
                             radius={circleRadius}
-                            color="red"
-                            fillColor="red"
+                            color="teal"
+                            fillColor="teal"
                             fillOpacity={0.3}
                         />
                     </div>
