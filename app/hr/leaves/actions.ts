@@ -9,6 +9,7 @@ export async function createLeaves(formData: FormData) {
   console.log("formData", formData);
   const response = await post(`leaves`, formData);
   const leaveImage = formData.get("image");
+  console.log("leaveImage : ", leaveImage);
   if (leaveImage instanceof Blob && !response.error) {
     const fileName = response.data.id;
     await uploadLeaveImage(fileName, leaveImage);

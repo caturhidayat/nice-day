@@ -49,11 +49,19 @@ const LeaveType = [
   "OTHER",
 ];
 
+interface IFormData {
+  startDate: string;
+  endDate: string;
+  reason: string;
+  leaveType: string;
+  image: FileList;
+}
+
 const FormSchema = z.object({
-  startDate: z.date({
+  startDate: z.string({
     required_error: "Start date is required",
   }),
-  endDate: z.date({
+  endDate: z.string({
     required_error: "End date is required",
   }),
   reason: z
@@ -66,7 +74,7 @@ const FormSchema = z.object({
   leaveType: z.string({
     required_error: "Leave type is required",
   }),
-  image: z.instanceof(File).optional(),
+  image: z.any(),
 });
 
 export function InputForm() {
@@ -75,8 +83,8 @@ export function InputForm() {
     console.log("File Uplaod", file);
   };
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    // resolver: zodResolver(FormSchema),
+  const form = useForm<IFormData>({
+    resolver: zodResolver(FormSchema),
     defaultValues: {
       reason: "",
       // startDate: new Date(),
@@ -86,53 +94,55 @@ export function InputForm() {
     },
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: IFormData) {
     console.log(data);
     const formData = new FormData();
-    // formData.append("startDate", data?.startDate.getTime().toString());
-    // formData.append("endDate", data?.endDate.getTime().toString());
+    formData.append("startDate", data?.startDate);
+    formData.append("endDate", data?.endDate);
     formData.append("reason", data.reason);
     formData.append("leaveType", data.leaveType);
     formData.append("image", data.image[0]);
 
-    console.log("Form Data RAW : ", formData);
+    console.log("image : ", formData.get("image"));
 
-    // const res = await createLeaves(formData);
+    // console.log("Form Data RAW : ", JSON.stringify(Object.fromEntries(formData)));
 
-    // if (res.error) {
-    //   return { error: res.error, success: "" };
-    // } else {
-    //   toast.custom((t) => (
-    //     <div
-    //       className={`${
-    //         t.visible ? "animate-enter" : "animate-leave"
-    //       } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-    //     >
-    //       <div className="flex-1 w-0 p-4">
-    //         <div className="flex items-start">
-    //           <div className="ml-3 flex-1">
-    //             <p className="text-sm font-medium text-gray-900">Success!</p>
-    //             <p className="mt-1 text-sm text-gray-500">
-    //               ✅ Leave has been created successfully
-    //             </p>
-    //           </div>
-    //         </div>
-    //       </div>
-    //       <div className="flex border-l border-gray-200">
-    //         <button
-    //           onClick={() => toast.dismiss(t.id)}
-    //           className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-    //         >
-    //           Close
-    //         </button>
-    //       </div>
-    //     </div>
-    //   ));
+    const res = await createLeaves(formData);
 
-    //   router.push("/hr/leaves");
-    // }
+    if (res.error) {
+      return { error: res.error, success: "" };
+    } else {
+      toast.custom((t) => (
+        <div
+          className={`${
+            t.visible ? "animate-enter" : "animate-leave"
+          } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="ml-3 flex-1">
+                <p className="text-sm font-medium text-gray-900">Success!</p>
+                <p className="mt-1 text-sm text-gray-500">
+                  ✅ Leave has been created successfully
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="flex border-l border-gray-200">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      ));
 
-    // console.log("res", res);
+      router.push("/hr/leaves");
+    }
+
+    console.log("res", res);
   }
 
   return (
@@ -197,7 +207,7 @@ export function InputForm() {
                       )}
                     >
                       {field.value ? (
-                        format(field.value, "PPP")
+                        format(new Date(parseInt(field.value as string)), "dd MMM yyyy")
                       ) : (
                         <span>Pick a date</span>
                       )}
@@ -208,8 +218,8 @@ export function InputForm() {
                 <PopoverContent className="p-0">
                   <Calendar
                     mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
+                    selected={field.value ? new Date(parseInt(field.value as string)) : undefined}
+                    onSelect={(date) => field.onChange(date?.getTime().toString())}
                     initialFocus
                   />
                 </PopoverContent>
@@ -236,7 +246,7 @@ export function InputForm() {
                       )}
                     >
                       {field.value ? (
-                        format(field.value, "dd, MMMM yyyy")
+                        format(new Date(parseInt(field.value as string)), "dd MMM yyyy")
                       ) : (
                         <span>Pick a date</span>
                       )}
@@ -247,8 +257,8 @@ export function InputForm() {
                 <PopoverContent className="w-auto p-0">
                   <Calendar
                     mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
+                    selected={field.value ? new Date(parseInt(field.value as string)) : undefined}
+                    onSelect={(date) => field.onChange(date?.getTime().toString())}
                     // disabled={(date) => (startDate ? date < startDate : false)}
                     initialFocus
                   />
@@ -285,7 +295,7 @@ export function InputForm() {
                   accept="image/*"
                   // value={value?.name}
                   onChange={(e) => {
-                    const file = e.target.files?.[0];
+                    const file = e.target.files;
                     onChange(file)
                   }}
                   {...field}

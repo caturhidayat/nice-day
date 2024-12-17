@@ -2,6 +2,7 @@ import { SquareChevronLeft } from "lucide-react";
 import { InputForm } from "../LeavesForm";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import FormInput from "../FormInput";
 
 export default function LeavesRequest() {
   return (
@@ -15,9 +16,8 @@ export default function LeavesRequest() {
         </Link>
       </div>
       <div className="text-xl font-bold">Leave Request Form</div>
-      {/* <div className="grid"> */}
       <InputForm />
-      {/* </div> */}
-    </div>  
+      {/* <FormInput /> */}
+    </div>
   );
 }

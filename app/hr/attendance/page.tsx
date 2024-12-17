@@ -5,7 +5,6 @@ import { getAttendances, getProfile } from "@/app/lib/action";
 import EmplyAttendance from "@/app/components/UI/EmplyAttendance";
 import { format } from "date-fns";
 import { TZDate } from "@date-fns/tz";
-import { toZonedTime } from "date-fns-tz";
 import {
   Card,
   CardContent,
@@ -136,12 +135,19 @@ export default async function Page() {
             //   </div>
             // </div>
             <Card key={item.id}>
-              <CardHeader className="bg-primary/10">
+              <CardHeader className="bg-secondary">
                 <CardTitle className="text-lg">
-                  {format(
+                  {/* {format(
                     new TZDate(Number(item.attendanceDate), "Asia/Jakarta"),
                     "EEE, dd MMM yyyy"
-                  )}
+                  )} */}
+                  {format(
+                    new TZDate(
+                      new Date(Number(item.attendanceDate)),
+                      userTimezone
+                    ),
+                    "EEEE, dd MMM yyyy"
+                  )}{" "}
                 </CardTitle>
               </CardHeader>
               <Separator />
@@ -151,26 +157,44 @@ export default async function Page() {
                     <p className="text-lg text-teal-600">Check In</p>
                     {item.checkInTime ? (
                       <div className="text-2xl font-semibold">
-                        {format(
+                        {/* {format(
                           new TZDate(Number(item.checkInTime), "Asia/Jakarta"),
+                          "HH:mm"
+                        )} */}
+                        {format(
+                          new TZDate(
+                            new Date(Number(item.checkInTime)),
+                            userTimezone
+                          ),
                           "HH:mm"
                         )}
                       </div>
                     ) : (
-                      <div className="text-2xl font-semibold text-primary/10">--:--</div>
+                      <div className="text-2xl font-semibold text-primary/10">
+                        --:--
+                      </div>
                     )}
                   </div>
                   <div className="flex flex-col items-center">
                     <p className="text-lg text-amber-600">Check Out</p>
                     {item.checkOutTime ? (
                       <div className="text-2xl font-semibold">
-                        {format(
+                        {/* {format(
                           new TZDate(Number(item.checkOutTime), "Asia/Jakarta"),
+                          "HH:mm"
+                        )} */}
+                        {format(
+                          new TZDate(
+                            new Date(Number(item.checkOutTime)),
+                            userTimezone
+                          ),
                           "HH:mm"
                         )}
                       </div>
                     ) : (
-                      <div className="text-2xl font-semibold text-primary/10">--:--</div>
+                      <div className="text-2xl font-semibold text-primary/10">
+                        --:--
+                      </div>
                     )}
                   </div>
                 </div>

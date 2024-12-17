@@ -89,8 +89,8 @@ export function AttendanceCard({
         </div>
       </CardContent>
       <CardFooter>
-        <p className="text-sm text-amber-600">
-          If you have any questions, please contact your HR
+        <p className="text-xs text-amber-600">
+          * If you have any questions, please contact HR
         </p>
       </CardFooter>
     </Card>
