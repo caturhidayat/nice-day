@@ -15,6 +15,7 @@ import { format } from "date-fns";
 import axios from "axios";
 import { API_URL } from "@/app/lib/constants/api";
 import { Button } from "@/components/ui/button";
+import { CheckCircle2Icon, CircleX } from "lucide-react";
 
 // Dynamic import komponen Map
 const MapView = dynamic(() => import("./MapView"), {
@@ -146,26 +147,30 @@ export default function AttendancePreview({
       context?.drawImage(videoRef.current, 0, 0, width, height);
 
       // Convert canvas data to blob
-      canvasRef.current.toBlob((blob) => {
-        if (blob) {
-          const fileName = "image.jpeg";
-          const file = new File([blob], fileName, { type: "image/jpeg" });
+      canvasRef.current.toBlob(
+        (blob) => {
+          if (blob) {
+            const fileName = "image.jpeg";
+            const file = new File([blob], fileName, { type: "image/jpeg" });
 
-          // Set photo based on whether it's check-in or check-out
-          if (mode === "in") {
-            setCheckInPhoto(file);
-          } else {
-            setCheckOutPhoto(file);
+            // Set photo based on whether it's check-in or check-out
+            if (mode === "in") {
+              setCheckInPhoto(file);
+            } else {
+              setCheckOutPhoto(file);
+            }
+
+            // Save preview
+            setPhoto(canvasRef.current!.toDataURL("image/jpeg"));
+
+            // Turn off camera after taking photo
+            setIsCameraOn(false);
+            stopCamera();
           }
-
-          // Save preview
-          setPhoto(canvasRef.current!.toDataURL("image/jpeg"));
-
-          // Turn off camera after taking photo
-          setIsCameraOn(false);
-          stopCamera();
-        }
-      }, "image/jpeg", 0.8); // 0.8 quality for better file size
+        },
+        "image/jpeg",
+        0.8
+      ); // 0.8 quality for better file size
     }
   };
 
@@ -188,7 +193,32 @@ export default function AttendancePreview({
   const saveAttendance = async () => {
     try {
       if (!location) {
-        toast.error("Lokasi tidak ditemukan");
+        toast.custom((t) => (
+          <div
+            className={`${
+              t.visible ? "animate-enter" : "animate-leave"
+            } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+          >
+            <div className="flex-1 w-0 p-4">
+              <div className="flex items-start">
+                <div className="ml-3 flex-1">
+                  <p className="text-sm font-medium text-gray-900">Error</p>
+                  <p className="mt-1 text-sm text-gray-500">
+                    Location not found
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex border-l border-gray-200">
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        ));
         return;
       }
 
@@ -196,7 +226,32 @@ export default function AttendancePreview({
 
       if (mode === "in") {
         if (!checkInPhoto) {
-          toast.error("Silakan ambil foto terlebih dahulu");
+          toast.custom((t) => (
+            <div
+              className={`${
+                t.visible ? "animate-enter" : "animate-leave"
+              } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+            >
+              <div className="flex-1 w-0 p-4">
+                <div className="flex items-start">
+                  <div className="ml-3 flex-1">
+                    <p className="text-sm font-medium text-gray-900">Error!</p>
+                    <p className="mt-1 text-sm text-gray-500">
+                      Please take photo first
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex border-l border-gray-200">
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          ));
           return;
         }
 
@@ -211,7 +266,32 @@ export default function AttendancePreview({
         // formData.append("checkInPhotoUrl", checkInPhotoUrl);
       } else if (mode === "out") {
         if (!checkOutPhoto) {
-          toast.error("Silakan ambil foto terlebih dahulu");
+          toast.custom((t) => (
+            <div
+              className={`${
+                t.visible ? "animate-enter" : "animate-leave"
+              } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+            >
+              <div className="flex-1 w-0 p-4">
+                <div className="flex items-start">
+                  <div className="ml-3 flex-1">
+                    <p className="text-sm font-medium text-gray-900">Error!</p>
+                    <p className="mt-1 text-sm text-gray-500">
+                      Please take photo first
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex border-l border-gray-200">
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          ));
           return;
         }
         formData.append("outLatitude", (location as any).lat);
@@ -231,17 +311,92 @@ export default function AttendancePreview({
         : updateAttendance(formData));
 
       if (response?.error) {
-        toast.error(response.error);
+        toast.custom((t) => (
+          <div
+            className={`${
+              t.visible ? "animate-enter" : "animate-leave"
+            } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+          >
+            <div className="flex-1 w-0 p-4">
+              <div className="flex items-start">
+                <div className="ml-3 flex-1">
+                  <p className="text-sm font-medium text-gray-900">Error!</p>
+                  <p className="mt-1 text-sm text-gray-500">
+                    {response?.error}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex border-l border-gray-200">
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        ));
         return;
       }
 
-      toast.success(
-        mode === "in" ? "Berhasil Check In!" : "Berhasil Check Out!"
-      );
+      toast.custom((t) => (
+        <div
+          className={`${
+            t.visible ? "animate-enter" : "animate-leave"
+          } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="ml-3 flex-1">
+                <p className="text-sm font-medium text-gray-900">Success!</p>
+                <p className="mt-1 text-sm text-gray-500">
+                  {mode === "in"
+                    ? "Check-in has been saved successfully"
+                    : "Check-out has been saved successfully"}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="flex border-l border-gray-200">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      ));
       router.push("/hr");
     } catch (error) {
       console.error("Error saving attendance:", error);
-      toast.error("Terjadi kesalahan saat menyimpan data");
+      toast.custom((t) => (
+        <div
+          className={`${
+            t.visible ? "animate-enter" : "animate-leave"
+          } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="ml-3 flex-1">
+                <p className="text-sm font-medium text-gray-900">Error!</p>
+                <p className="mt-1 text-sm text-gray-500">
+                  {error instanceof Error ? error.message : "Unknown error"}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="flex border-l border-gray-200">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      ));
     }
   };
 
