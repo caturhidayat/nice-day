@@ -51,7 +51,7 @@ export default function AttendanceTracking() {
 
         console.log("Check-in data:", checkInData);
 
-        await createAttendance(checkInData);
+        // await createAttendance(checkInData,);
 
         console.log("Check-in data:", checkInData);
       });
@@ -72,7 +72,7 @@ export default function AttendanceTracking() {
 
         console.log("Check-out data:", checkOutData);
 
-        await updateAttendance(checkOutData);
+        // await updateAttendance(checkOutData);
 
         // const response = await axios.post('/api/attendance/check-out', checkOutData);
         // console.log('Check-out berhasil:', response.data);

@@ -40,7 +40,7 @@ export default function AttendancePreview({
     lat: 0,
     lng: 0,
   });
-  const [photo, setPhoto] = useState<string | null>(null);
+  const [photo, setPhoto] = useState<string>("");
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [inRadius, setInRadius] = useState(false);
   const [response, setResponse] = useState<FormResponse>();
@@ -136,17 +136,15 @@ export default function AttendancePreview({
   }, []);
 
   // Take a photo
-  const takePhoto = () => {
+  const takePhoto = async () => {
     if (videoRef.current && canvasRef.current) {
       const width = videoRef.current.videoWidth;
       const height = videoRef.current.videoHeight;
-
       canvasRef.current.width = width;
       canvasRef.current.height = height;
-
       const context = canvasRef.current.getContext("2d");
       context?.drawImage(videoRef.current, 0, 0, width, height);
-      setPhoto(canvasRef.current.toDataURL("image/png"));
+      setPhoto(canvasRef.current.toDataURL("image/jpeg"));
       // if (!checkInTime) {
       //   setCheckInTime(dayjs().valueOf());
       //   console.log("checkInTime", checkInTime);
@@ -154,6 +152,17 @@ export default function AttendancePreview({
       setIsCameraOn(false);
       stopCamera();
     }
+    // try {
+    //   const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    //   const video = document.createElement("video");
+    //   video.srcObject = stream;
+    //   await new Promise(resolve => video.onloadedmetadata = resolve);
+    //   video.play();
+    //   const canvas = document.createElement("canvas");
+    // } catch (error) {
+    //   console.error("Error capturing photo", error);
+    //   return null;
+    // }
   };
 
   const uploadPhoto = async (file: File): Promise<string> => {
@@ -183,11 +192,13 @@ export default function AttendancePreview({
       formData.append("inLatitude", (location as any).lat);
       formData.append("inLongitude", (location as any).lng);
       formData.append("checkInTime", checkInTime?.toString() || "");
+      // formData.append("checkInPhotoUrl", photo);
       // formData.append("checkInPhotoUrl", await uploadPhoto(checkInPhoto as File));
     } else if (mode === "out") {
       formData.append("outLatitude", (location as any).lat);
       formData.append("outLongitude", (location as any).lng);
       formData.append("checkOutTime", checkOutTime?.toString() || "");
+      // formData.append("checkOutPhotoUrl", photo);
       // formData.append("checkOutPhotoUrl", await uploadPhoto(checkOutPhoto as File));
     }
 
@@ -260,8 +271,8 @@ export default function AttendancePreview({
 
     const response =
       mode === "in"
-        ? await createAttendance(formData)
-        : await updateAttendance(formData);
+        ? await createAttendance(formData, photo)
+        : await updateAttendance(formData, photo);
     handleResponse(response);
   };
 
@@ -303,7 +314,9 @@ export default function AttendancePreview({
             </div>
             <div className="grid gap-2 p-2">
               {isCameraOn ? (
-                <Button onClick={takePhoto} className="w-full">Take Photo</Button>
+                <Button onClick={takePhoto} className="w-full">
+                  Take Photo
+                </Button>
               ) : null}
             </div>
           </div>

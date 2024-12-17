@@ -35,6 +35,8 @@ import { API_URL } from "@/app/lib/constants/api";
 import { createLeaves } from "./actions";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import ImageUplaod from "./ImageUplaod";
 
 const LeaveType = [
   "SICK",
@@ -47,11 +49,19 @@ const LeaveType = [
   "OTHER",
 ];
 
+interface IFormData {
+  startDate: string;
+  endDate: string;
+  reason: string;
+  leaveType: string;
+  image: FileList;
+}
+
 const FormSchema = z.object({
-  startDate: z.date({
+  startDate: z.string({
     required_error: "Start date is required",
   }),
-  endDate: z.date({
+  endDate: z.string({
     required_error: "End date is required",
   }),
   reason: z
@@ -64,29 +74,38 @@ const FormSchema = z.object({
   leaveType: z.string({
     required_error: "Leave type is required",
   }),
-  imageUrl: z.string(),
+  image: z.any(),
 });
 
 export function InputForm() {
   const router = useRouter();
+  const handleImageUpload = (file: File) => {
+    console.log("File Uplaod", file);
+  };
 
-  const form = useForm<z.infer<typeof FormSchema>>({
+  const form = useForm<IFormData>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       reason: "",
+      // startDate: new Date(),
+      // endDate: new Date(),
       leaveType: "",
-      imageUrl: "",
+      // image: undefined,
     },
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: IFormData) {
     console.log(data);
     const formData = new FormData();
-    formData.append("startDate", data.startDate.getTime().toString());
-    formData.append("endDate", data.endDate.getTime().toString());
+    formData.append("startDate", data?.startDate);
+    formData.append("endDate", data?.endDate);
     formData.append("reason", data.reason);
     formData.append("leaveType", data.leaveType);
-    formData.append("imageUrl", data.imageUrl);
+    formData.append("image", data.image[0]);
+
+    console.log("image : ", formData.get("image"));
+
+    // console.log("Form Data RAW : ", JSON.stringify(Object.fromEntries(formData)));
 
     const res = await createLeaves(formData);
 
@@ -128,7 +147,20 @@ export function InputForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+      <form
+        className="space-y-2"
+        onSubmit={form.handleSubmit(onSubmit)}
+        // action={async (formData) => {
+        //   console.log("form data raw: ", formData);
+        //   const res = await createLeaves(formData);
+
+        //   if (res.error) {
+        //     return { error: res.error, success: "" };
+        //   }
+        //   return res.data;
+
+        // }}
+      >
         <FormField
           control={form.control}
           name="leaveType"
@@ -175,7 +207,7 @@ export function InputForm() {
                       )}
                     >
                       {field.value ? (
-                        format(field.value, "PPP")
+                        format(new Date(parseInt(field.value as string)), "dd MMM yyyy")
                       ) : (
                         <span>Pick a date</span>
                       )}
@@ -186,8 +218,8 @@ export function InputForm() {
                 <PopoverContent className="p-0">
                   <Calendar
                     mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
+                    selected={field.value ? new Date(parseInt(field.value as string)) : undefined}
+                    onSelect={(date) => field.onChange(date?.getTime().toString())}
                     initialFocus
                   />
                 </PopoverContent>
@@ -214,7 +246,7 @@ export function InputForm() {
                       )}
                     >
                       {field.value ? (
-                        format(field.value, "dd, MMMM yyyy")
+                        format(new Date(parseInt(field.value as string)), "dd MMM yyyy")
                       ) : (
                         <span>Pick a date</span>
                       )}
@@ -225,8 +257,8 @@ export function InputForm() {
                 <PopoverContent className="w-auto p-0">
                   <Calendar
                     mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
+                    selected={field.value ? new Date(parseInt(field.value as string)) : undefined}
+                    onSelect={(date) => field.onChange(date?.getTime().toString())}
                     // disabled={(date) => (startDate ? date < startDate : false)}
                     initialFocus
                   />
@@ -253,18 +285,32 @@ export function InputForm() {
 
         <FormField
           control={form.control}
-          name="imageUrl"
-          render={({ field }) => (
+          name="image"
+          render={({ field: { onChange, value, ...field } }) => (
             <FormItem>
               <FormLabel>Image URL</FormLabel>
               <FormControl>
-                <Input type="file" {...field} />
+                <Input
+                  type="file"
+                  accept="image/*"
+                  // value={value?.name}
+                  onChange={(e) => {
+                    const file = e.target.files;
+                    onChange(file)
+                  }}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">Submit</Button>
+
+        {/* <ImageUplaod onUpload={handleImageUpload} /> */}
+
+        <Button className="w-full" type="submit">
+          Submit
+        </Button>
       </form>
     </Form>
   );

@@ -102,30 +102,47 @@ export async function getAttendances() {
   return get<Attendance[]>("attendances/last-attendances");
 }
 
-export async function createAttendance(formData: FormData) {
+export async function createAttendance(formData: FormData, photo: string | File) {
+  console.log("formData", formData);
   const response = await post("attendances/check-in", formData);
 
   // console.log("res-action", response);
-  // const attendanceImage = formData.get("image") as File;
-  // if (attendanceImage instanceof File && response.error) {
-  //     await uploadAttendanceImage(response.data.id, attendanceImage);
-  // }
+  // const attendanceImage = formData.get("checkInPhotoUrl");
+  if (photo instanceof Blob && !response.error) {
+    const fileName = response.data.id;
+    await uploadAttendanceInImage(fileName, photo);
+  }
   revalidateTag("attendance");
   // setAttendanceCookie(response.data);
   // console.log("res-action", response);
   return response;
 }
 
-export async function updateAttendance(formData: FormData) {
+export async function updateAttendance(formData: FormData, photo: string | File) {
   const response = await post(`attendances/check-out`, formData);
+
+  const attendanceImage = formData.get("image");
+  if (attendanceImage instanceof Blob && !response.error) {
+    const fileName = "out" + response.data.id;
+    await uploadAttendanceOutImage(fileName, attendanceImage);
+  }
   revalidateTag("attendance");
   return response;
 }
 
-async function uploadAttendanceImage(attendanceId: string, file: File) {
+async function uploadAttendanceInImage(attendanceId: string, file: File) {
   const formData = new FormData();
   formData.append("image", file);
-  await fetch(`${API_URL}/attendance/${attendanceId}/image`, {
+  await fetch(`${API_URL}/attendances/${attendanceId}/in`, {
+    body: formData,
+    method: "POST",
+    headers: getHeaders(),
+  });
+}
+async function uploadAttendanceOutImage(attendanceId: string, file: File) {
+  const formData = new FormData();
+  formData.append("image", file);
+  await fetch(`${API_URL}/attendances/${attendanceId}/out`, {
     body: formData,
     method: "POST",
     headers: getHeaders(),

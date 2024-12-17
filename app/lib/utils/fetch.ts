@@ -1,15 +1,14 @@
 import { cookies } from "next/headers";
 import { API_URL } from "../constants/api";
 import { getErrorMessage } from "./errors";
+import { error } from "console";
 
 export const getHeaders = () => ({
   Cookie: cookies().toString(),
 });
 
 export const post = async (path: string, data: FormData) => {
-  console.log("formData : ", data);
-  // const body = data instanceof FormData ? Object.fromEntries(data) : data;
-
+  // console.log("formData : ", data);
   console.log("request body ", data);
   const res = await fetch(`${API_URL}/${path}`, {
     method: "POST",
@@ -17,13 +16,13 @@ export const post = async (path: string, data: FormData) => {
     body: JSON.stringify(Object.fromEntries(data)),
   });
 
-  console.log("res", res);
+  // console.log("res", res);
   const parsedRes = await res.json();
   console.log("parsedRes", parsedRes);
   if (!res.ok) {
     return { error: getErrorMessage(parsedRes) };
   } else {
-    return { data: parsedRes };
+    return {error: "", data: parsedRes };
   }
 };
 
