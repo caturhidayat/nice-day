@@ -115,21 +115,23 @@ export async function updateAttendance(formData: FormData) {
 }
 
 async function uploadAttendanceInImage(attendanceId: string, file: File) {
+  const token = await getHeaders();
   const formData = new FormData();
   formData.append("image", file);
   await fetch(`${API_URL}/attendances/${attendanceId}/in`, {
     body: formData,
     method: "POST",
-    headers: getHeaders(),
+    headers: token,
   });
 }
 async function uploadAttendanceOutImage(attendanceId: string, file: File) {
+  const token = await getHeaders();
   const formData = new FormData();
   formData.append("image", file);
   await fetch(`${API_URL}/attendances/${attendanceId}/out`, {
     body: formData,
     method: "POST",
-    headers: getHeaders(),
+    headers: token,
   });
 }
 

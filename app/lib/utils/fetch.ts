@@ -1,18 +1,19 @@
 import { cookies } from "next/headers";
 import { API_URL } from "../constants/api";
 import { getErrorMessage } from "./errors";
-import { error } from "console";
 
-export const getHeaders = () => ({
-  Cookie: cookies().toString(),
+export const getHeaders = async () => ({
+  Cookie: (await cookies()).toString(),
 });
 
-export const post = async (path: string, data: FormData) => {
+
+export async function post(path: string, data: FormData) {
+  const token = await getHeaders();
   // console.log("formData : ", data);
   console.log("request body ", data);
   const res = await fetch(`${API_URL}/${path}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", ...getHeaders() },
+    headers: { "Content-Type": "application/json", ...token },
     body: JSON.stringify(Object.fromEntries(data)),
   });
 
@@ -26,33 +27,28 @@ export const post = async (path: string, data: FormData) => {
   }
 };
 
-// export const get = async <T>(path: string, tags?: string[]) => {
-//   const res = await fetch(`${API_URL}/${path}`, {
-//     headers: { ...getHeaders() },
-//     next: { tags },
-//   });
-//   return res.json() as T;
-// };
-
-export const get = async <T>(path: string) => {
+export async function get<T>(path: string) {
+  const token = await getHeaders();
   const res = await fetch(`${API_URL}/${path}`, {
-    headers: { ...getHeaders() },
+    headers: { ...token, "Content-Type": "application/json" },
   });
   return res.json() as T;
 };
 
-export const getOne = async <T>(path: string, id: string) => {
+export async function getOne<T>(path: string, id: string) {
+  const token = await getHeaders();
   const res = await fetch(`${API_URL}/${path}/${id}`, {
-    headers: { ...getHeaders() },
+    headers: { ...token, "Content-Type": "application/json" },
   });
   return res.json() as T;
 };
 
-export const patch = async (path: string, data: FormData) => {
+export async function patch(path: string, data: FormData) {
+  const token = await getHeaders();
   const res = await fetch(`${API_URL}/${path}`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json", ...getHeaders() },
+    headers: { "Content-Type": "application/json", ...token },
     body: JSON.stringify(Object.fromEntries(data)),
   });
   return res.json();
-};
+}

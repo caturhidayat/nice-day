@@ -6,7 +6,6 @@ import {
   MapPin,
   MapPinCheckInside,
   MapPinXInside,
-  SquarePen,
   User2,
 } from "lucide-react";
 import { getAttendances, getProfile } from "@/app/lib/action";
@@ -20,14 +19,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 export default async function Page() {
-  // Get 3 last attendance records
+  // Get attendance records
   const attendance = await getAttendances();
-  const userTimezone = "Asia/Jakarta";
-  // console.log("attendance page : ", attendance);
 
   const me = await getProfile();
 
@@ -115,15 +110,6 @@ export default async function Page() {
                     )}
                   </div>
                 </div>
-                {/* <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                  <dt></dt>
-                  <dd className="sm:col-span-2 text-sm">
-                    {format(
-                      new Date(Number(item.attendanceDate)),
-                      "EEE, dd MMM yyyy"
-                    )}
-                  </dd>
-                </div> */}
               </CardContent>
               <Separator />
               <CardFooter className="grid grid-cols-2 gap-2 text-xs p-2">

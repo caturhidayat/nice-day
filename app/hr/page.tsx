@@ -3,8 +3,6 @@ import { getAttendance, getProfile } from "../lib/action";
 import MenuList from "../components/UI/MenuList";
 import { AttendanceCard } from "../components/UI/AttendanceCard";
 import ClockDisplay from "../components/ClockDisplay";
-import { format } from "date-fns";
-import { TZDate } from "@date-fns/tz";
 
 export default async function Page() {
   const attendance = await getAttendance();
@@ -22,18 +20,6 @@ export default async function Page() {
           Live Attendance
         </p>
         <ClockDisplay />
-        {/* <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-center">
-            <div className="text-5xl font-bold text-secondary">
-              {format(new TZDate(new Date(), "Asia/Jakarta"), "HH:mm")}
-            </div>
-          </div>
-          <div className="flex items-center justify-center">
-            <span className="text-md text-slate-300">
-              <h2>{format(new Date(), "EEE, dd MMM yyyy")}</h2>
-            </span>
-          </div>
-        </div> */}
         <div className="p-1">
           <AttendanceCard attendance={attendance} />
         </div>
