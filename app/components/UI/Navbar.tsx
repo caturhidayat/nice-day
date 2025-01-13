@@ -1,7 +1,7 @@
 "use client";
 
 import { AuthContext } from "@/app/auth/auth-context";
-import { Squirrel } from "lucide-react";
+import Image from "next/image";
 import { useContext } from "react";
 
 export default function Navbar() {
@@ -12,9 +12,19 @@ export default function Navbar() {
       {isAuthenticated ? (
         <div className="navbar bg-base-100 fixed ">
           <div className="flex-1">
-            <a className="btn btn-ghost text-2xl bg-gradient-to-r from-violet-600 via-teal-600 to-purple-600 bg-clip-text text-transparent">
-              [app name]
-            </a>
+            <div className="avatar">
+              <div className="w-12 rounded">
+                <Image
+                  src="/images/Logo.png"
+                  alt="Avatar Tailwind CSS Component"
+                  width={128}
+                  height={128}
+                />
+              </div>
+            </div>
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-polynesian  to-ceruline bg-clip-text text-transparent ">
+              NiceDay
+            </h2>
           </div>
           <div className="flex-none"></div>
         </div>
