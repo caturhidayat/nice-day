@@ -7,9 +7,11 @@ export const getHeaders = async () => ({
 });
 
 
-export async function post(path: string, data: FormData) {
+export const post = async (path: string, data: FormData) => {
+  console.log("formData : ", data);
+  // const body = data instanceof FormData ? Object.fromEntries(data) : data;
+
   const token = await getHeaders();
-  // console.log("formData : ", data);
   console.log("request body ", data);
   const res = await fetch(`${API_URL}/${path}`, {
     method: "POST",
@@ -17,20 +19,20 @@ export async function post(path: string, data: FormData) {
     body: JSON.stringify(Object.fromEntries(data)),
   });
 
-  // console.log("res", res);
   const parsedRes = await res.json();
   console.log("parsedRes", parsedRes);
   if (!res.ok) {
     return { error: getErrorMessage(parsedRes) };
   } else {
-    return {error: "", data: parsedRes };
+    return { data: parsedRes };
   }
 };
 
-export async function get<T>(path: string) {
+export const get = async <T>(path: string, tags?: string[]) => {
   const token = await getHeaders();
   const res = await fetch(`${API_URL}/${path}`, {
     headers: { ...token, "Content-Type": "application/json" },
+    next: { tags },
   });
   return res.json() as T;
 };

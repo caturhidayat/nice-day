@@ -8,7 +8,7 @@ import {
   MapPinXInside,
   User2,
 } from "lucide-react";
-import { getAttendances, getProfile } from "@/app/lib/action";
+import { Attendance, getAttendances, getProfile, ProfileProps } from "@/app/lib/action";
 import EmplyAttendance from "@/app/components/UI/EmplyAttendance";
 import { format } from "date-fns";
 import {
@@ -19,6 +19,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { get } from "@/app/lib/utils/fetch";
 
 export default async function Page() {
   // Get attendance records

@@ -1,38 +1,40 @@
-"use client";
-
 import logout from "@/app/auth/logout";
 import { getProfile } from "@/app/lib/action";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { Logout } from "./Logout";
 
-export default function Page() {
-  const [profile, setProfile] = useState<ProfileProps>({
-    id: "",
-    name: "",
-    departement: "",
-    branch: "",
-  });
 
-  type ProfileProps = {
-    id: string;
-    name: string;
-    departement: string;
-    branch: string;
-  };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await getProfile();
-      setProfile(res);
-    };
-    fetchData();
-  }, []);
+type ProfileProps = {
+  id: string;
+  name: string;
+  departement: string;
+  branch: string;
+};
 
-  const handleLogout = async () => {
-    await logout();
-  };
+export default async function Page() {
+  // const [profile, setProfile] = useState<ProfileProps>({
+  //   id: "",
+  //   name: "",
+  //   departement: "",
+  //   branch: "",
+  // });
+
+ 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const res = await getProfile();
+  //     setProfile(res);
+  //     console.log("res : ", res);
+  //   };
+  //   fetchData();
+  // }, []);
+
+  console.log("window type : ", typeof window);
+  
+  const profile = await getProfile();
 
   return (
     <div className="px-6 flow-root">
@@ -70,24 +72,12 @@ export default function Page() {
             {profile.branch ? profile.branch : "--"}
           </dd>
         </div>
-        {/* 
-                <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                    <dt className="font-medium">Bio</dt>
-                    <dd className="sm:col-span-2">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing
-                        elit. Et facilis debitis explicabo doloremque impedit
-                        nesciunt dolorem facere, dolor quasi veritatis quia
-                        fugit aperiam aspernatur neque molestiae labore aliquam
-                        soluta architecto?
-                    </dd>
-                </div> */}
+
         <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
           <Button variant={"outline"} asChild>
             <Link href="/hr/profile/change-password">Change Password</Link>
           </Button>
-          <Button onClick={handleLogout} variant={"destructive"}>
-            Logout
-          </Button>
+          <Logout />
         </div>
       </dl>
     </div>

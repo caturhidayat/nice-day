@@ -70,9 +70,7 @@ export interface Leaves {
 }
 
 export async function getProfile() {
-  const result = await get<ProfileProps>("users/profile");
-  // console.log("result", result);
-  return result;
+  return get<ProfileProps>("users/profile");
 }
 
 export async function getAttendance() {
@@ -135,11 +133,12 @@ async function uploadAttendanceOutImage(attendanceId: string, file: File) {
   });
 }
 
-const setAttendanceCookie = (response: Response) => {
+export async function setAttendanceCookie(response: Response) {
+  const cookieStore = await cookies();
   const setCookieHeader = response.headers.get("Set-Cookie");
   if (setCookieHeader) {
     const token = setCookieHeader.split(";")[0].split("=")[1];
-    cookies().set({
+    cookieStore.set({
       name: ATTENDANCE_COOKIE,
       value: token,
       secure: true,

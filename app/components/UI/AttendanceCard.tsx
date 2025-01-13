@@ -12,11 +12,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { OctagonAlert } from "lucide-react";
 
-export function AttendanceCard({
-  attendance: Attendance,
-}: {
-  attendance: Attendance;
-}) {
+export function AttendanceCard({ attendance }: { attendance: Attendance }) {
   return (
     // <div className="p-4 bg-base-200 rounded-lg min-h-max pb-16">
     //   <div className="relative block overflow-hidden rounded-lg bg-base-100 border-gray-100 p-4 sm:p-6 lg:p-8 shadow-lg">
@@ -72,16 +68,16 @@ export function AttendanceCard({
         <div className="grid grid-cols-2 py-2 gap-1">
           <div className="flex flex-col gap-2 items-center">
             <p className="text-md font-bold text-2xl pb-4">
-              {Attendance?.checkInTime
-                ? format(new Date(Number(Attendance?.checkInTime)), "HH:mm")
+              {attendance?.checkInTime
+                ? format(new Date(Number(attendance?.checkInTime)), "HH:mm")
                 : "--:--"}
             </p>
             <ButtonAtt label="Masuk" param1="hr/preview/in" style="primary" />
           </div>
           <div className="flex flex-col gap-2 items-center">
             <p className="text-md font-bold text-2xl pb-4">
-              {Attendance?.checkOutTime
-                ? format(new Date(Number(Attendance?.checkOutTime)), "HH:mm")
+              {attendance?.checkOutTime
+                ? format(new Date(Number(attendance?.checkOutTime)), "HH:mm")
                 : "--:--"}
             </p>
             <ButtonAtt label="Pulang" param1="hr/preview/out" style="primary" />

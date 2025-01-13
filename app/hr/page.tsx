@@ -1,4 +1,4 @@
-import { getAttendance, getProfile } from "../lib/action";
+import {  getAttendance, getProfile } from "../lib/action";
 
 import MenuList from "../components/UI/MenuList";
 import { AttendanceCard } from "../components/UI/AttendanceCard";
@@ -8,7 +8,7 @@ export default async function Page() {
   const attendance = await getAttendance();
   const me = await getProfile();
 
-  console.log("attendance", attendance);
+  // console.log("attendance", attendance);
 
   return (
     <div className="bg-base-100">
