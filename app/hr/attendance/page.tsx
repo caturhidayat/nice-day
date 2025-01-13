@@ -8,7 +8,12 @@ import {
   MapPinXInside,
   User2,
 } from "lucide-react";
-import { Attendance, getAttendances, getProfile, ProfileProps } from "@/app/lib/action";
+import {
+  Attendance,
+  getAttendances,
+  getProfile,
+  ProfileProps,
+} from "@/app/lib/action";
 import EmplyAttendance from "@/app/components/UI/EmplyAttendance";
 import { format } from "date-fns";
 import {
@@ -20,6 +25,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { get } from "@/app/lib/utils/fetch";
+import LocalTimeView from "@/app/components/LocalTimeView";
 
 export default async function Page() {
   // Get attendance records
@@ -32,12 +38,6 @@ export default async function Page() {
       <div className="flex flex-col gap-4">
         <h2 className="text-xl font-bold">Attendance List</h2>
         <div className="flex justify-end pb-2">
-          {/* <Link href="/hr/leaves/request">
-            <Button variant={"default"}>
-              <SquarePen className="mr-2 h-4 w-4" />
-              New Request
-            </Button>
-          </Link> */}
         </div>
       </div>
       {attendance.length === 0 ? (
@@ -55,13 +55,6 @@ export default async function Page() {
                       {me?.name} {me?.department}
                     </p>
                   </div>
-                  {/* {format(
-                    new TZDate(
-                      new Date(Number(item.attendanceDate)),
-                      userTimezone
-                    ),
-                    "EEEE, dd MMM yyyy"
-                  )}{" "} */}
                 </CardTitle>
               </CardHeader>
               <Separator />
@@ -84,7 +77,8 @@ export default async function Page() {
                           size={18}
                           className="text-teal-600 mr-1"
                         />
-                        {format(new Date(Number(item.checkInTime)), "HH:mm")}
+                        {/* {format(new Date(Number(item.checkInTime)), "HH:mm")} */}
+                        <LocalTimeView dbTime={item.checkInTime} />
                       </div>
                     ) : (
                       <div className="text-sm flex items-center">
@@ -101,7 +95,8 @@ export default async function Page() {
                           size={18}
                           className="text-teal-600 mr-1"
                         />
-                        {format(new Date(Number(item.checkOutTime)), "HH:mm")}
+                        {/* {format(new Date(Number(item.checkOutTime)), "HH:mm")} */}
+                        <LocalTimeView dbTime={item.checkOutTime} />
                       </div>
                     ) : (
                       <div className="text-sm flex items-center">
