@@ -10,8 +10,8 @@ import { Logout } from "./Logout";
 type ProfileProps = {
   id: string;
   name: string;
-  departement: string;
-  branch: string;
+  department: string;
+  branches: string;
 };
 
 export default async function Page() {
@@ -58,11 +58,15 @@ export default async function Page() {
           <dt className="font-medium">Name</dt>
           <dd className="sm:col-span-2 text-lg">{profile.name}</dd>
         </div>
+        <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+          <dt className="font-medium">Username</dt>
+          <dd className="sm:col-span-2 text-lg">{profile.username}</dd>
+        </div>
 
         <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-          <dt className="font-medium">Departement</dt>
+          <dt className="font-medium">Department</dt>
           <dd className="sm:col-span-2 text-lg">
-            {profile.departement ? profile.departement : "--"}
+            {profile.department ? profile.department : "--"}
           </dd>
         </div>
 

@@ -52,7 +52,7 @@ export default async function Page() {
                   <div className="flex items-center">
                     <User2 className="mr-2 h-4 w-4" />
                     <p className="font-medium">
-                      {me?.name} {me?.departement}
+                      {me?.name} {me?.department}
                     </p>
                   </div>
                   {/* {format(
