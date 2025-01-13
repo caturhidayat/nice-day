@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 type BeforeInstallPromptEvent = Event & {
   prompt: () => void;
@@ -46,14 +47,22 @@ export default function InstallPromptHandler() {
 
   return (
     <>
-      {showInstallButton && (
-        <button
-          onClick={handleInstallClick}
-          style={{ position: "fixed", bottom: 20, right: 20 }}
-        >
-          Install App
-        </button>
-      )}
+      {showInstallButton &&
+        toast.custom((t) => (
+          <div
+            className={`${
+              t.visible ? "animate-enter" : "animate-leave"
+            } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+          >
+            <button
+              className="btn btn-primary btn-sm"
+              onClick={handleInstallClick}
+              // style={{ position: "fixed", bottom: 20, right: 20 }}
+            >
+              Install App
+            </button>
+          </div>
+        ))}
     </>
   );
 }
