@@ -10,6 +10,7 @@ import { useActionState, useEffect } from "react";
 import { LoaderIcon, ShieldX } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import Image from "next/image";
 
 const initialState = {
   success: false,
@@ -44,14 +45,26 @@ export default function Login() {
   return (
     <section className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-lg text-center">
-        <h1 className="text-2xl font-bold sm:text-3xl">
-          Welcome to NiceDay ✨
-        </h1>
+        <div className="flex-1">
+          <div className="avatar">
+            <div className="w-32 rounded">
+              <Image
+                src="/images/Logo.png"
+                alt="Avatar Tailwind CSS Component"
+                width={512}
+                height={512}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="text-2xl font-bold sm:text-3xl flex justify-center">
+          <h2 className="mr-2">Welcome to</h2>
+          <h2 className="bg-gradient-to-r from-polynesian  to-ceruline bg-clip-text text-transparent ">
+            NiceDay ✨
+          </h2>
+        </div>
 
-        <p className="mt-4 text-gray-500">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero
-          nulla eaque error neque ipsa culpa autem, at itaque nostrum!
-        </p>
+        <p className="mt-4 text-gray-500">Sign in to access your account</p>
       </div>
 
       <form action={action}>
