@@ -38,12 +38,12 @@ export default async function Page() {
         <h2 className="text-center text-xl font-semibold py-2 text-white">
           ✨ Hello {me?.name}! 👋
         </h2>
-        <div className="grid justify-center max-w-xl space-y-2 ">
-          <p className="text-center text-xl font-semibold text-secondary">
+        <div className="grid justify-center max-w-xl">
+          <p className="text-center text-lg text-secondary">
             Live Attendance
           </p>
           <ClockDisplay />
-          <div className="p-1">
+          <div>
             <AttendanceCard
               attendance={attendance}
               me={me}
@@ -52,45 +52,47 @@ export default async function Page() {
           </div>
         </div>
       </div>
-      <div className="p-4">
+      <div className="flex flex-col gap-2 p-4">
         <h3 className="text-sm py-2 font-semibold">Last Attendances</h3>
-        {attendances.length === 0 ? (
+        {attendances.length !== 0 ? (
+          attendances.map((att) => (
+            <Card key={att.id}>
+              <CardContent>
+                <div className="grid col-span-1">
+                  <p className="text-xs">
+                    {format(
+                      new Date(+att?.attendanceDate),
+                      "EEE, dd MMM yyyy"
+                    )}
+                  </p>
+                  <Separator />
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="text-sm flex items-center gap-2">
+                      <Avatar>
+                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarFallback>{initialFallback}</AvatarFallback>
+                      </Avatar>
+                      <LocalTimeView dbTime={att.checkInTime} />
+                    </div>
+                    <div className="text-sm flex items-center gap-2">
+                      <Avatar>
+                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarFallback>{initialFallback}</AvatarFallback>
+                      </Avatar>
+                      <LocalTimeView dbTime={att.checkOutTime} />
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
           <div>
             <Alert>
               <AlertTitle>Recent attendances</AlertTitle>
               <AlertDescription>No attendances recorded</AlertDescription>
             </Alert>
           </div>
-        ) : (
-          <Card>
-            <CardContent>
-              <div className="grid col-span-1">
-                <p className="text-xs">
-                  {format(
-                    new Date(+attendance?.attendanceDate),
-                    "EEE, dd MMM yyyy"
-                  )}
-                </p>
-                <Separator />
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="text-sm flex items-center gap-2">
-                    <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback>{initialFallback}</AvatarFallback>
-                    </Avatar>
-                    <LocalTimeView dbTime={attendance.checkInTime} />
-                  </div>
-                  <div className="text-sm flex items-center gap-2">
-                    <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback>{initialFallback}</AvatarFallback>
-                    </Avatar>
-                    <LocalTimeView dbTime={attendance.checkOutTime} />
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         )}
       </div>
       <div className="grid max-w-xl pb-12">

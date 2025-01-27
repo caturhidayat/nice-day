@@ -28,14 +28,14 @@ export function AttendanceCard({
   return (
     <Card>
       <CardContent>
-        <div className="py-4">
+        <div className="pt-2">
           <Alert>
             <AlertDescription>
               <span className="flex items-center">
                 <CalendarClock className="h-4 w-4 mr-2 text-orange-600" />
                 Shift : {shiftToday?.name} :{" "}
-                {format(new Date(Number(shiftToday?.startTime)), "HH:mm")} -{" "}
-                {format(new Date(Number(shiftToday?.endTime)), "HH:mm")}
+                [{format(new Date(Number(shiftToday?.startTime)), "HH:mm")} -{" "}
+                {format(new Date(Number(shiftToday?.endTime)), "HH:mm")}]
               </span>
             </AlertDescription>
           </Alert>

@@ -150,7 +150,7 @@ export function InputForm() {
 
         // }}
       >
-        <FormField
+        {/* <FormField
           control={form.control}
           name="leaveType"
           render={({ field }) => (
@@ -177,7 +177,7 @@ export function InputForm() {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
         <FormField
           control={form.control}
