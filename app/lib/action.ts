@@ -30,6 +30,11 @@ export interface Attendance {
   userId: string;
   checkInTime: string;
   checkOutTime: string;
+  shiftName: string;
+  shiftStartTime: string;
+  shiftEndTime: string;
+  fullName: string;
+  username: string;
   inLatitude: number;
   inLongitude: number;
   outLatitude: number;

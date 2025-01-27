@@ -1,14 +1,36 @@
-import { getAttendance, getProfile } from "../lib/action";
+import {
+  getAttendance,
+  getAttendances,
+  getProfile,
+  getShiftToday,
+} from "../lib/action";
 
 import MenuList from "../components/UI/MenuList";
 import { AttendanceCard } from "../components/UI/AttendanceCard";
 import ClockDisplay from "../components/ClockDisplay";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import LocalTimeView from "../components/LocalTimeView";
+import { MapPinXInside } from "lucide-react";
+import { format } from "date-fns";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default async function Page() {
   const attendance = await getAttendance();
+  const attendances = await getAttendances();
   const me = await getProfile();
+  const shiftToday = await getShiftToday(me?.id);
 
-  // console.log("attendance", attendance);
+  console.log("attendances : ", attendances);
+
+  const initialFallback = me?.name[0].toUpperCase();
 
   return (
     <div className="bg-base-100">
@@ -22,13 +44,58 @@ export default async function Page() {
           </p>
           <ClockDisplay />
           <div className="p-1">
-            <AttendanceCard attendance={attendance} />
+            <AttendanceCard
+              attendance={attendance}
+              me={me}
+              shiftToday={shiftToday}
+            />
           </div>
         </div>
       </div>
+      <div className="p-4">
+        <h3 className="text-sm py-2 font-semibold">Last Attendances</h3>
+        {attendances.length === 0 ? (
+          <div>
+            <Alert>
+              <AlertTitle>Recent attendances</AlertTitle>
+              <AlertDescription>No attendances recorded</AlertDescription>
+            </Alert>
+          </div>
+        ) : (
+          <Card>
+            <CardContent>
+              <div className="grid col-span-1">
+                <p className="text-xs">
+                  {format(
+                    new Date(+attendance?.attendanceDate),
+                    "EEE, dd MMM yyyy"
+                  )}
+                </p>
+                <Separator />
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="text-sm flex items-center gap-2">
+                    <Avatar>
+                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarFallback>{initialFallback}</AvatarFallback>
+                    </Avatar>
+                    <LocalTimeView dbTime={attendance.checkInTime} />
+                  </div>
+                  <div className="text-sm flex items-center gap-2">
+                    <Avatar>
+                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarFallback>{initialFallback}</AvatarFallback>
+                    </Avatar>
+                    <LocalTimeView dbTime={attendance.checkOutTime} />
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
       <div className="grid max-w-xl pb-12">
         <h2 className="text-xl font-bold sm:text-2xl mt-4">
-          <MenuList />
+          {/* <MenuList /> */}
         </h2>
       </div>
     </div>
