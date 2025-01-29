@@ -12,6 +12,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CalendarClock } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { PUBLIC_API_URL } from "@/app/lib/constants/api";
 
 export function AttendanceCard({
   attendance,
@@ -44,7 +45,7 @@ export function AttendanceCard({
           <div className="flex flex-col gap-2 items-center">
             <div className="grid grid-cols-2 gap-2">
               <Avatar>
-                <AvatarImage src="" />
+                <AvatarImage src={`${PUBLIC_API_URL}/attendances/check-in/${attendance?.id}`} />
                 <AvatarFallback>{initialFallback}</AvatarFallback>
               </Avatar>
               <p className="text-md font-bold text-md self-center">
@@ -58,7 +59,7 @@ export function AttendanceCard({
           <div className="flex flex-col gap-2 items-center">
             <div className="grid grid-cols-2 gap-2">
               <Avatar>
-                <AvatarImage src="" />
+                <AvatarImage src={`${PUBLIC_API_URL}/attendances/check-out/${attendance?.id}`} />
                 <AvatarFallback>{initialFallback}</AvatarFallback>
               </Avatar>
               <p className="text-md font-bold text-md self-center">
