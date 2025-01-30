@@ -37,9 +37,9 @@ export function AttendanceCard({
             <AlertDescription>
               <span className="flex items-center">
                 <CalendarClock className="h-4 w-4 mr-2 text-orange-600" />
-                Shift : {shiftToday?.name} :{" "}
-                [{shiftToday?.startTime ? <LocalTimeView dbTime={shiftToday?.startTime} /> : "--:--"} -{" "}
-                {shiftToday?.endTime ? <LocalTimeView dbTime={shiftToday?.endTime} /> : "--:--"}]
+                Shift : {shiftToday?.name}{" "}
+                {/* [{shiftToday?.startTime ? <LocalTimeView dbTime={shiftToday?.startTime} /> : "--:--"} -{" "}
+                {shiftToday?.endTime ? <LocalTimeView dbTime={shiftToday?.endTime} /> : "--:--"}] */}
               </span>
             </AlertDescription>
           </Alert>
