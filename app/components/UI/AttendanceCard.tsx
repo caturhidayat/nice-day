@@ -38,8 +38,8 @@ export function AttendanceCard({
               <span className="flex items-center">
                 <CalendarClock className="h-4 w-4 mr-2 text-orange-600" />
                 Shift : {shiftToday?.name} :{" "}
-                {/* [{shiftToday?.startTime ? format(new Date(shiftToday?.startTime), "HH:mm") : "--:--"} -{" "}
-                {shiftToday?.endTime ? format(new Date(shiftToday?.endTime), "HH:mm") : "--:--"}] */}
+                [{shiftToday?.startTime ? format(new Date(shiftToday?.startTime), "HH:mm") : "--:--"} -{" "}
+                {shiftToday?.endTime ? format(new Date(shiftToday?.endTime), "HH:mm") : "--:--"}]
               </span>
             </AlertDescription>
           </Alert>
