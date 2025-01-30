@@ -12,10 +12,8 @@ import { useRouter } from "next/navigation";
 import { createAttendance, updateAttendance } from "@/app/lib/action";
 import { AttendancePreviewProps } from "@/app/lib/interfaces/attendance.interface";
 import { format } from "date-fns";
-import axios from "axios";
-import { API_URL } from "@/app/lib/constants/api";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2Icon, CircleX } from "lucide-react";
+
 
 // Dynamic import komponen Map
 const MapView = dynamic(() => import("./MapView"), {
@@ -174,22 +172,7 @@ export default function AttendancePreview({
     }
   };
 
-  // const uploadPhoto = async (file: File): Promise<string> => {
-  //   const formData = new FormData();
-  //   formData.append("file", file);
-
-  //   const response = await axios.post(
-  //     `${API_URL}/attendances/${attendanceId}/image`,
-  //     formData,
-  //     {
-  //       headers: { "Content-Type": "multipart/form-data" },
-  //     }
-  //   );
-
-  //   return response.data.fileUrl;
-  // };
-
-  // * Save attendance
+  // * Save attendance Toast
   const saveAttendance = async () => {
     try {
       if (!location) {
@@ -255,7 +238,11 @@ export default function AttendancePreview({
           return;
         }
 
+        // Attendance Date in epoch
+        const today = new Date().getTime();
+
         console.log("checkInPhoto file :", checkInPhoto);
+        formData.append("attendanceDate", today.toString());
         formData.append("inLatitude", (location as any).lat);
         formData.append("inLongitude", (location as any).lng);
         formData.append("checkInTime", checkInTime?.toString() || "");
