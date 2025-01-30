@@ -31,7 +31,7 @@ export default function LocalTimeView({ dbTime, style }: LocalTimeViewProps) {
 
   return (
     <Suspense fallback={<h2>Loading...</h2>}>
-      <h2 className={`text-${style} py-4`}>{dbTime ? formatTime(dbTime) : "--:--"}</h2>
+      <h2 className={`text-${style}`}>{dbTime ? formatTime(dbTime) : "--:--"}</h2>
     </Suspense>
   );
 }
