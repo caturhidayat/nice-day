@@ -34,9 +34,9 @@ export function AttendanceCard({
             <AlertDescription>
               <span className="flex items-center">
                 <CalendarClock className="h-4 w-4 mr-2 text-orange-600" />
-                {/* Shift : {shiftToday?.name} :{" "}
+                Shift : {shiftToday?.name} :{" "}
                 [{shiftToday?.startTime ? format(new Date(shiftToday?.startTime), "HH:mm") : "--:--"} -{" "}
-                {shiftToday?.endTime ? format(new Date(shiftToday?.endTime), "HH:mm") : "--:--"}] */}
+                {shiftToday?.endTime ? format(new Date(shiftToday?.endTime), "HH:mm") : "--:--"}]
               </span>
             </AlertDescription>
           </Alert>
@@ -49,9 +49,9 @@ export function AttendanceCard({
                 <AvatarFallback>{initialFallback}</AvatarFallback>
               </Avatar>
               <p className="text-md font-bold text-md self-center">
-                {attendance?.checkInTime
+                {/* {attendance?.checkInTime
                   ? format(new Date(attendance?.checkInTime), "HH:mm")
-                  : "--:--"}
+                  : "--:--"} */}
               </p>
             </div>
             <ButtonAtt label="Masuk" param1="hr/preview/in" style="primary" />
@@ -63,9 +63,9 @@ export function AttendanceCard({
                 <AvatarFallback>{initialFallback}</AvatarFallback>
               </Avatar>
               <p className="text-md font-bold text-md self-center">
-                {attendance?.checkOutTime
+                {/* {attendance?.checkOutTime
                   ? format(new Date(attendance?.checkOutTime), "HH:mm")
-                  : "--:--"}
+                  : "--:--"} */}
               </p>
             </div>
             <ButtonAtt label="Pulang" param1="hr/preview/out" style="primary" />
