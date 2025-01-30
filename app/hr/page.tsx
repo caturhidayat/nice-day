@@ -23,7 +23,7 @@ export default async function Page() {
   const me = await getProfile();
   const shiftToday = await getShiftToday(me?.id);
 
-  // console.log("attendances : ", attendances);
+  console.log("attendance : ", attendance);
 
   const initialFallback = me?.name[0].toUpperCase();
 
@@ -37,13 +37,13 @@ export default async function Page() {
           <p className="text-center text-lg text-secondary">
             Live Attendance
           </p>
-          {/* <ClockDisplay /> */}
+          <ClockDisplay />
           <div>
-            {/* <AttendanceCard
+            <AttendanceCard
               attendance={attendance}
               me={me}
               shiftToday={shiftToday}
-            /> */}
+            />
           </div>
         </div>
       </div>
