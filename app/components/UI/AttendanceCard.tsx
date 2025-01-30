@@ -13,6 +13,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CalendarClock } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PUBLIC_API_URL } from "@/app/lib/constants/api";
+import LocalTimeView from "../LocalTimeView";
 
 export function AttendanceCard({
   attendance,
@@ -54,6 +55,7 @@ export function AttendanceCard({
                 {/* {attendance?.checkInTime
                   ? format(new Date(attendance?.checkInTime), "HH:mm")
                   : "--:--"} */}
+                  <LocalTimeView dbTime={attendance?.checkInTime} />
               </p>
             </div>
             <ButtonAtt label="Masuk" param1="hr/preview/in" style="primary" />
@@ -68,6 +70,7 @@ export function AttendanceCard({
                 {/* {attendance?.checkOutTime
                   ? format(new Date(attendance?.checkOutTime), "HH:mm")
                   : "--:--"} */}
+                  <LocalTimeView dbTime={attendance?.checkOutTime} />
               </p>
             </div>
             <ButtonAtt label="Pulang" param1="hr/preview/out" style="primary" />
