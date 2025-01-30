@@ -35,8 +35,8 @@ export function AttendanceCard({
               <span className="flex items-center">
                 <CalendarClock className="h-4 w-4 mr-2 text-orange-600" />
                 Shift : {shiftToday?.name} :{" "}
-                [{format(new Date(Number(shiftToday?.startTime)), "HH:mm")} -{" "}
-                {format(new Date(Number(shiftToday?.endTime)), "HH:mm")}]
+                [{shiftToday?.startTime ? format(new Date(shiftToday?.startTime), "HH:mm") : "--:--"} -{" "}
+                {shiftToday?.endTime ? format(new Date(shiftToday?.endTime), "HH:mm") : "--:--"}]
               </span>
             </AlertDescription>
           </Alert>
@@ -50,7 +50,7 @@ export function AttendanceCard({
               </Avatar>
               <p className="text-md font-bold text-md self-center">
                 {attendance?.checkInTime
-                  ? format(new Date(Number(attendance?.checkInTime)), "HH:mm")
+                  ? format(new Date(attendance?.checkInTime), "HH:mm")
                   : "--:--"}
               </p>
             </div>
@@ -64,7 +64,7 @@ export function AttendanceCard({
               </Avatar>
               <p className="text-md font-bold text-md self-center">
                 {attendance?.checkOutTime
-                  ? format(new Date(Number(attendance?.checkOutTime)), "HH:mm")
+                  ? format(new Date(attendance?.checkOutTime), "HH:mm")
                   : "--:--"}
               </p>
             </div>
