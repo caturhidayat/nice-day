@@ -2,7 +2,21 @@
 const nextConfig = {
   // allow image from external source
   images: {
-    domains: ["openstreetmap.org", "images.unsplash.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "openstreetmap.org",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: process.env.NEXT_PUBLIC_API_URL,
+      },
+
+    ],
   },
   async redirects() {
     return [
