@@ -19,11 +19,11 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default async function Page() {
   const attendance = await getAttendance();
-  const attendances = await getAttendances();
+  // const attendances = await getAttendances();
   const me = await getProfile();
   const shiftToday = await getShiftToday(me?.id);
 
-  console.log("attendances : ", attendances);
+  // console.log("attendances : ", attendances);
 
   const initialFallback = me?.name[0].toUpperCase();
 
