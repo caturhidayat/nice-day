@@ -39,11 +39,11 @@ export default async function Page() {
           </p>
           {/* <ClockDisplay /> */}
           <div>
-            <AttendanceCard
+            {/* <AttendanceCard
               attendance={attendance}
               me={me}
               shiftToday={shiftToday}
-            />
+            /> */}
           </div>
         </div>
       </div>
