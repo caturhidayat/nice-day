@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { validatedAction } from "./middleware";
-import { API_URL } from "./constants/api";
+import { API_URL, UPLOAD_IMAGE_API_URL } from "./constants/api";
 import { getErrorMessage } from "./utils/errors";
 import { redirect } from "next/navigation";
 import { setAuthCookie } from "../auth/login/login";
@@ -145,7 +145,7 @@ async function uploadAttendanceInImage(attendanceId: string, file: File) {
   const token = await getHeaders();
   const formData = new FormData();
   formData.append("image", file);
-  await fetch(`${API_URL}/attendances/${attendanceId}/in`, {
+  await fetch(`${UPLOAD_IMAGE_API_URL}/attendances/${attendanceId}/in`, {
     body: formData,
     method: "POST",
     headers: token,
@@ -155,7 +155,7 @@ async function uploadAttendanceOutImage(attendanceId: string, file: File) {
   const token = await getHeaders();
   const formData = new FormData();
   formData.append("image", file);
-  await fetch(`${API_URL}/attendances/${attendanceId}/out`, {
+  await fetch(`${UPLOAD_IMAGE_API_URL}/attendances/${attendanceId}/out`, {
     body: formData,
     method: "POST",
     headers: token,
