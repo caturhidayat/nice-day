@@ -61,7 +61,7 @@ export default async function Page() {
                 <div className="grid col-span-1">
                   <p className="text-xs">
                     {format(
-                      new Date(+att?.attendanceDate),
+                      new Date(att?.attendanceDate),
                       "EEE, dd MMM yyyy"
                     )}
                   </p>
