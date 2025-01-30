@@ -19,12 +19,13 @@ export async function createLeaves(formData: FormData) {
 }
 
 async function uploadLeaveImage(leaveId: string, file: File) {
+  const token = await getHeaders();
   const formData = new FormData();
   formData.append("image", file);
   await fetch(`${API_URL}/leaves/${leaveId}/image`, {
     body: formData,
     method: "POST",
-    headers: getHeaders(),
+    headers: token,
   });
 }
 

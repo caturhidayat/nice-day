@@ -6,10 +6,14 @@ import {
   MapPin,
   MapPinCheckInside,
   MapPinXInside,
-  SquarePen,
   User2,
 } from "lucide-react";
-import { getAttendances, getProfile } from "@/app/lib/action";
+import {
+  Attendance,
+  getAttendances,
+  getProfile,
+  ProfileProps,
+} from "@/app/lib/action";
 import EmplyAttendance from "@/app/components/UI/EmplyAttendance";
 import { format } from "date-fns";
 import {
@@ -20,14 +24,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { get } from "@/app/lib/utils/fetch";
+import LocalTimeView from "@/app/components/LocalTimeView";
 
 export default async function Page() {
-  // Get 3 last attendance records
+  // Get attendance records
   const attendance = await getAttendances();
-  const userTimezone = "Asia/Jakarta";
-  // console.log("attendance page : ", attendance);
 
   const me = await getProfile();
 
@@ -35,14 +37,7 @@ export default async function Page() {
     <section className="h-[calc(100vh-6rem)] flex flex-col px-4">
       <div className="flex flex-col gap-4">
         <h2 className="text-xl font-bold">Attendance List</h2>
-        <div className="flex justify-end pb-2">
-          {/* <Link href="/hr/leaves/request">
-            <Button variant={"default"}>
-              <SquarePen className="mr-2 h-4 w-4" />
-              New Request
-            </Button>
-          </Link> */}
-        </div>
+        <div className="flex justify-end pb-2"></div>
       </div>
       {attendance.length === 0 ? (
         <EmplyAttendance />
@@ -56,16 +51,9 @@ export default async function Page() {
                   <div className="flex items-center">
                     <User2 className="mr-2 h-4 w-4" />
                     <p className="font-medium">
-                      {me?.name} {me?.departement}
+                      {me?.name} {me?.department}
                     </p>
                   </div>
-                  {/* {format(
-                    new TZDate(
-                      new Date(Number(item.attendanceDate)),
-                      userTimezone
-                    ),
-                    "EEEE, dd MMM yyyy"
-                  )}{" "} */}
                 </CardTitle>
               </CardHeader>
               <Separator />
@@ -88,7 +76,8 @@ export default async function Page() {
                           size={18}
                           className="text-teal-600 mr-1"
                         />
-                        {format(new Date(Number(item.checkInTime)), "HH:mm")}
+                        {/* {format(new Date(Number(item.checkInTime)), "HH:mm")} */}
+                        <LocalTimeView dbTime={item.checkInTime} />
                       </div>
                     ) : (
                       <div className="text-sm flex items-center">
@@ -105,7 +94,8 @@ export default async function Page() {
                           size={18}
                           className="text-teal-600 mr-1"
                         />
-                        {format(new Date(Number(item.checkOutTime)), "HH:mm")}
+                        {/* {format(new Date(Number(item.checkOutTime)), "HH:mm")} */}
+                        <LocalTimeView dbTime={item.checkOutTime} />
                       </div>
                     ) : (
                       <div className="text-sm flex items-center">
@@ -115,15 +105,6 @@ export default async function Page() {
                     )}
                   </div>
                 </div>
-                {/* <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                  <dt></dt>
-                  <dd className="sm:col-span-2 text-sm">
-                    {format(
-                      new Date(Number(item.attendanceDate)),
-                      "EEE, dd MMM yyyy"
-                    )}
-                  </dd>
-                </div> */}
               </CardContent>
               <Separator />
               <CardFooter className="grid grid-cols-2 gap-2 text-xs p-2">

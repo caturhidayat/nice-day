@@ -30,6 +30,11 @@ export interface Attendance {
   userId: string;
   checkInTime: string;
   checkOutTime: string;
+  shiftName: string;
+  shiftStartTime: string;
+  shiftEndTime: string;
+  fullName: string;
+  username: string;
   inLatitude: number;
   inLongitude: number;
   outLatitude: number;
@@ -39,12 +44,35 @@ export interface Attendance {
   createdAt: string;
   updatedAt: string;
 }
+// "id": "USR-1731504639202783",
+// "name": "Catur Hidayat",
+// "username": "PY-ID676",
+// "role": "ADMIN",
+// "Department": {
+//     "id": 1,
+//     "name": "IT",
+//     "createdAt": "1731504951569",
+//     "updatedAt": "1731504951569",
+//     "deletedAt": "0"
+// },
+// "Branch": {
+//     "id": 2,
+//     "name": "NAGRAK",
+//     "location": "",
+//     "createdAt": "1731504928422",
+//     "updatedAt": "1731504928422",
+//     "deletedAt": "0"
+// },
+// "department": "IT",
+// "branch": "NAGRAK"
 
 export type ProfileProps = {
   id: string;
   name: string;
-  departement: string;
+  department: string;
   branch: string;
+  username: string;
+  role: string;
 };
 
 export type UserShift = {
@@ -70,9 +98,7 @@ export interface Leaves {
 }
 
 export async function getProfile() {
-  const result = await get<ProfileProps>("users/profile");
-  // console.log("result", result);
-  return result;
+  return get<ProfileProps>("users/profile");
 }
 
 export async function getAttendance() {
@@ -115,29 +141,32 @@ export async function updateAttendance(formData: FormData) {
 }
 
 async function uploadAttendanceInImage(attendanceId: string, file: File) {
+  const token = await getHeaders();
   const formData = new FormData();
   formData.append("image", file);
   await fetch(`${API_URL}/attendances/${attendanceId}/in`, {
     body: formData,
     method: "POST",
-    headers: getHeaders(),
+    headers: token,
   });
 }
 async function uploadAttendanceOutImage(attendanceId: string, file: File) {
+  const token = await getHeaders();
   const formData = new FormData();
   formData.append("image", file);
   await fetch(`${API_URL}/attendances/${attendanceId}/out`, {
     body: formData,
     method: "POST",
-    headers: getHeaders(),
+    headers: token,
   });
 }
 
-const setAttendanceCookie = (response: Response) => {
+export async function setAttendanceCookie(response: Response) {
+  const cookieStore = await cookies();
   const setCookieHeader = response.headers.get("Set-Cookie");
   if (setCookieHeader) {
     const token = setCookieHeader.split(";")[0].split("=")[1];
-    cookies().set({
+    cookieStore.set({
       name: ATTENDANCE_COOKIE,
       value: token,
       secure: true,

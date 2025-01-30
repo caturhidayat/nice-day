@@ -4,8 +4,17 @@ import { Button } from "@/components/ui/button";
 import { SquareChevronLeft } from "lucide-react";
 import Link from "next/link";
 
-export default async function page({ params }: { params: { id: string } }) {
-  const leave = await getLeave(params.id);
+type Params = Promise<{ id: string }>;
+// type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+export default async function Page({
+  params,
+}: {
+  params: Params;
+  // searchParams: SearchParams;
+}) {
+  const id = (await params).id;
+  const leave = await getLeave(id);
   return (
     <div className="grid gap-2 m-auto p-4">
       <div>

@@ -45,8 +45,8 @@ const BottomItemNav = ({ icon, text, path }: ButtonItem) => {
       }`}
     >
       <button
-        className={`inline-flex flex-col items-center justify-center text-gray-600 group-hover:text-primary ${
-          currentPath === path ? "text-primary" : ""
+        className={`inline-flex flex-col items-center justify-center text-gray-600 group-hover:text-rose-600 ${
+          currentPath === path ? "text-rose-600" : ""
         }`}
       >
         {icon}

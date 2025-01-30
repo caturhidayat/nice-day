@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EyeIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import { changePassword } from "../action";
 import { useRouter } from "next/navigation";
@@ -58,7 +57,7 @@ export default function FormChangePassword() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-    //   password: "",
+      //   password: "",
       newPassword: "",
       confirmPassword: "",
     },
@@ -110,6 +109,7 @@ export default function FormChangePassword() {
   }
   return (
     <div>
+     
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           {/* <FormField

@@ -2,7 +2,7 @@
 
 import { format } from "date-fns";
 import ButtonAtt from "../ButtonAttendance";
-import { Attendance } from "@/app/lib/action";
+import { Attendance, ProfileProps, UserShift } from "@/app/lib/action";
 import {
   Card,
   CardContent,
@@ -10,80 +10,64 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { OctagonAlert } from "lucide-react";
+import { CalendarClock } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { PUBLIC_API_URL } from "@/app/lib/constants/api";
 
 export function AttendanceCard({
-  attendance: Attendance,
+  attendance,
+  me,
+  shiftToday,
 }: {
   attendance: Attendance;
+  me: ProfileProps;
+  shiftToday: UserShift;
 }) {
+  console.log("name : ", me?.name);
+  const initialFallback = me?.name[0].toUpperCase();
+
   return (
-    // <div className="p-4 bg-base-200 rounded-lg min-h-max pb-16">
-    //   <div className="relative block overflow-hidden rounded-lg bg-base-100 border-gray-100 p-4 sm:p-6 lg:p-8 shadow-lg">
-    //     <span className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
-
-    //     <div className="sm:flex sm:justify-between sm:gap-4">
-    //       <div>
-    //         <h2>Today [ {format(new Date(), "EEEE dd, MMM yyyy")} ]</h2>
-    //       </div>
-    //     </div>
-
-    //     <div className="mt-4">
-    //       <div className="grid grid-cols-2 py-2 gap-1">
-    //         <div className="flex flex-col gap-2 items-center">
-    //           <p>
-    //             {Attendance?.checkInTime
-    //               ? format(new Date(Number(Attendance?.checkInTime)), "HH:mm")
-    //               : "--:--"}
-    //           </p>
-    //           <ButtonAtt label="Masuk" param1="hr/preview/in" style="primary" />
-    //         </div>
-    //         <div className="flex flex-col gap-2 items-center">
-    //           <p>
-    //             {Attendance?.checkOutTime
-    //               ? format(new Date(Number(Attendance?.checkOutTime)), "HH:mm")
-    //               : "--:--"}
-    //           </p>
-    //           <ButtonAtt
-    //             label="Pulang"
-    //             param1="hr/preview/out"
-    //             style="outline"
-    //           />
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
     <Card>
-      {/* <CardHeader>
-        
-      </CardHeader> */}
       <CardContent>
-        <div className="py-4">
+        <div className="pt-2">
           <Alert>
             <AlertDescription>
               <span className="flex items-center">
-                <OctagonAlert className="text-amber-600 h-4 w-4 mr-2" />
-                Selfie photo is required for attendance
+                <CalendarClock className="h-4 w-4 mr-2 text-orange-600" />
+                Shift : {shiftToday?.name} :{" "}
+                [{format(new Date(Number(shiftToday?.startTime)), "HH:mm")} -{" "}
+                {format(new Date(Number(shiftToday?.endTime)), "HH:mm")}]
               </span>
             </AlertDescription>
           </Alert>
         </div>
         <div className="grid grid-cols-2 py-2 gap-1">
           <div className="flex flex-col gap-2 items-center">
-            <p className="text-md font-bold text-2xl pb-4">
-              {Attendance?.checkInTime
-                ? format(new Date(Number(Attendance?.checkInTime)), "HH:mm")
-                : "--:--"}
-            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <Avatar>
+                <AvatarImage src={`${PUBLIC_API_URL}/attendances/check-in/${attendance?.id}`} />
+                <AvatarFallback>{initialFallback}</AvatarFallback>
+              </Avatar>
+              <p className="text-md font-bold text-md self-center">
+                {attendance?.checkInTime
+                  ? format(new Date(Number(attendance?.checkInTime)), "HH:mm")
+                  : "--:--"}
+              </p>
+            </div>
             <ButtonAtt label="Masuk" param1="hr/preview/in" style="primary" />
           </div>
           <div className="flex flex-col gap-2 items-center">
-            <p className="text-md font-bold text-2xl pb-4">
-              {Attendance?.checkOutTime
-                ? format(new Date(Number(Attendance?.checkOutTime)), "HH:mm")
-                : "--:--"}
-            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <Avatar>
+                <AvatarImage src={`${PUBLIC_API_URL}/attendances/check-out/${attendance?.id}`} />
+                <AvatarFallback>{initialFallback}</AvatarFallback>
+              </Avatar>
+              <p className="text-md font-bold text-md self-center">
+                {attendance?.checkOutTime
+                  ? format(new Date(Number(attendance?.checkOutTime)), "HH:mm")
+                  : "--:--"}
+              </p>
+            </div>
             <ButtonAtt label="Pulang" param1="hr/preview/out" style="primary" />
           </div>
         </div>

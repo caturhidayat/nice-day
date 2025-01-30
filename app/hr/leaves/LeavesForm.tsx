@@ -38,17 +38,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ImageUplaod from "./ImageUplaod";
 
-const LeaveType = [
-  "SICK",
-  "ANNUAL",
-  "UNPAID",
-  "MATERNITY",
-  "PATERNITY",
-  "BEREAVEMENT",
-  "STUDY",
-  "OTHER",
-];
-
 interface IFormData {
   startDate: string;
   endDate: string;
@@ -161,7 +150,7 @@ export function InputForm() {
 
         // }}
       >
-        <FormField
+        {/* <FormField
           control={form.control}
           name="leaveType"
           render={({ field }) => (
@@ -188,7 +177,7 @@ export function InputForm() {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
         <FormField
           control={form.control}
@@ -207,7 +196,10 @@ export function InputForm() {
                       )}
                     >
                       {field.value ? (
-                        format(new Date(parseInt(field.value as string)), "dd MMM yyyy")
+                        format(
+                          new Date(parseInt(field.value as string)),
+                          "dd MMM yyyy"
+                        )
                       ) : (
                         <span>Pick a date</span>
                       )}
@@ -218,8 +210,14 @@ export function InputForm() {
                 <PopoverContent className="p-0">
                   <Calendar
                     mode="single"
-                    selected={field.value ? new Date(parseInt(field.value as string)) : undefined}
-                    onSelect={(date) => field.onChange(date?.getTime().toString())}
+                    selected={
+                      field.value
+                        ? new Date(parseInt(field.value as string))
+                        : undefined
+                    }
+                    onSelect={(date) =>
+                      field.onChange(date?.getTime().toString())
+                    }
                     initialFocus
                   />
                 </PopoverContent>
@@ -246,7 +244,10 @@ export function InputForm() {
                       )}
                     >
                       {field.value ? (
-                        format(new Date(parseInt(field.value as string)), "dd MMM yyyy")
+                        format(
+                          new Date(parseInt(field.value as string)),
+                          "dd MMM yyyy"
+                        )
                       ) : (
                         <span>Pick a date</span>
                       )}
@@ -257,8 +258,14 @@ export function InputForm() {
                 <PopoverContent className="w-auto p-0">
                   <Calendar
                     mode="single"
-                    selected={field.value ? new Date(parseInt(field.value as string)) : undefined}
-                    onSelect={(date) => field.onChange(date?.getTime().toString())}
+                    selected={
+                      field.value
+                        ? new Date(parseInt(field.value as string))
+                        : undefined
+                    }
+                    onSelect={(date) =>
+                      field.onChange(date?.getTime().toString())
+                    }
                     // disabled={(date) => (startDate ? date < startDate : false)}
                     initialFocus
                   />
@@ -296,7 +303,7 @@ export function InputForm() {
                   // value={value?.name}
                   onChange={(e) => {
                     const file = e.target.files;
-                    onChange(file)
+                    onChange(file);
                   }}
                   {...field}
                 />
