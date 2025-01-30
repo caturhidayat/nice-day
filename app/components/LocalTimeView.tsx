@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 
 type LocalTimeViewProps = {
   dbTime: string;
@@ -9,11 +9,29 @@ type LocalTimeViewProps = {
 };
 
 export default function LocalTimeView({ dbTime, style }: LocalTimeViewProps) {
-  console.log("dbTime : ", dbTime);
-  const localTime = format(new Date(Number(dbTime)), "HH:mm");
+  const formatTime = (timeStr: string) => {
+    try {
+      // First try parsing as ISO string
+      if (timeStr.includes('T') || timeStr.includes('-')) {
+        return format(parseISO(timeStr), "HH:mm");
+      }
+      
+      // Then try parsing as timestamp
+      const timestamp = Number(timeStr);
+      if (!isNaN(timestamp)) {
+        return format(new Date(timestamp), "HH:mm");
+      }
+
+      return "--:--";
+    } catch (error) {
+      console.error("Error formatting time:", error, "Value:", timeStr);
+      return "--:--";
+    }
+  };
+
   return (
     <Suspense fallback={<h2>Loading...</h2>}>
-      <h2 className={`text-${style} py-4`}>{dbTime ? localTime : "--:--"}</h2>
+      <h2 className={`text-${style} py-4`}>{dbTime ? formatTime(dbTime) : "--:--"}</h2>
     </Suspense>
   );
 }
