@@ -5,18 +5,13 @@ import {
   getShiftToday,
 } from "../lib/action";
 
-import MenuList from "../components/UI/MenuList";
 import { AttendanceCard } from "../components/UI/AttendanceCard";
 import ClockDisplay from "../components/ClockDisplay";
 import {
   Card,
   CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import LocalTimeView from "../components/LocalTimeView";
-import { MapPinXInside } from "lucide-react";
 import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
@@ -52,7 +47,7 @@ export default async function Page() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-2 p-4">
+      {/* <div className="flex flex-col gap-2 p-4">
         <h3 className="text-sm py-2 font-semibold">Last Attendances</h3>
         {attendances.length !== 0 ? (
           attendances.map((att) => (
@@ -94,7 +89,7 @@ export default async function Page() {
             </Alert>
           </div>
         )}
-      </div>
+      </div> */}
       <div className="grid max-w-xl pb-12">
         <h2 className="text-xl font-bold sm:text-2xl mt-4">
           {/* <MenuList /> */}
