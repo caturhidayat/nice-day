@@ -23,7 +23,7 @@ export function AttendanceCard({
   me: ProfileProps;
   shiftToday: UserShift;
 }) {
-  console.log("name : ", me?.name);
+  // console.log("name : ", me?.name);
   const initialFallback = me?.name[0].toUpperCase();
 
   return (

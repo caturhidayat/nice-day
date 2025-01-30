@@ -113,6 +113,7 @@ export async function createAttendance(formData: FormData) {
   // console.log("formData", formData);
   const image = formData.get("image");
   formData.delete("image");
+  console.log("Data request : ", formData);
 
   const response = await post("attendances/check-in", formData);
 
