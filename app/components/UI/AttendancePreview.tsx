@@ -37,14 +37,14 @@ const MapView = dynamic(() => import("./MapView"), {
 // ];
 // Target Locations
 export const TargetLocationsWithRadius = [
-  { location: { lat: -6.173, lng: 106.941 }, radius: 100 }, // Office Cakung
+  { location: { lat: -6.173, lng: 106.941 }, radius: 200 }, // Office Cakung
   { location: { lat: -6.153857, lng: 107.016924 }, radius: 150 }, // WPU
-  { location: { lat: -6.130013, lng: 106.942239 }, radius: 100 }, // Office Nagrak
-  { location: { lat: -6.2785393106250345, lng: 107.15864398307146 }, radius: 100 }, // Office Jl. Tekno raya
-  { location: { lat: -6.278292210508911, lng: 107.295504867729 }, radius: 150 }, // Office KRWG Tanjung Pura
-  { location: { lat: -6.245460747124666, lng: 107.28079689656437 }, radius: 100 }, // Office KRWG Tunggakjati
-  { location: { lat: -6.374668342338985, lng: 107.32776063928956 }, radius: 150 }, // Office KRWG SLP
-  { location: { lat: -6.196474488258041, lng: 106.97737172725586 }, radius: 100 }, // Office PI LOGOS
+  { location: { lat: -6.130013, lng: 106.942239 }, radius: 200 }, // Office Nagrak
+  { location: { lat: -6.2785393106250345, lng: 107.15864398307146 }, radius: 300 }, // Office Jl. Tekno raya
+  { location: { lat: -6.278292210508911, lng: 107.295504867729 }, radius: 350 }, // Office KRWG Tanjung Pura
+  { location: { lat: -6.245460747124666, lng: 107.28079689656437 }, radius: 300 }, // Office KRWG Tunggakjati
+  { location: { lat: -6.374668342338985, lng: 107.32776063928956 }, radius: 350 }, // Office KRWG SLP
+  { location: { lat: -6.196474488258041, lng: 106.97737172725586 }, radius: 200 }, // Office PI LOGOS
 ];
 
 const RADIUS = 200;
