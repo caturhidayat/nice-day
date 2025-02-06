@@ -29,10 +29,10 @@ export const fixLeafletIcon = () => {
     });
 };
 
+
 const MapView = ({
     location,
-    targetLocations,
-    circleRadius,
+    targetLocationsWithRadius,
 }: PreviewRecordProps) => {
     // Function to fly to user location
     interface FlyToUserLocationProps {
@@ -85,11 +85,11 @@ const MapView = ({
                     id="mapbox/streets-v11"
                 />
 
-                {targetLocations.map((target, index) => (
+                {targetLocationsWithRadius.map((target, index) => (
                     <div key={index}>
                         <Circle
-                            center={target}
-                            radius={circleRadius}
+                            center={target.location}
+                            radius={target.radius}
                             color="teal"
                             fillColor="teal"
                             fillOpacity={0.3}

@@ -3,8 +3,13 @@ import { MutableRefObject } from "react";
 
 export interface PreviewRecordProps {
     location: LatLngExpression;
-    targetLocations: LatLngExpression[];
-    circleRadius: number;
+    targetLocationsWithRadius: TargetLocationWithRadius[];
     // mapRef: MutableRefObject<LeafletMap | null>;
     // getLocation: () => void;
   }
+
+
+type TargetLocationWithRadius = {
+  location: LatLngExpression;
+  radius: number;
+}
