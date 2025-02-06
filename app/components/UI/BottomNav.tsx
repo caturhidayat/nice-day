@@ -26,7 +26,7 @@ export const buttons: ButtonItem[] = [
   {
     icon: <FlaskConical />,
     text: "Features", 
-    path: "#",
+    path: "/hr/overtime",
   },
   {
     icon: <UserRound />,
