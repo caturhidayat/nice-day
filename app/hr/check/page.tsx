@@ -11,6 +11,7 @@ const MapView = dynamic(() => import("@/app/components/UI/MapView"), {
   ssr: false,
 });
 import { LatLngExpression } from "leaflet";
+import { TargetLocationsWithRadius } from "@/app/components/UI/AttendancePreview";
 
 interface AttendanceProps {
   userId: string;
@@ -116,12 +117,7 @@ export default function AttendanceTracking() {
 
       <MapView
         location={location}
-        targetLocations={[
-          { lat: -6.173, lng: 106.941 }, // Office Cakung
-          { lat: -6.153857, lng: 107.016924 }, // WPU
-          { lat: -6.130013, lng: 106.942239 }, // Office Nagrak
-        ]}
-        circleRadius={100}
+        targetLocationsWithRadius={TargetLocationsWithRadius}
       />
 
       <button className="btn btn-primary mx-2" onClick={handleCheckIn}>
