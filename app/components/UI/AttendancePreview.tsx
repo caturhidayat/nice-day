@@ -32,8 +32,8 @@ const MapView = dynamic(() => import("./MapView"), {
 //   { lat: -6.2785393106250345, lng: 107.15864398307146 }, // Office Jl. Tekno raya
 //   { lat: -6.278292210508911, lng: 107.295504867729 }, // Office KRWG Tanjung Pura
 //   { lat: -6.245460747124666, lng: 107.28079689656437 }, // Office KRWG Tunggakjati
-//   { lat: -6.374668342338985, lng: 107.32776063928956 }, // Office KRWG SLP
-//   { lat: -6.196474488258041, lng: 106.97737172725586 }, // Office PI LOGOS
+// -6.3800194403391535, 107.32365024954318 // Office KRWG SLP main
+// -6.199625436099085, 106.97630124236697 // Office Yamaha motor PU
 // ];
 // Target Locations
 export const TargetLocationsWithRadius = [
@@ -43,8 +43,8 @@ export const TargetLocationsWithRadius = [
   { location: { lat: -6.2785393106250345, lng: 107.15864398307146 }, radius: 300 }, // Office Jl. Tekno raya
   { location: { lat: -6.278292210508911, lng: 107.295504867729 }, radius: 350 }, // Office KRWG Tanjung Pura
   { location: { lat: -6.245460747124666, lng: 107.28079689656437 }, radius: 300 }, // Office KRWG Tunggakjati
-  { location: { lat: -6.374668342338985, lng: 107.32776063928956 }, radius: 350 }, // Office KRWG SLP
-  { location: { lat: -6.196474488258041, lng: 106.97737172725586 }, radius: 200 }, // Office PI LOGOS
+  { location: { lat: -6.199625436099085, lng: 106.97630124236697 }, radius: 200 }, // Office PU Yamaha motor
+  { location: { lat: -6.3800194403391535, lng: 107.32365024954318 }, radius: 300 }, // Office KRWG SLP main
 ];
 
 const RADIUS = 200;
