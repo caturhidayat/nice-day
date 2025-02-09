@@ -1,6 +1,6 @@
 "use client";
 
-import { House, UserCheck, UserRound, ClockArrowUp } from "lucide-react";
+import { House, UserCheck, UserRound, ClockArrowUp, FlaskConical } from "lucide-react";
 import React, { useContext } from "react";
 import Link from "next/link";
 import { AuthContext } from "@/app/auth/auth-context";
@@ -24,8 +24,8 @@ export const buttons: ButtonItem[] = [
     path: "/hr/attendance",
   },
   {
-    icon: <ClockArrowUp />,
-    text: "Overtime",
+    icon: <FlaskConical />,
+    text: "Features", 
     path: "/hr/overtime",
   },
   {

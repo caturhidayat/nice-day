@@ -23,7 +23,7 @@ export default async function Page() {
   const me = await getProfile();
   const shiftToday = await getShiftToday(me?.id);
 
-  // console.log("attendances : ", attendances);
+  console.log("attendance : ", attendance);
 
   const initialFallback = me?.name[0].toUpperCase();
 
@@ -47,49 +47,7 @@ export default async function Page() {
           </div>
         </div>
       </div>
-      {/* <div className="flex flex-col gap-2 p-4">
-        <h3 className="text-sm py-2 font-semibold">Last Attendances</h3>
-        {attendances.length !== 0 ? (
-          attendances.map((att) => (
-            <Card key={att.id}>
-              <CardContent>
-                <div className="grid col-span-1">
-                  <p className="text-xs">
-                    {format(
-                      new Date(att?.attendanceDate),
-                      "EEE, dd MMM yyyy"
-                    )}
-                  </p>
-                  <Separator />
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="text-sm flex items-center gap-2">
-                      <Avatar>
-                        <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback>{initialFallback}</AvatarFallback>
-                      </Avatar>
-                      <LocalTimeView dbTime={att.checkInTime} />
-                    </div>
-                    <div className="text-sm flex items-center gap-2">
-                      <Avatar>
-                        <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback>{initialFallback}</AvatarFallback>
-                      </Avatar>
-                      <LocalTimeView dbTime={att.checkOutTime} />
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))
-        ) : (
-          <div>
-            <Alert>
-              <AlertTitle>Recent attendances</AlertTitle>
-              <AlertDescription>No attendances recorded</AlertDescription>
-            </Alert>
-          </div>
-        )}
-      </div> */}
+     
       <div className="grid max-w-xl pb-12">
         <h2 className="text-xl font-bold sm:text-2xl mt-4">
           {/* <MenuList /> */}

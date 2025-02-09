@@ -20,11 +20,31 @@ const MapView = dynamic(() => import("./MapView"), {
   ssr: false,
 });
 
+// -6.2785393106250345, 107.15864398307146 
+// -6.278292210508911, 107.295504867729
+// -6.245460747124666, 107.28079689656437
+// -6.374668342338985, 107.32776063928956
+// -6.196474488258041, 106.97737172725586
+// const TargetLocations = [
+//   { lat: -6.173, lng: 106.941 }, // Office Cakung
+//   { lat: -6.153857, lng: 107.016924 }, // WPU
+//   { lat: -6.130013, lng: 106.942239 }, // Office Nagrak
+//   { lat: -6.2785393106250345, lng: 107.15864398307146 }, // Office Jl. Tekno raya
+//   { lat: -6.278292210508911, lng: 107.295504867729 }, // Office KRWG Tanjung Pura
+//   { lat: -6.245460747124666, lng: 107.28079689656437 }, // Office KRWG Tunggakjati
+// -6.3800194403391535, 107.32365024954318 // Office KRWG SLP main
+// -6.199625436099085, 106.97630124236697 // Office Yamaha motor PU
+// ];
 // Target Locations
-const TargetLocations = [
-  { lat: -6.173, lng: 106.941 }, // Office Cakung
-  { lat: -6.153857, lng: 107.016924 }, // WPU
-  { lat: -6.130013, lng: 106.942239 }, // Office Nagrak
+export const TargetLocationsWithRadius = [
+  { location: { lat: -6.173, lng: 106.941 }, radius: 200 }, // Office Cakung
+  { location: { lat: -6.153857, lng: 107.016924 }, radius: 150 }, // WPU
+  { location: { lat: -6.130013, lng: 106.942239 }, radius: 200 }, // Office Nagrak
+  { location: { lat: -6.2785393106250345, lng: 107.15864398307146 }, radius: 300 }, // Office Jl. Tekno raya
+  { location: { lat: -6.278292210508911, lng: 107.295504867729 }, radius: 350 }, // Office KRWG Tanjung Pura
+  { location: { lat: -6.245460747124666, lng: 107.28079689656437 }, radius: 300 }, // Office KRWG Tunggakjati
+  { location: { lat: -6.199625436099085, lng: 106.97630124236697 }, radius: 200 }, // Office PU Yamaha motor
+  { location: { lat: -6.3800194403391535, lng: 107.32365024954318 }, radius: 300 }, // Office KRWG SLP main
 ];
 
 const RADIUS = 200;
@@ -77,10 +97,10 @@ export default function AttendancePreview({
           });
 
           // Calculate distance between user location and target locations
-          const targetLatLng = TargetLocations.some((target) => {
-            const targetLocation = new L.LatLng(target.lat, target.lng);
+          const targetLatLng = TargetLocationsWithRadius.some((target) => {
+            const targetLocation = new L.LatLng(target.location.lat, target.location.lng);
             const distance = userLocation.distanceTo(targetLocation);
-            return distance <= RADIUS;
+            return distance <= target.radius;
           });
 
           setInRadius(targetLatLng);
@@ -394,8 +414,9 @@ export default function AttendancePreview({
           <>
             <MapView
               location={location}
-              targetLocations={TargetLocations}
-              circleRadius={RADIUS}
+              targetLocationsWithRadius={TargetLocationsWithRadius}
+              // targetLocations={TargetLocationsWithRadius}
+              // circleRadius={TargetLocationsWithRadius.radius}
             />
             <div className="grid justify-center py-4">
               <h1 className="font-semibold text-lg">
