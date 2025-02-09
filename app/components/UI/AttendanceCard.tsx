@@ -24,11 +24,30 @@ export function AttendanceCard({
   me: ProfileProps;
   shiftToday: UserShift;
 }) {
+  // Menambahkan logika untuk validasi waktu attendance
+  const currentTime = new Date();
+  console.log("attendance Date : ", attendance.attendanceDate);
+  // const attendanceDate = attendance.attendanceDate ? new Date(attendance.attendanceDate) : currentTime;
+  // console.log("attendance Date 2 : ", attendanceDate)
+  const sameDate =
+    format(+attendance.attendanceDate, "yyyy-MM-dd") ===
+    format(currentTime, "yyyy-MM-dd");
+  let timeValid = true;
+  if (attendance.checkOutTime) {
+    const checkOutTime = new Date(attendance.checkOutTime);
+    const diffHours =
+      (currentTime.getTime() - checkOutTime.getTime()) / (1000 * 60 * 60);
+    if (diffHours > 2) {
+      timeValid = false;
+    }
+  }
+  const shouldShowTimes = sameDate && timeValid;
+
   // console.log("name : ", me?.name);
   const initialFallback = me?.name[0].toUpperCase();
 
-  console.log("attendance : ", attendance);
-  console.log("shiftToday : ", shiftToday);
+  // console.log("attendance : ", attendance);
+  // console.log("shiftToday : ", shiftToday);
   return (
     <Card>
       <CardContent>
@@ -37,7 +56,7 @@ export function AttendanceCard({
             <AlertDescription>
               <span className="flex items-center">
                 <CalendarClock className="h-4 w-4 mr-2 text-orange-600" />
-                Shift : {shiftToday?.name}{" "}
+                <p className="text-xs">Shift : {shiftToday?.name} </p>
                 {/* [{shiftToday?.startTime ? <LocalTimeView dbTime={shiftToday?.startTime} /> : "--:--"} -{" "}
                 {shiftToday?.endTime ? <LocalTimeView dbTime={shiftToday?.endTime} /> : "--:--"}] */}
               </span>
@@ -47,30 +66,32 @@ export function AttendanceCard({
         <div className="grid grid-cols-2 py-2 gap-1">
           <div className="flex flex-col gap-2 items-center">
             <div className="grid grid-cols-2 gap-2">
-              <Avatar>
+              {/* <Avatar>
                 <AvatarImage src={`${PUBLIC_API_URL}/attendances/check-in/${attendance?.id}`} />
                 <AvatarFallback>{initialFallback}</AvatarFallback>
-              </Avatar>
-              <p className="text-md font-bold text-md self-center">
-                {/* {attendance?.checkInTime
-                  ? format(new Date(attendance?.checkInTime), "HH:mm")
-                  : "--:--"} */}
+              </Avatar> */}
+              <p className="text-sm self-center">
+                {shouldShowTimes ? (
                   <LocalTimeView dbTime={attendance?.checkInTime} />
+                ) : (
+                  "--:--"
+                )}
               </p>
             </div>
             <ButtonAtt label="Masuk" param1="hr/preview/in" style="primary" />
           </div>
           <div className="flex flex-col gap-2 items-center">
             <div className="grid grid-cols-2 gap-2">
-              <Avatar>
+              {/* <Avatar>
                 <AvatarImage src={`${PUBLIC_API_URL}/attendances/check-out/${attendance?.id}`} />
                 <AvatarFallback>{initialFallback}</AvatarFallback>
-              </Avatar>
-              <p className="text-md font-bold text-md self-center">
-                {/* {attendance?.checkOutTime
-                  ? format(new Date(attendance?.checkOutTime), "HH:mm")
-                  : "--:--"} */}
+              </Avatar> */}
+              <p className="text-sm self-center">
+                {shouldShowTimes ? (
                   <LocalTimeView dbTime={attendance?.checkOutTime} />
+                ) : (
+                  "--:--"
+                )}
               </p>
             </div>
             <ButtonAtt label="Pulang" param1="hr/preview/out" style="primary" />
