@@ -104,7 +104,7 @@ export default function FormChangePassword() {
         </div>
       ));
 
-      router.push("/hr/leaves");
+      router.push("/hr/profile");
     }
   }
   return (

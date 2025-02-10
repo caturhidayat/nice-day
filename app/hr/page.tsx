@@ -1,21 +1,12 @@
 import {
   getAttendance,
-  getAttendances,
   getProfile,
   getShiftToday,
 } from "../lib/action";
 
 import { AttendanceCard } from "../components/UI/AttendanceCard";
 import ClockDisplay from "../components/ClockDisplay";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
-import LocalTimeView from "../components/LocalTimeView";
-import { format } from "date-fns";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
 
 export default async function Page() {
   const attendance = await getAttendance();
