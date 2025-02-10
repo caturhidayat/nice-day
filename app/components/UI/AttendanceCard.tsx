@@ -11,8 +11,6 @@ import {
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CalendarClock } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { PUBLIC_API_URL } from "@/app/lib/constants/api";
 import LocalTimeView from "../LocalTimeView";
 
 export function AttendanceCard({
@@ -27,11 +25,8 @@ export function AttendanceCard({
   // Menambahkan logika untuk validasi waktu attendance
   const currentTime = new Date();
   console.log("attendance Date : ", attendance.attendanceDate);
-  // const attendanceDate = attendance.attendanceDate ? new Date(attendance.attendanceDate) : currentTime;
-  // console.log("attendance Date 2 : ", attendanceDate)
-  const sameDate =
-    format(+attendance.attendanceDate, "yyyy-MM-dd") ===
-    format(currentTime, "yyyy-MM-dd");
+  const sameDate = attendance.attendanceDate ?
+    format(new Date(+attendance.attendanceDate), "yyyy-MM-dd") === format(currentTime, "yyyy-MM-dd") : false;
   let timeValid = true;
   if (attendance.checkOutTime) {
     const checkOutTime = new Date(attendance.checkOutTime);

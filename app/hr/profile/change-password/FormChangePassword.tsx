@@ -88,7 +88,7 @@ export default function FormChangePassword() {
               <div className="ml-3 flex-1">
                 <p className="text-sm font-medium text-gray-900">Success!</p>
                 <p className="mt-1 text-sm text-gray-500">
-                  ✅ Leave has been created successfully
+                  ✅ Password has been changed successfully
                 </p>
               </div>
             </div>
@@ -104,7 +104,7 @@ export default function FormChangePassword() {
         </div>
       ));
 
-      router.push("/hr/leaves");
+      router.push("/hr/profile");
     }
   }
   return (
