@@ -26,7 +26,7 @@ export function AttendanceCard({
   const currentTime = new Date();
   console.log("attendance Date : ", attendance.attendanceDate);
   const sameDate = attendance.attendanceDate ?
-    format(new Date(attendance.attendanceDate), "yyyy-MM-dd") === format(currentTime, "yyyy-MM-dd") : false;
+    format(new Date(+attendance.attendanceDate), "yyyy-MM-dd") === format(currentTime, "yyyy-MM-dd") : false;
   let timeValid = true;
   if (attendance.checkOutTime) {
     const checkOutTime = new Date(attendance.checkOutTime);
