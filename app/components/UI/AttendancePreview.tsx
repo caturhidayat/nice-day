@@ -27,24 +27,32 @@ const MapView = dynamic(() => import("./MapView"), {
 // -6.196474488258041, 106.97737172725586
 // const TargetLocations = [
 //   { lat: -6.173, lng: 106.941 }, // Office Cakung
+// * -6.172872, 106.941640 // Office Cakung
 //   { lat: -6.153857, lng: 107.016924 }, // WPU
 //   { lat: -6.130013, lng: 106.942239 }, // Office Nagrak
+// * -6.129503750410665, 106.94506771794923 // Nagrak
 //   { lat: -6.2785393106250345, lng: 107.15864398307146 }, // Office Jl. Tekno raya
+// * -6,274988, 107,159851 // Office Jl. Tekno raya GENESIS yelo3
 //   { lat: -6.278292210508911, lng: 107.295504867729 }, // Office KRWG Tanjung Pura
+// * -6.278472108300512, 107.2955143129147 // Office KRWG Tanjung Pura karawang 2
 //   { lat: -6.245460747124666, lng: 107.28079689656437 }, // Office KRWG Tunggakjati
+// -6.246722, 107.281064 // Office KRWG Tunggakjati
 // -6.3800194403391535, 107.32365024954318 // Office KRWG SLP main
-// -6.199625436099085, 106.97630124236697 // Office Yamaha motor PU
+// * -6.380323846727715, 107.32358433007559 // Office KRWG SLP
+// * -6,199584, 106,976736 // Office Yamaha motor PU
+// * -6.249241202375471, 107.2798416588952 // Karawang Logistics Center
 // ];
 // Target Locations
 export const TargetLocationsWithRadius = [
-  { location: { lat: -6.173, lng: 106.941 }, radius: 200 }, // Office Cakung
+  { location: { lat: -6.172872, lng: 106.941640 }, radius: 150 }, // Office Cakung
   { location: { lat: -6.153857, lng: 107.016924 }, radius: 150 }, // WPU
-  { location: { lat: -6.130013, lng: 106.942239 }, radius: 200 }, // Office Nagrak
-  { location: { lat: -6.2785393106250345, lng: 107.15864398307146 }, radius: 300 }, // Office Jl. Tekno raya
-  { location: { lat: -6.278292210508911, lng: 107.295504867729 }, radius: 350 }, // Office KRWG Tanjung Pura
-  { location: { lat: -6.245460747124666, lng: 107.28079689656437 }, radius: 300 }, // Office KRWG Tunggakjati
-  { location: { lat: -6.199625436099085, lng: 106.97630124236697 }, radius: 200 }, // Office PU Yamaha motor
-  { location: { lat: -6.3800194403391535, lng: 107.32365024954318 }, radius: 300 }, // Office KRWG SLP main
+  { location: { lat: -6.129503750410665, lng: 106.94506771794923 }, radius: 450 }, // Nagrak
+  { location: { lat: -6.274988, lng: 107.159851 }, radius: 100 }, // Office Jl. Tekno raya GENESIS yelo3
+  { location: { lat: -6.278472108300512, lng: 107.2955143129147 }, radius: 100 }, // Office KRWG Tanjung Pura karawang 2
+  { location: { lat: -6.246722, lng: 107.281064 }, radius: 120 }, // Office KRWG Tunggakjati
+  { location: { lat: -6.380323846727715, lng: 107.32358433007559 }, radius: 100 }, // Office KRWG SLP
+  { location: { lat: -6.199584, lng: 106.976736 }, radius: 70 }, // Office PU Yamaha motor
+  { location: { lat: -6.249241202375471, lng: 107.2798416588952 }, radius: 50 }, // Karawang Logistics Center
 ];
 
 const RADIUS = 200;
