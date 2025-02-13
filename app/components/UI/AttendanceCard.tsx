@@ -25,18 +25,30 @@ export function AttendanceCard({
   // Menambahkan logika untuk validasi waktu attendance
   const currentTime = new Date();
   console.log("attendance Date : ", attendance.attendanceDate);
-  const sameDate = attendance.attendanceDate ?
-    format(new Date(+attendance.attendanceDate), "yyyy-MM-dd") === format(currentTime, "yyyy-MM-dd") : false;
-  let timeValid = true;
-  if (attendance.checkOutTime) {
+
+  // New attendance validation logic
+  let shouldShowTimes = false;
+
+  if (attendance.checkInTime && !attendance.checkOutTime) {
+    // Tampilkan checkIn jika ada, walau attendanceDate tidak sama dengan hari ini
+    shouldShowTimes = true;
+  } else if (!attendance.checkInTime && attendance.checkOutTime) {
+    // Jika hanya memiliki checkOut, tampilkan checkOut selama masih dalam 2 jam setelahnya
     const checkOutTime = new Date(attendance.checkOutTime);
-    const diffHours =
-      (currentTime.getTime() - checkOutTime.getTime()) / (1000 * 60 * 60);
-    if (diffHours > 2) {
-      timeValid = false;
+    const diffHours = (currentTime.getTime() - checkOutTime.getTime()) / (1000 * 60 * 60);
+    if (diffHours <= 2) {
+      shouldShowTimes = true;
+    }
+  } else if (attendance.checkInTime && attendance.checkOutTime) {
+    // Jika ada checkIn dan checkOut, tampilkan hanya jika attendanceDate adalah hari ini
+    if (attendance.attendanceDate) {
+      const attendanceDateStr = format(new Date(+attendance.attendanceDate), "yyyy-MM-dd");
+      const currentDateStr = format(currentTime, "yyyy-MM-dd");
+      if (attendanceDateStr === currentDateStr) {
+        shouldShowTimes = true;
+      }
     }
   }
-  const shouldShowTimes = sameDate && timeValid;
 
   // console.log("name : ", me?.name);
   const initialFallback = me?.name[0].toUpperCase();

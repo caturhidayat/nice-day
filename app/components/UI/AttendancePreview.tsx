@@ -39,7 +39,7 @@ const MapView = dynamic(() => import("./MapView"), {
 // -6.246722, 107.281064 // Office KRWG Tunggakjati
 // -6.3800194403391535, 107.32365024954318 // Office KRWG SLP main
 // * -6.380323846727715, 107.32358433007559 // Office KRWG SLP
-// * -6,199584, 106,976736 // Office Yamaha motor PU
+// * -6,199990, 106,976838 // Office Yamaha motor PU
 // * -6.249241202375471, 107.2798416588952 // Karawang Logistics Center
 // ];
 // Target Locations
@@ -51,7 +51,7 @@ export const TargetLocationsWithRadius = [
   { location: { lat: -6.278472108300512, lng: 107.2955143129147 }, radius: 100 }, // Office KRWG Tanjung Pura karawang 2
   { location: { lat: -6.246722, lng: 107.281064 }, radius: 120 }, // Office KRWG Tunggakjati
   { location: { lat: -6.380323846727715, lng: 107.32358433007559 }, radius: 100 }, // Office KRWG SLP
-  { location: { lat: -6.199584, lng: 106.976736 }, radius: 70 }, // Office PU Yamaha motor
+  { location: { lat: -6.199990, lng: 106.976838 }, radius: 70 }, // Office PU Yamaha motor
   { location: { lat: -6.249241202375471, lng: 107.2798416588952 }, radius: 50 }, // Karawang Logistics Center
 ];
 
