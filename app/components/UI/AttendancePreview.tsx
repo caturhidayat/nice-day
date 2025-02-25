@@ -14,13 +14,12 @@ import { AttendancePreviewProps } from "@/app/lib/interfaces/attendance.interfac
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 
-
 // Dynamic import komponen Map
 const MapView = dynamic(() => import("./MapView"), {
   ssr: false,
 });
 
-// -6.2785393106250345, 107.15864398307146 
+// -6.2785393106250345, 107.15864398307146
 // -6.278292210508911, 107.295504867729
 // -6.245460747124666, 107.28079689656437
 // -6.374668342338985, 107.32776063928956
@@ -39,19 +38,28 @@ const MapView = dynamic(() => import("./MapView"), {
 // -6.246722, 107.281064 // Office KRWG Tunggakjati
 // -6.3800194403391535, 107.32365024954318 // Office KRWG SLP main
 // * -6.380323846727715, 107.32358433007559 // Office KRWG SLP
-// * -6,199584, 106,976736 // Office Yamaha motor PU
+// * -6,199990, 106,976838 // Office Yamaha motor PU
 // * -6.249241202375471, 107.2798416588952 // Karawang Logistics Center
 // ];
 // Target Locations
 export const TargetLocationsWithRadius = [
-  { location: { lat: -6.172872, lng: 106.941640 }, radius: 150 }, // Office Cakung
+  { location: { lat: -6.172872, lng: 106.94164 }, radius: 150 }, // Office Cakung
   { location: { lat: -6.153857, lng: 107.016924 }, radius: 150 }, // WPU
-  { location: { lat: -6.129503750410665, lng: 106.94506771794923 }, radius: 450 }, // Nagrak
+  {
+    location: { lat: -6.129503750410665, lng: 106.94506771794923 },
+    radius: 450,
+  }, // Nagrak
   { location: { lat: -6.274988, lng: 107.159851 }, radius: 100 }, // Office Jl. Tekno raya GENESIS yelo3
-  { location: { lat: -6.278472108300512, lng: 107.2955143129147 }, radius: 100 }, // Office KRWG Tanjung Pura karawang 2
+  {
+    location: { lat: -6.278472108300512, lng: 107.2955143129147 },
+    radius: 100,
+  }, // Office KRWG Tanjung Pura karawang 2
   { location: { lat: -6.246722, lng: 107.281064 }, radius: 120 }, // Office KRWG Tunggakjati
-  { location: { lat: -6.380323846727715, lng: 107.32358433007559 }, radius: 100 }, // Office KRWG SLP
-  { location: { lat: -6.199584, lng: 106.976736 }, radius: 70 }, // Office PU Yamaha motor
+  {
+    location: { lat: -6.380323846727715, lng: 107.32358433007559 },
+    radius: 100,
+  }, // Office KRWG SLP
+  { location: { lat: -6.19999, lng: 106.976838 }, radius: 70 }, // Office PU Yamaha motor
   { location: { lat: -6.249241202375471, lng: 107.2798416588952 }, radius: 50 }, // Karawang Logistics Center
 ];
 
@@ -106,7 +114,10 @@ export default function AttendancePreview({
 
           // Calculate distance between user location and target locations
           const targetLatLng = TargetLocationsWithRadius.some((target) => {
-            const targetLocation = new L.LatLng(target.location.lat, target.location.lng);
+            const targetLocation = new L.LatLng(
+              target.location.lat,
+              target.location.lng
+            );
             const distance = userLocation.distanceTo(targetLocation);
             return distance <= target.radius;
           });
@@ -364,11 +375,11 @@ export default function AttendancePreview({
           <div className="flex-1 w-0 p-4">
             <div className="flex items-start">
               <div className="ml-3 flex-1">
-                <p className="text-sm font-medium text-gray-900">Success!</p>
+                <p className="text-sm font-medium text-green-600">Success!</p>
                 <p className="mt-1 text-sm text-gray-500">
                   {mode === "in"
-                    ? "Check-in has been saved successfully"
-                    : "Check-out has been saved successfully"}
+                    ? "Check-in has been saved successfully ✅"
+                    : "Check-out has been saved successfully ✅"}
                 </p>
               </div>
             </div>
@@ -395,7 +406,7 @@ export default function AttendancePreview({
           <div className="flex-1 w-0 p-4">
             <div className="flex items-start">
               <div className="ml-3 flex-1">
-                <p className="text-sm font-medium text-gray-900">Error!</p>
+                <p className="text-sm font-medium text-red-600">Error!</p>
                 <p className="mt-1 text-sm text-gray-500">
                   {error instanceof Error ? error.message : "Unknown error"}
                 </p>
@@ -418,6 +429,17 @@ export default function AttendancePreview({
   return (
     <div className="grid grid-cols-1 w-auto gap-4 justify-center">
       <div className="justify-center">
+        <div className="flex flex-col items-center justify-center gap-2 p-2">
+          {!isCameraOn && (
+            <Button
+              variant={inRadius ? "default" : "destructive"}
+              onClick={inRadius ? saveAttendance : getLocation}
+              className="w-full"
+            >
+              {inRadius ? "Save Attendance" : "Refresh Location"}
+            </Button>
+          )}
+        </div>
         {photo ? (
           <>
             <MapView
@@ -443,6 +465,13 @@ export default function AttendancePreview({
           </>
         ) : (
           <div className="grid grid-cols-1 gap-2">
+            <div className="grid gap-2 p-2">
+              {isCameraOn ? (
+                <Button onClick={takePhoto} className="w-full">
+                  Take Photo
+                </Button>
+              ) : null}
+            </div>
             <div className="flex flex-col items-center justify-center">
               <video
                 ref={videoRef}
@@ -452,25 +481,7 @@ export default function AttendancePreview({
               ></video>
               <canvas ref={canvasRef} className="hidden"></canvas>
             </div>
-            <div className="grid gap-2 p-2">
-              {isCameraOn ? (
-                <Button onClick={takePhoto} className="w-full">
-                  Take Photo
-                </Button>
-              ) : null}
-            </div>
           </div>
-        )}
-      </div>
-      <div className="flex flex-col items-center justify-center gap-2 p-2">
-        {!isCameraOn && (
-          <Button
-            variant={inRadius ? "default" : "destructive"}
-            onClick={inRadius ? saveAttendance : getLocation}
-            className="w-full"
-          >
-            {inRadius ? "Save Attendance" : "Refresh Location"}
-          </Button>
         )}
       </div>
       <div className=""></div>
