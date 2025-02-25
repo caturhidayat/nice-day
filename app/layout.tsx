@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import Loading from "./loading";
 import { Toaster } from "react-hot-toast";
 import InstallPromptHandler from "./install-prompt-handler";
+import InstallPromptButton from "./install-prompt";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -26,7 +27,8 @@ export default async function RootLayout({
         <Providers authenticated={isAuthenticated}>
           <Suspense fallback={<Loading />}>
             <main className="max-w-screen-xl h-dvh">{children}</main>
-            <InstallPromptHandler />
+            {/* <InstallPromptHandler /> */}
+            <InstallPromptButton />
           </Suspense>
           <Toaster />
         </Providers>
