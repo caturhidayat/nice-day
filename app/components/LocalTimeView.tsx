@@ -12,9 +12,9 @@ export default function LocalTimeView({ dbTime, style }: LocalTimeViewProps) {
   const formatTime = (timeStr: string) => {
     try {
       // First try parsing as ISO string
-      if (timeStr.includes('T') || timeStr.includes('-')) {
-        return format(parseISO(timeStr), "HH:mm");
-      }
+      // if (timeStr.includes('T') || timeStr.includes('-')) {
+      //   return format(parseISO(timeStr), "HH:mm");
+      // }
       
       // Then try parsing as timestamp
       const timestamp = Number(timeStr);
