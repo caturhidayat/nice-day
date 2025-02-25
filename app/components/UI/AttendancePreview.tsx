@@ -375,11 +375,11 @@ export default function AttendancePreview({
           <div className="flex-1 w-0 p-4">
             <div className="flex items-start">
               <div className="ml-3 flex-1">
-                <p className="text-sm font-medium text-gray-900">Success!</p>
+                <p className="text-sm font-medium text-green-600">Success!</p>
                 <p className="mt-1 text-sm text-gray-500">
                   {mode === "in"
-                    ? "Check-in has been saved successfully"
-                    : "Check-out has been saved successfully"}
+                    ? "Check-in has been saved successfully ✅"
+                    : "Check-out has been saved successfully ✅"}
                 </p>
               </div>
             </div>
@@ -406,7 +406,7 @@ export default function AttendancePreview({
           <div className="flex-1 w-0 p-4">
             <div className="flex items-start">
               <div className="ml-3 flex-1">
-                <p className="text-sm font-medium text-gray-900">Error!</p>
+                <p className="text-sm font-medium text-red-600">Error!</p>
                 <p className="mt-1 text-sm text-gray-500">
                   {error instanceof Error ? error.message : "Unknown error"}
                 </p>
