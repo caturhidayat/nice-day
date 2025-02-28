@@ -21,18 +21,15 @@ const NetworkInformation: React.FC = () => {
 
   return (
     <>
-      {/* {isOnline ? (
+      {isOnline ? (
         <div className="flex text-sm items-center text-green-500">
-          <ChartNoAxesColumnIncreasing /> Online
+          <ChartNoAxesColumnIncreasing /> 
         </div>
       ) : (
         <div className="flex text-sm items-center text-red-500">
-          <ChartNoAxesColumnIncreasing /> Offline
+          <ChartNoAxesColumnIncreasing /> 
         </div>
-      )} */}
-      <div className={`flex text-sm items-center ${isOnline ? "text-green-500" : "text-red-500"}`}>
-        <ChartNoAxesColumnIncreasing /> {isOnline ? "Online" : "Offline"}
-      </div>
+      )}
     </>
   );
 };

@@ -13,6 +13,8 @@ import { createAttendance, updateAttendance } from "@/app/lib/action";
 import { AttendancePreviewProps } from "@/app/lib/interfaces/attendance.interface";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
+import useOnlineStatus from "../../../src/hooks/useOnlineStatus";
+import { saveAttendanceOffline } from "../../../src/utils/offlineHelpers";
 
 // Dynamic import komponen Map
 const MapView = dynamic(() => import("./MapView"), {
@@ -92,6 +94,23 @@ export default function AttendancePreview({
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mapRef = useRef<leafletMap | null>(null);
+
+  const isOnline = useOnlineStatus();
+
+  // useEffect(() => {
+  //   function handleOnline() {
+  //     setIsOnline(true);
+  //   }
+  //   function handleOffline() {
+  //     setIsOnline(false);
+  //   }
+  //   window.addEventListener('online', handleOnline);
+  //   window.addEventListener('offline', handleOffline);
+  //   return () => {
+  //     window.removeEventListener('online', handleOnline);
+  //     window.removeEventListener('offline', handleOffline);
+  //   };
+  // }, []);
 
   // * Function to get user location
   const getLocation = async () => {
@@ -212,7 +231,18 @@ export default function AttendancePreview({
   };
 
   // * Save attendance Toast
-  const saveAttendance = async () => {
+  const saveAttendance = async (attendanceData: any) => {
+    if (!isOnline) {
+      saveAttendanceOffline(attendanceData)
+        .then(() => {
+          alert("Data kehadiran disimpan secara offline dan akan disinkronkan saat online.");
+        })
+        .catch((err) => {
+          console.error("Gagal menyimpan data offline:", err);
+        });
+      return;
+    }
+
     try {
       if (!location) {
         toast.custom((t) => (
@@ -428,6 +458,11 @@ export default function AttendancePreview({
 
   return (
     <div className="grid grid-cols-1 w-full gap-4 justify-center max-w-md mx-auto overflow-auto pb-24">
+      {!isOnline && (
+        <div style={{ backgroundColor: '#f8d7da', color: '#721c24', padding: '10px', textAlign: 'center' }}>
+          Anda sedang offline. Data mungkin tidak terupdate.
+        </div>
+      )}
       <div className="justify-center">
         {photo ? (
           <>
