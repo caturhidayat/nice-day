@@ -427,7 +427,7 @@ export default function AttendancePreview({
   };
 
   return (
-    <div className="grid grid-cols-1 w-auto gap-4 justify-center">
+    <div className="grid grid-cols-1 w-full gap-4 justify-center max-w-md mx-auto overflow-auto pb-24">
       <div className="justify-center">
         {photo ? (
           <>
@@ -457,7 +457,7 @@ export default function AttendancePreview({
             <div className="flex flex-col items-center justify-center">
               <video
                 ref={videoRef}
-                className="w-[280px] h-auto"
+                className="w-full sm:w-[280px] h-auto"
                 autoPlay
                 playsInline
               ></video>
