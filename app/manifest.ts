@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Niceday',
     short_name: 'Niceday',
-    description: 'Niceday is a platform for managing your daily Attendance',
+    description: 'Niceday is a platform for recording your daily Attendance',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
@@ -21,5 +21,6 @@ export default function manifest(): MetadataRoute.Manifest {
         type: 'image/png',
       },
     ],
+    orientation: 'portrait',
   }
 }
