@@ -26,7 +26,7 @@ export default async function Page() {
         </h1>
         <div className="flex items-center justify-center">
           <Avatar className="mx-auto">
-            <AvatarImage src={`https://avatar.iran.liara.run/public`} alt="avatar" />
+            <AvatarImage src={`https://avatar.iran.liara.run/username?username=${profile.name}`} alt="avatar" />
             <AvatarFallback>
               <span className="text-xl font-bold">
                 {/* {profile.name ? profile.name.charAt(0) : "?"} */}
