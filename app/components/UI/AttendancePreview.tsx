@@ -429,17 +429,6 @@ export default function AttendancePreview({
   return (
     <div className="grid grid-cols-1 w-auto gap-4 justify-center">
       <div className="justify-center">
-        <div className="flex flex-col items-center justify-center gap-2 p-2">
-          {!isCameraOn && (
-            <Button
-              variant={inRadius ? "default" : "destructive"}
-              onClick={inRadius ? saveAttendance : getLocation}
-              className="w-full"
-            >
-              {inRadius ? "Save Attendance" : "Refresh Location"}
-            </Button>
-          )}
-        </div>
         {photo ? (
           <>
             <MapView
@@ -465,6 +454,15 @@ export default function AttendancePreview({
           </>
         ) : (
           <div className="grid grid-cols-1 gap-2">
+            <div className="flex flex-col items-center justify-center">
+              <video
+                ref={videoRef}
+                className="w-[280px] h-auto"
+                autoPlay
+                playsInline
+              ></video>
+              <canvas ref={canvasRef} className="hidden"></canvas>
+            </div>
             <div className="grid gap-2 p-2">
               {isCameraOn ? (
                 <Button onClick={takePhoto} className="w-full">
@@ -472,17 +470,19 @@ export default function AttendancePreview({
                 </Button>
               ) : null}
             </div>
-            <div className="flex flex-col items-center justify-center">
-              <video
-                ref={videoRef}
-                className="w-full h-full"
-                autoPlay
-                playsInline
-              ></video>
-              <canvas ref={canvasRef} className="hidden"></canvas>
-            </div>
           </div>
         )}
+        <div className="flex flex-col items-center justify-center gap-2 p-2">
+          {!isCameraOn && (
+            <Button
+              variant={inRadius ? "default" : "destructive"}
+              onClick={inRadius ? saveAttendance : getLocation}
+              className="w-full"
+            >
+              {inRadius ? "Save Attendance" : "Refresh Location"}
+            </Button>
+          )}
+        </div>
       </div>
       <div className=""></div>
     </div>
