@@ -3,12 +3,13 @@
 import { AuthContext } from "@/app/auth/auth-context";
 import Image from "next/image";
 import { useContext } from "react";
+import NetworkInformation from './NetworkInformation';
 
 export default function Navbar() {
   const isAuthenticated = useContext(AuthContext);
 
   return (
-    <div>
+    <nav>
       {isAuthenticated ? (
         <div className="navbar bg-base-100 fixed ">
           <div className="flex-1">
@@ -26,9 +27,12 @@ export default function Navbar() {
               NiceDay
             </h2>
           </div>
-          <div className="flex-none"></div>
+          <div className="flex-none">
+          <NetworkInformation />
+          </div>
         </div>
       ) : null}
-    </div>
+      
+    </nav>
   );
 }
