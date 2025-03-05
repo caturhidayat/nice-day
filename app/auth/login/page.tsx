@@ -6,11 +6,14 @@
 import toast from "react-hot-toast";
 import { useFormState } from "react-dom";
 import login from "./login";
-import { useActionState, useEffect } from "react";
-import { LoaderIcon, ShieldX } from "lucide-react";
+import { useActionState, useEffect, useState } from "react";
+import { Eye, EyeOff, LoaderIcon, ShieldX } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import InstallPromptButton from "@/app/install-prompt";
 
 const initialState = {
   success: false,
@@ -22,11 +25,8 @@ const initialState = {
 };
 export default function Login() {
   const router = useRouter();
-  // const [state, formAction, isPending] = useActionState<ActionState, FormData>(
-  //   login,
-  //   initialState
-  // );
   const [state, action, isPending] = useActionState(login, initialState);
+  const [seePassword, setSeePassword] = useState(false);
 
   // Check if login is successful and redirect to dashboard
   useEffect(() => {
@@ -44,10 +44,11 @@ export default function Login() {
 
   return (
     <section className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+      <InstallPromptButton />
       <div className="mx-auto max-w-lg text-center">
         <div className="flex-1">
           <div className="avatar">
-            <div className="w-32 rounded">
+            <div className="w-36 rounded">
               <Image
                 src="/images/Logo.png"
                 alt="Avatar Tailwind CSS Component"
@@ -63,16 +64,22 @@ export default function Login() {
             NiceDay ✨
           </h2>
         </div>
-
+        <h1 className="text-xl font-extrabold sm:text-5xl">
+          Understand User Flow.
+          <strong className="font-extrabold text-rose-700 sm:block">
+            {" "}
+            Increase Conversion.{" "}
+          </strong>
+        </h1>
         <p className="mt-4 text-gray-500">Sign in to access your account</p>
       </div>
 
       <form action={action}>
         <div className="grid gap-4 pt-16 w-full">
-          <input
+          <Input
             type="text"
             name="username"
-            className="input input-bordered "
+            // className="input input-bordered "
             placeholder="Enter Username"
             defaultValue={state.inputs?.username}
           />
@@ -82,12 +89,26 @@ export default function Login() {
             </span>
           )}
 
-          <input
-            type="password"
-            name="password"
-            className="input input-bordered "
-            placeholder="Enter Password"
-          />
+          <div className="flex w-full gap-2">
+            <Input
+              type={seePassword ? "text" : "password"}
+              name="password"
+              // className="input input-bordered "
+              placeholder="Enter Password"
+            />
+            <Button
+              type="button"
+              variant={"ghost"}
+              onClick={() => setSeePassword(!seePassword)}
+            >
+              {seePassword ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
+
           {state.errors?.password && (
             <span id="password-error" className="text-red-500 text-xs">
               {state.errors?.password[0]}
@@ -101,7 +122,7 @@ export default function Login() {
             </Alert>
           )}
 
-          <button className="btn btn-primary btn-block" disabled={isPending}>
+          <Button className="bg-sky-700 hover:bg-sky-800 " disabled={isPending}>
             {isPending ? (
               <>
                 <LoaderIcon className="h-4 w-4 animate-spin" />
@@ -110,7 +131,7 @@ export default function Login() {
             ) : (
               "Sign In"
             )}
-          </button>
+          </Button>
         </div>
       </form>
     </section>

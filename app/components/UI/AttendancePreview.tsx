@@ -13,6 +13,8 @@ import { createAttendance, updateAttendance } from "@/app/lib/action";
 import { AttendancePreviewProps } from "@/app/lib/interfaces/attendance.interface";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
+import useOnlineStatus from "../../../src/hooks/useOnlineStatus";
+import { saveAttendanceOffline } from "../../../src/utils/offlineHelpers";
 
 // Dynamic import komponen Map
 const MapView = dynamic(() => import("./MapView"), {
@@ -212,7 +214,7 @@ export default function AttendancePreview({
   };
 
   // * Save attendance Toast
-  const saveAttendance = async () => {
+  const saveAttendance = async (attendanceData: any) => {
     try {
       if (!location) {
         toast.custom((t) => (
@@ -427,7 +429,7 @@ export default function AttendancePreview({
   };
 
   return (
-    <div className="grid grid-cols-1 w-auto gap-4 justify-center">
+    <div className="grid grid-cols-1 w-full gap-4 justify-center max-w-md mx-auto overflow-auto pb-24">
       <div className="justify-center">
         {photo ? (
           <>
@@ -437,8 +439,8 @@ export default function AttendancePreview({
               // targetLocations={TargetLocationsWithRadius}
               // circleRadius={TargetLocationsWithRadius.radius}
             />
-            <div className="grid justify-center py-4">
-              <h1 className="font-semibold text-lg">
+            <div className="grid justify-center py-2">
+              <h1 className="text-sm">
                 {checkInTime && format(new Date(checkInTime), "PPpp")}
               </h1>
             </div>
@@ -447,8 +449,8 @@ export default function AttendancePreview({
                 src={photo}
                 alt="Preview"
                 className="rounded-lg"
-                width={180}
-                height={200}
+                width={140}
+                height={100}
               />
             </div>
           </>
@@ -457,7 +459,7 @@ export default function AttendancePreview({
             <div className="flex flex-col items-center justify-center">
               <video
                 ref={videoRef}
-                className="w-[280px] h-auto"
+                className="w-4/6 h-auto"
                 autoPlay
                 playsInline
               ></video>

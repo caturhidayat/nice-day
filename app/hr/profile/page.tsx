@@ -4,8 +4,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Logout } from "./Logout";
-
-
+import Image from "next/image";
+import InstallPromptButton from "@/app/install-prompt";
 
 type ProfileProps = {
   id: string;
@@ -15,44 +15,29 @@ type ProfileProps = {
 };
 
 export default async function Page() {
-  // const [profile, setProfile] = useState<ProfileProps>({
-  //   id: "",
-  //   name: "",
-  //   departement: "",
-  //   branch: "",
-  // });
-
- 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const res = await getProfile();
-  //     setProfile(res);
-  //     console.log("res : ", res);
-  //   };
-  //   fetchData();
-  // }, []);
-
   console.log("window type : ", typeof window);
-  
+
   const profile = await getProfile();
 
   return (
-    <div className="px-6 flow-root">
+    <div className="px-6 flow-root pb-40">
       <div className="grid grid-col-1 justify-center py-6 gap-2">
         <h1 className="flex justify-center text-center text-2xl font-bold tracking-tight sm:text-2xl">
           Profile
         </h1>
         <div className="flex items-center justify-center">
           <Avatar className="mx-auto">
-            <AvatarImage src="/images/avatar.png" alt="avatar" />
+            <AvatarImage src={`https://avatar.iran.liara.run/username?username=${profile.name}`} alt="avatar" />
             <AvatarFallback>
               <span className="text-xl font-bold">
-                {profile.name ? profile.name.charAt(0) : "?"}
+                {/* {profile.name ? profile.name.charAt(0) : "?"} */}
+                <Image src={`https://avatar.iran.liara.run/username?username=${profile.name}`} alt="avatar" width={50} height={50} />
               </span>
             </AvatarFallback>
           </Avatar>
         </div>
       </div>
+      
       <dl className="-my-3 divide-y divide-gray-100 text-sm">
         <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
           <dt className="font-medium">Name</dt>
@@ -82,6 +67,7 @@ export default async function Page() {
             <Link href="/hr/profile/change-password">Change Password</Link>
           </Button>
           <Logout />
+          <InstallPromptButton />
         </div>
       </dl>
     </div>
