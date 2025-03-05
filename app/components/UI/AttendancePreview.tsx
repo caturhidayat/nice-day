@@ -95,23 +95,6 @@ export default function AttendancePreview({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mapRef = useRef<leafletMap | null>(null);
 
-  const isOnline = useOnlineStatus();
-
-  // useEffect(() => {
-  //   function handleOnline() {
-  //     setIsOnline(true);
-  //   }
-  //   function handleOffline() {
-  //     setIsOnline(false);
-  //   }
-  //   window.addEventListener('online', handleOnline);
-  //   window.addEventListener('offline', handleOffline);
-  //   return () => {
-  //     window.removeEventListener('online', handleOnline);
-  //     window.removeEventListener('offline', handleOffline);
-  //   };
-  // }, []);
-
   // * Function to get user location
   const getLocation = async () => {
     if (navigator.geolocation) {
@@ -232,17 +215,6 @@ export default function AttendancePreview({
 
   // * Save attendance Toast
   const saveAttendance = async (attendanceData: any) => {
-    if (!isOnline) {
-      saveAttendanceOffline(attendanceData)
-        .then(() => {
-          alert("Data kehadiran disimpan secara offline dan akan disinkronkan saat online.");
-        })
-        .catch((err) => {
-          console.error("Gagal menyimpan data offline:", err);
-        });
-      return;
-    }
-
     try {
       if (!location) {
         toast.custom((t) => (
@@ -458,11 +430,6 @@ export default function AttendancePreview({
 
   return (
     <div className="grid grid-cols-1 w-full gap-4 justify-center max-w-md mx-auto overflow-auto pb-24">
-      {!isOnline && (
-        <div style={{ backgroundColor: '#f8d7da', color: '#721c24', padding: '10px', textAlign: 'center' }}>
-          Anda sedang offline. Data mungkin tidak terupdate.
-        </div>
-      )}
       <div className="justify-center">
         {photo ? (
           <>
@@ -472,8 +439,8 @@ export default function AttendancePreview({
               // targetLocations={TargetLocationsWithRadius}
               // circleRadius={TargetLocationsWithRadius.radius}
             />
-            <div className="grid justify-center py-4">
-              <h1 className="font-semibold text-lg">
+            <div className="grid justify-center py-2">
+              <h1 className="text-sm">
                 {checkInTime && format(new Date(checkInTime), "PPpp")}
               </h1>
             </div>
@@ -482,8 +449,8 @@ export default function AttendancePreview({
                 src={photo}
                 alt="Preview"
                 className="rounded-lg"
-                width={180}
-                height={200}
+                width={140}
+                height={100}
               />
             </div>
           </>
@@ -492,7 +459,7 @@ export default function AttendancePreview({
             <div className="flex flex-col items-center justify-center">
               <video
                 ref={videoRef}
-                className="w-full sm:w-[280px] h-auto"
+                className="w-full min-h-fit "
                 autoPlay
                 playsInline
               ></video>

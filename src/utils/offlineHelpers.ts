@@ -57,7 +57,7 @@ export function saveAttendanceOffline(attendanceData: any): Promise<void> {
       const request = store.add(sanitizedData);
       request.onsuccess = () => {
         console.log('Data kehadiran disimpan secara offline menggunakan IndexedDB:', sanitizedData);
-        resolve();
+        resolve();  
       };
       request.onerror = () => {
         console.error('Gagal menyimpan data kehadiran secara offline:', request.error);

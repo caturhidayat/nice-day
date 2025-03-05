@@ -28,7 +28,7 @@ export default function Navbar() {
             </h2>
           </div>
           <div className="flex-none">
-          <NetworkInformation />
+          {/* <NetworkInformation /> */}
           </div>
         </div>
       ) : null}

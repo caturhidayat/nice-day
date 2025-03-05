@@ -74,8 +74,8 @@ export default async function RootLayout({
         <Providers authenticated={isAuthenticated}>
           <Suspense fallback={<Loading />}>
             <main className="max-w-screen-xl h-dvh">{children}</main>
+            {/* <InstallPromptButton /> */}
             {/* <InstallPromptHandler /> */}
-            <InstallPromptButton />
           </Suspense>
           <Toaster />
         </Providers>
