@@ -459,7 +459,7 @@ export default function AttendancePreview({
             <div className="flex flex-col items-center justify-center">
               <video
                 ref={videoRef}
-                className="w-full min-h-fit "
+                className="w-4/6 h-auto"
                 autoPlay
                 playsInline
               ></video>
