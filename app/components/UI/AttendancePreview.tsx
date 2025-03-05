@@ -77,6 +77,7 @@ export default function AttendancePreview({
     lat: 0,
     lng: 0,
   });
+  const [isLoading, setIsLoading] = useState(false);
   const [photo, setPhoto] = useState<string>("");
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [inRadius, setInRadius] = useState(false);
@@ -215,6 +216,7 @@ export default function AttendancePreview({
 
   // * Save attendance Toast
   const saveAttendance = async (attendanceData: any) => {
+    setIsLoading(true);
     try {
       if (!location) {
         toast.custom((t) => (
@@ -337,6 +339,7 @@ export default function AttendancePreview({
       const response = await (mode === "in"
         ? createAttendance(formData)
         : updateAttendance(formData));
+      setIsLoading(false);
 
       if (response?.error) {
         toast.custom((t) => (
@@ -480,8 +483,9 @@ export default function AttendancePreview({
               variant={inRadius ? "default" : "destructive"}
               onClick={inRadius ? saveAttendance : getLocation}
               className="w-full"
+              disabled={isLoading}
             >
-              {inRadius ? "Save Attendance" : "Refresh Location"}
+              {isLoading ? "Loading..." : inRadius ? "Save Attendance" : "Refresh Location"}
             </Button>
           )}
         </div>
