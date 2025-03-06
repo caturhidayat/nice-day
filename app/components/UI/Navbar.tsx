@@ -11,7 +11,7 @@ export default function Navbar() {
   return (
     <nav>
       {isAuthenticated ? (
-        <div className="navbar bg-base-100 fixed ">
+        <div className="navbar bg-base-100 fixed z-20">
           <div className="flex-1">
             <div className="avatar">
               <div className="w-12 rounded">
