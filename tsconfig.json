@@ -20,13 +20,8 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    },
-    "types": [
-      // Other types...
-      // This allows Serwist to type `window.serwist`.
-      "@serwist/next/typings"
-    ],    
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "public/sw.js"],
-  "exclude": ["node_modules", "public/sw.js"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }
