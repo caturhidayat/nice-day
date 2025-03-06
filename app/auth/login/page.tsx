@@ -43,7 +43,7 @@ export default function Login() {
   }, [state.success, state.message, router, state.errors]);
 
   return (
-    <section className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-(--breakpoint-xl) px-4 py-16 sm:px-6 lg:px-8">
       <InstallPromptButton />
       <div className="mx-auto max-w-lg text-center">
         <div className="flex-1">
@@ -60,7 +60,7 @@ export default function Login() {
         </div>
         <div className="text-2xl font-bold sm:text-3xl flex justify-center">
           <h2 className="mr-2">Welcome to</h2>
-          <h2 className="bg-gradient-to-r from-polynesian  to-ceruline bg-clip-text text-transparent ">
+          <h2 className="bg-linear-to-r from-polynesian  to-ceruline bg-clip-text text-transparent ">
             NiceDay ✨
           </h2>
         </div>

@@ -23,7 +23,7 @@ export default function Navbar() {
                 />
               </div>
             </div>
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-polynesian  to-ceruline bg-clip-text text-transparent ">
+            <h2 className="text-2xl font-bold bg-linear-to-r from-polynesian  to-ceruline bg-clip-text text-transparent ">
               NiceDay
             </h2>
           </div>

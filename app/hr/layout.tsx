@@ -11,7 +11,7 @@ export default function HrLayout({ children }: { children: React.ReactNode }) {
   return (
     <div>
       <Navbar />
-      <section className="max-w-screen-xl py-16  sm:py-14 lg:py-14 h-dvh">
+      <section className="max-w-(--breakpoint-xl) py-16  sm:py-14 lg:py-14 h-dvh">
         {children}
         <BottomNav />
       </section>

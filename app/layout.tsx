@@ -73,7 +73,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <Providers authenticated={isAuthenticated}>
           <Suspense fallback={<Loading />}>
-            <main className="max-w-screen-xl h-dvh">{children}</main>
+            <main className="max-w-(--breakpoint-xl) h-dvh">{children}</main>
             {/* <InstallPromptButton /> */}
             {/* <InstallPromptHandler /> */}
           </Suspense>
