@@ -23,11 +23,11 @@ export const buttons: ButtonItem[] = [
     text: "Attendance",
     path: "/hr/attendance",
   },
-  {
-    icon: <FlaskConical />,
-    text: "Features", 
-    path: "/hr/overtime",
-  },
+  // {
+  //   icon: <FlaskConical />,
+  //   text: "Features", 
+  //   path: "/hr/overtime",
+  // },
   {
     icon: <UserRound />,
     text: "Profile",
