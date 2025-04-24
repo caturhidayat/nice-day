@@ -11,10 +11,10 @@ export default function Navbar() {
   return (
     <nav>
       {isAuthenticated ? (
-        <div className="navbar bg-base-100 fixed z-20">
+        <div className="navbar bg-sky-700 fixed z-20">
           <div className="flex-1">
             <div className="avatar">
-              <div className="w-12 rounded">
+              <div className="w-12 bg-white rounded-full">
                 <Image
                   src="/images/Logo.png"
                   alt="Avatar Tailwind CSS Component"
@@ -23,9 +23,9 @@ export default function Navbar() {
                 />
               </div>
             </div>
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-polynesian  to-ceruline bg-clip-text text-transparent ">
+            {/* <h2 className="text-2xl font-bold bg-gradient-to-r from-polynesian  to-ceruline bg-clip-text text-transparent ">
               NiceDay
-            </h2>
+            </h2> */}
           </div>
           <div className="flex-none">
           {/* <NetworkInformation /> */}

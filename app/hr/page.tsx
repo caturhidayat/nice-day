@@ -20,14 +20,14 @@ export default async function Page() {
 
   return (
     <div className="bg-base-100">
-      <div className="bg-rose-700 pb-4">
-        <h2 className="text-center text-xl font-semibold py-2 text-white">
-          ✨ Hello {me?.name}! 👋
+      <div className="bg-sky-700 pb-4 rounded-b-2xl">
+        <h2 className="pl-4 text-xl font-semibold text-white">
+          Hello {me?.name}! 👋
         </h2>
-        <div className="grid justify-center max-w-xl">
-          <p className="text-center text-lg text-secondary">
+        <div className="grid p-4">
+          {/* <p className="text-center text-lg text-secondary">
             Live Attendance
-          </p>
+          </p> */}
           <ClockDisplay />
           <div>
             <AttendanceCard

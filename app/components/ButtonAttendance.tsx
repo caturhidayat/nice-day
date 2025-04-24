@@ -19,21 +19,17 @@ export default function ButtonAtt({
   mode,
 }: ButtonAttProps) {
   const router = useRouter();
-
   const handleClick = () => {
     // router.push(`/${param1}/${mode}/${param2}`);
     router.push(`/${param1}`);
   };
 
   return (
-    // <button className={`btn btn-block btn-${style}`} onClick={handleClick}>
-    //     {label}
-    // </button>
-    <Button
+    <button
       onClick={handleClick}
-      className="w-full bg-teal-700 hover:bg-teal-800"
+      className={`btn w-full btn-${style}`}
     >
       {label}
-    </Button>
+    </button>
   );
 }
