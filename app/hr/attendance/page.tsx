@@ -34,7 +34,7 @@ export default async function Page() {
   const me = await getProfile();
 
   return (
-    <section className="h-[calc(100vh-6rem)] flex flex-col px-4">
+    <section className="h-[calc(100vh-6rem)] flex flex-col p-4">
       <div className="flex flex-col gap-4">
         <h2 className="text-xl font-bold">Attendance List</h2>
         <div className="flex justify-end pb-2"></div>

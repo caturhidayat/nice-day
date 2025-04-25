@@ -1,7 +1,7 @@
 "use client";
 
 import { AuthContext } from "@/app/auth/auth-context";
-import { CalendarArrowDown, CircleArrowOutDownRight, RefreshCcw } from "lucide-react";
+import { CalendarArrowDown, CalendarClock, CircleArrowOutDownRight, RefreshCcw } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useContext } from "react";
@@ -14,14 +14,14 @@ export type menuListItem = {
 
 export const menuList: menuListItem[] = [
   {
-    icon: <CalendarArrowDown className="text-teal-600" />,
+    icon: <CalendarArrowDown />,
     text: "Leave Request",
     path: "/hr/leaves",
   },
   {
-    icon: <RefreshCcw className="text-orange-600" />,
-    text: "Future Update",
-    path: "",
+    icon: <CalendarClock />,
+    text: "Attendance Correction",
+    path: "/hr/corrections",
   },
   // {
   //   icon: <CircleArrowOutDownRight className="text-purple-600" />,
@@ -44,7 +44,7 @@ const MenuListItem = ({ icon, text, path }: menuListItem) => {
           currentPath === path ? "text-primary" : ""
         }`}
       >
-        {icon}
+        <Icon icon={icon} />
         <span className="text-xs">{text}</span>
       </button>
     </Link>
@@ -65,3 +65,11 @@ export default function MenuList() {
     </div>
   );
 }
+
+const Icon = ({ icon }: { icon: JSX.Element }) => {
+  return (
+    <span className="inline-block rounded-sm bg-teal-600 p-4 text-white">
+      {icon}
+    </span>
+  );
+};

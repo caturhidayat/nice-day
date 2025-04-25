@@ -6,6 +6,7 @@ import {
 
 import { AttendanceCard } from "../components/UI/AttendanceCard";
 import ClockDisplay from "../components/ClockDisplay";
+import MenuList from "../components/UI/MenuList";
 
 
 export default async function Page() {
@@ -20,14 +21,11 @@ export default async function Page() {
 
   return (
     <div className="bg-base-100">
-      <div className="bg-sky-700 pb-4 rounded-b-2xl">
+      <div className="bg-teal-700 pb-4 rounded-b-2xl p-4">
         <h2 className="pl-4 text-xl font-semibold text-white">
           Hello {me?.name}! 👋
         </h2>
         <div className="grid p-4">
-          {/* <p className="text-center text-lg text-secondary">
-            Live Attendance
-          </p> */}
           <ClockDisplay />
           <div>
             <AttendanceCard
@@ -41,7 +39,7 @@ export default async function Page() {
      
       <div className="grid max-w-xl pb-12">
         <h2 className="text-xl font-bold sm:text-2xl mt-4">
-          {/* <MenuList /> */}
+          <MenuList />
         </h2>
       </div>
     </div>

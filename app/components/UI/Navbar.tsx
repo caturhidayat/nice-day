@@ -11,7 +11,7 @@ export default function Navbar() {
   return (
     <nav>
       {isAuthenticated ? (
-        <div className="navbar bg-sky-700 fixed z-20">
+        <div className="navbar bg-teal-700 fixed z-20">
           <div className="flex-1">
             <div className="avatar">
               <div className="w-12 bg-white rounded-full">
@@ -23,7 +23,7 @@ export default function Navbar() {
                 />
               </div>
             </div>
-            {/* <h2 className="text-2xl font-bold bg-gradient-to-r from-polynesian  to-ceruline bg-clip-text text-transparent ">
+            {/* <h2 className="ml-4 text-2xl font-bold bg-gradient-to-r from-polynesian  to-ceruline bg-clip-text text-transparent ">
               NiceDay
             </h2> */}
           </div>
