@@ -50,7 +50,7 @@ export default function Login() {
           <div className="avatar">
             <div className="w-36 rounded">
               <Image
-                src="/images/Logo.png"
+                src="/images/Logo-new.png"
                 alt="Avatar Tailwind CSS Component"
                 width={512}
                 height={512}
@@ -66,7 +66,7 @@ export default function Login() {
         </div>
         <h1 className="text-xl font-extrabold sm:text-5xl">
           Understand User Flow.
-          <strong className="font-extrabold text-rose-700 sm:block">
+          <strong className="font-extrabold text-ceruline sm:block">
             {" "}
             Increase Conversion.{" "}
           </strong>
@@ -122,7 +122,7 @@ export default function Login() {
             </Alert>
           )}
 
-          <Button className="bg-sky-700 hover:bg-sky-800 " disabled={isPending}>
+          <Button className="bg-ceruline hover:bg-ceruline/90 " disabled={isPending}>
             {isPending ? (
               <>
                 <LoaderIcon className="h-4 w-4 animate-spin" />

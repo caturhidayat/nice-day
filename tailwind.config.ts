@@ -59,8 +59,8 @@ const config: Config = {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			},
-			ceruline: '#247BA0',
-			polynesian: '#1F487E',
+			ceruline: '#08605F',
+			polynesian: '#177E89',
   		}
   	}
   },

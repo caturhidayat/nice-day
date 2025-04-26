@@ -45,7 +45,7 @@ export default function InstallPromptButton() {
             <div className="flex items-start">
               <div className="flex-shrink-0 pt-0.5">
                 <Button
-                  className="bg-sky-700 hover:bg-sky-800 focus:ring-sky-500"
+                  className="bg-ceruline hover:bg-ceruline/90 focus:ring-ceruline"
                   onClick={handleInstallClick}
                 >
                   Install App
