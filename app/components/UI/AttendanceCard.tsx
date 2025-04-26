@@ -109,7 +109,7 @@ export function AttendanceCard({
     <div className="p-4">
       <div className="pt-2">
         <span className="flex items-center">
-          <CalendarClock className="h-4 w-4 mr-2 text-orange-600" />
+          <CalendarClock className="h-6 w-6 mr-2 text-orange-600" />
           <p className="text-sm text-white">{shiftToday?.name} </p>          
         </span>
         <Separator className="my-2" />

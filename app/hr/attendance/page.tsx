@@ -3,16 +3,13 @@ import React from "react";
 import {
   CalendarCheck,
   Clock,
-  MapPin,
   MapPinCheckInside,
   MapPinXInside,
   User2,
 } from "lucide-react";
 import {
-  Attendance,
   getAttendances,
   getProfile,
-  ProfileProps,
 } from "@/app/lib/action";
 import EmplyAttendance from "@/app/components/UI/EmplyAttendance";
 import { format } from "date-fns";
@@ -24,8 +21,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { get } from "@/app/lib/utils/fetch";
 import LocalTimeView from "@/app/components/LocalTimeView";
+
+export const metadata = {
+  title: "Attendance List",
+};
 
 export default async function Page() {
   // Get attendance records

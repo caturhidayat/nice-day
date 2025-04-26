@@ -14,16 +14,16 @@ export default function Navbar() {
         <div className="navbar bg-teal-700 fixed z-20">
           <div className="flex-1">
             <div className="avatar">
-              <div className="w-12 bg-white rounded-full">
+              <div className="w-12 bg-white rounded-xl">
                 <Image
-                  src="/images/Logo.png"
+                  src="/images/Logo-new.png"
                   alt="Avatar Tailwind CSS Component"
                   width={128}
                   height={128}
                 />
               </div>
             </div>
-            {/* <h2 className="ml-4 text-2xl font-bold bg-gradient-to-r from-polynesian  to-ceruline bg-clip-text text-transparent ">
+            {/* <h2 className="ml-8 text-lg font-bold">
               NiceDay
             </h2> */}
           </div>
