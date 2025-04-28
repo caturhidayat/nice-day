@@ -3,6 +3,7 @@ import { getAttendance, getProfile, getShiftToday } from "../lib/action";
 import { AttendanceCard } from "../components/UI/AttendanceCard";
 import ClockDisplay from "../components/ClockDisplay";
 import MenuList from "../components/UI/MenuList";
+import Navbar from "../components/UI/Navbar";
 
 export default async function Page() {
   const attendance = await getAttendance();
@@ -16,11 +17,12 @@ export default async function Page() {
 
   return (
     <div className="bg-base-100">
-      <div className="bg-teal-700 pb-4 rounded-b-2xl p-4">
+      <Navbar />
+      <div className="bg-teal-700 rounded-b-2xl p-4">
         <h2 className="pl-4 text-xl font-semibold text-white">
           Hello {me?.name}! 👋
         </h2>
-        <div className="grid p-4">
+        <div className="grid px-4">
           <ClockDisplay />
           <div>
             <AttendanceCard

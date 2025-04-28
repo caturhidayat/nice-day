@@ -106,15 +106,15 @@ export function AttendanceCard({
     //   </CardFooter>
     // </Card>
 
-    <div className="p-4">
+    <div className="p-2">
       <div className="pt-2">
         <span className="flex items-center">
-          <CalendarClock className="h-6 w-6 mr-2 text-orange-600" />
+          <CalendarClock className="h-6 w-6 mr-2 text-amber-300" />
           <p className="text-sm text-white">{shiftToday?.name} </p>          
         </span>
         <Separator className="my-2" />
       </div>
-      <div className="grid grid-cols-2 py-2 gap-1">
+      <div className="grid grid-cols-2 py-2 gap-4">
         <div className="flex flex-col gap-2 items-center">
           <div className="grid grid-cols-2 gap-2">
             <span className="text-white self-center">
@@ -125,7 +125,7 @@ export function AttendanceCard({
               )}
             </span>
           </div>
-          <ButtonAtt label="Masuk" param1="hr/preview/in" style="accent" />
+          <ButtonAtt label="Clock In" param1="hr/preview/in" style="accent" />
         </div>
         <div className="flex flex-col gap-2 items-center">
           <div className="grid grid-cols-2 gap-2">
@@ -137,7 +137,7 @@ export function AttendanceCard({
               )}
             </p>
           </div>
-        <ButtonAtt label="Pulang" param1="hr/preview/out" style="warning" />
+        <ButtonAtt label="Clock Out" param1="hr/preview/out" style="warning" />
         </div>
       </div>
     </div>

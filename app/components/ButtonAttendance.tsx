@@ -1,6 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { ClockIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface ButtonAttProps {
@@ -27,9 +29,12 @@ export default function ButtonAtt({
   return (
     <button
       onClick={handleClick}
-      className={`btn w-full btn-${style}`}
+      className={`btn btn-sm w-full btn-${style}`}
     >
+      <span className="flex items-center gap-2">
       {label}
+      <ClockIcon className="h-4 w-4 text-primary" />
+      </span>
     </button>
   );
 }

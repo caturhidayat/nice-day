@@ -69,7 +69,7 @@ export default function MenuList() {
 
 const Icon = ({ icon }: { icon: JSX.Element }) => {
   return (
-    <span className="inline-block rounded-sm p-4 text-white bg-gradient-to-bl from-teal-400 to-teal-700 shadow-md">
+    <span className="inline-block rounded-sm p-4 text-white bg-gradient-to-tl from-teal-400 to-teal-700 shadow-md">
       {icon}
     </span>
   );
