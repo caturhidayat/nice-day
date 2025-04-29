@@ -19,7 +19,7 @@ export default function TimeInput({
 }: TimeInputProps) {
   return (
     <div className="mb-4">
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id} className="text-xs mb-1 block">{label}</label>
       <input
         type="time"
         id={id}

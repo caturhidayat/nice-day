@@ -58,13 +58,6 @@ export default function CorrectionForm({ profile }: { profile: ProfileProps }) {
         <p className="text-white">
           Request correction for your attendance record
         </p>
-        {/* <Alert className="bg-teal-700 text-white border-none">
-          <Clock className="mr-3 h-6 w-6 text-white " />
-          <AlertTitle>Attendance Correction</AlertTitle>
-          <AlertDescription>
-            Request correction for your attendance record
-          </AlertDescription>
-        </Alert> */}
       </div>
       <div className="py-4 px-6">
         <ScrollArea className="h-[calc(100vh-200px)]">
@@ -95,6 +88,24 @@ export default function CorrectionForm({ profile }: { profile: ProfileProps }) {
               onClockInChange={setNewClockIn}
               onClockOutChange={setNewClockOut}
             />
+
+            <div className="mb-4">
+              <div className="flex flex-col">
+                <label htmlFor="reason">Reason</label>
+                <label className="form-control">
+                  <textarea
+                    className="textarea textarea-bordered h-24"
+                    placeholder="Please provide a detailed explanation for this correction request..."
+                  ></textarea>
+                </label>
+              </div>
+            </div>
+
+            <div className="flex pb-8">
+              <button className="btn bg-polynesian text-white hover:bg-polynesian/90 w-full">
+                Submit
+              </button>
+            </div>
           </form>
         </ScrollArea>
       </div>

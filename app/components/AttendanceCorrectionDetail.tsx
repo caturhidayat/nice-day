@@ -26,10 +26,10 @@ export default function AttendanceCorrectionDetail({
   onClockOutChange,
 }: AttendanceDetailsProps) {
   return (
-    <div className="">
-      <h3 className="text-sm font-medium ">Current Attendance record</h3>
+    <div className="bg-polynesian/5 p-4 rounded-lg border border-polynesian/20">
+      <h3 className="text-sm font-medium text-polynesian">Current Attendance record</h3>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 mb-4 ">
         <div className="flex flex-col">
           <span className="text-xs text-gray-500">Current Clock In</span>
           <span className="text-sm font-medium">{attendanceData?.clockIn}</span>
@@ -42,9 +42,9 @@ export default function AttendanceCorrectionDetail({
         </div>
       </div>
 
-      <h3 className="text-sm font-medium">Correction Request</h3>
+      <h3 className="text-sm font-medium text-polynesian">Correction Request</h3>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 mb-4">
         <TimeInput
           id="correction-clock-in"
           label="Correction Clock In"
@@ -59,23 +59,6 @@ export default function AttendanceCorrectionDetail({
         />
       </div>
 
-      <div className="mb-4">
-        <div>
-          <label htmlFor="reason">Reason</label>
-          <label className="form-control">
-            <textarea
-              className="textarea textarea-bordered h-24"
-              placeholder="Please provide a detailed explanation for this correction request..."
-            ></textarea>
-          </label>
-        </div>
-      </div>
-
-      <div className="flex pb-8">
-        <button className="btn bg-polynesian text-white hover:bg-polynesian/90 w-full">
-          Submit
-        </button>
-      </div>
     </div>
   );
 }
