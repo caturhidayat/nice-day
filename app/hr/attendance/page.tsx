@@ -3,16 +3,13 @@ import React from "react";
 import {
   CalendarCheck,
   Clock,
-  MapPin,
   MapPinCheckInside,
   MapPinXInside,
   User2,
 } from "lucide-react";
 import {
-  Attendance,
   getAttendances,
   getProfile,
-  ProfileProps,
 } from "@/app/lib/action";
 import EmplyAttendance from "@/app/components/UI/EmplyAttendance";
 import { format } from "date-fns";
@@ -24,8 +21,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { get } from "@/app/lib/utils/fetch";
 import LocalTimeView from "@/app/components/LocalTimeView";
+
+export const metadata = {
+  title: "Attendance List",
+};
 
 export default async function Page() {
   // Get attendance records
@@ -34,7 +34,7 @@ export default async function Page() {
   const me = await getProfile();
 
   return (
-    <section className="h-[calc(100vh-6rem)] flex flex-col px-4">
+    <section className="h-[calc(100vh-6rem)] flex flex-col p-4">
       <div className="flex flex-col gap-4">
         <h2 className="text-xl font-bold">Attendance List</h2>
         <div className="flex justify-end pb-2"></div>

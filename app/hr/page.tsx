@@ -1,12 +1,9 @@
-import {
-  getAttendance,
-  getProfile,
-  getShiftToday,
-} from "../lib/action";
+import { getAttendance, getProfile, getShiftToday } from "../lib/action";
 
 import { AttendanceCard } from "../components/UI/AttendanceCard";
 import ClockDisplay from "../components/ClockDisplay";
-
+import MenuList from "../components/UI/MenuList";
+import Navbar from "../components/UI/Navbar";
 
 export default async function Page() {
   const attendance = await getAttendance();
@@ -20,14 +17,12 @@ export default async function Page() {
 
   return (
     <div className="bg-base-100">
-      <div className="bg-rose-700 pb-4">
-        <h2 className="text-center text-xl font-semibold py-2 text-white">
-          ✨ Hello {me?.name}! 👋
+      <Navbar />
+      <div className="bg-teal-700 rounded-b-2xl p-4">
+        <h2 className="pl-4 text-xl font-semibold text-white">
+          Hello {me?.name}! 👋
         </h2>
-        <div className="grid justify-center max-w-xl">
-          <p className="text-center text-lg text-secondary">
-            Live Attendance
-          </p>
+        <div className="grid px-4">
           <ClockDisplay />
           <div>
             <AttendanceCard
@@ -38,11 +33,9 @@ export default async function Page() {
           </div>
         </div>
       </div>
-     
-      <div className="grid max-w-xl pb-12">
-        <h2 className="text-xl font-bold sm:text-2xl mt-4">
-          {/* <MenuList /> */}
-        </h2>
+
+      <div className="p-4">
+        {/* <MenuList /> */}
       </div>
     </div>
   );

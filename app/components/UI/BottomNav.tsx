@@ -23,11 +23,11 @@ export const buttons: ButtonItem[] = [
     text: "Attendance",
     path: "/hr/attendance",
   },
-  {
-    icon: <FlaskConical />,
-    text: "Features", 
-    path: "/hr/overtime",
-  },
+  // {
+  //   icon: <FlaskConical />,
+  //   text: "Features", 
+  //   path: "/hr/overtime",
+  // },
   {
     icon: <UserRound />,
     text: "Profile",
@@ -45,8 +45,8 @@ const BottomItemNav = ({ icon, text, path }: ButtonItem) => {
       }`}
     >
       <button
-        className={`inline-flex flex-col items-center justify-center text-gray-600 group-hover:text-rose-600 ${
-          currentPath === path ? "text-rose-600" : ""
+        className={`inline-flex flex-col items-center justify-center text-gray-600 group-hover:text-amber-500 ${
+          currentPath === path ? "text-amber-500" : ""
         }`}
       >
         {icon}
