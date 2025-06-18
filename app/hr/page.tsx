@@ -35,7 +35,7 @@ export default async function Page() {
       </div>
 
       <div className="p-4">
-        <MenuList />
+        {/* <MenuList /> */}
       </div>
     </div>
   );

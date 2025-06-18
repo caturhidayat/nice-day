@@ -29,7 +29,7 @@ export default function ButtonAtt({
   return (
     <button
       onClick={handleClick}
-      className={`btn btn-sm w-full btn-${style}`}
+      className={`btn w-full btn-soft btn-${style}`}
     >
       <span className="flex items-center gap-2">
       {label}

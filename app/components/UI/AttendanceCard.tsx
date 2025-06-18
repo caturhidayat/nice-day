@@ -125,7 +125,7 @@ export function AttendanceCard({
               )}
             </span>
           </div>
-          <ButtonAtt label="Clock In" param1="hr/preview/in" style="accent" />
+          <ButtonAtt label="Clock In" param1="hr/preview/in" style="warning" />
         </div>
         <div className="flex flex-col gap-2 items-center">
           <div className="grid grid-cols-2 gap-2">

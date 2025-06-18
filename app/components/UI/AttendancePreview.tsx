@@ -34,6 +34,7 @@ const MapView = dynamic(() => import("./MapView"), {
 // * -6.129503750410665, 106.94506771794923 // Nagrak
 //   { lat: -6.2785393106250345, lng: 107.15864398307146 }, // Office Jl. Tekno raya
 // * -6,274988, 107,159851 // Office Jl. Tekno raya GENESIS yelo3
+// * -6.247143, 107.282365 // Office KRWG - Heinz ABC Genesis Rengasdengklok
 //   { lat: -6.278292210508911, lng: 107.295504867729 }, // Office KRWG Tanjung Pura
 // * -6.278472108300512, 107.2955143129147 // Office KRWG Tanjung Pura karawang 2
 //   { lat: -6.245460747124666, lng: 107.28079689656437 }, // Office KRWG Tunggakjati
@@ -51,7 +52,8 @@ export const TargetLocationsWithRadius = [
     location: { lat: -6.129503750410665, lng: 106.94506771794923 },
     radius: 450,
   }, // Nagrak
-  { location: { lat: -6.274988, lng: 107.159851 }, radius: 100 }, // Office Jl. Tekno raya GENESIS yelo3
+  // { location: { lat: -6.274988, lng: 107.159851 }, radius: 100 }, // Office Jl. Tekno raya GENESIS yelo3
+  { location: { lat: -6.247143, lng: 107.282365 }, radius: 100 }, // Office KRWG - Heinz ABC Genesis Rengasdengklok
   {
     location: { lat: -6.278472108300512, lng: 107.2955143129147 },
     radius: 100,
